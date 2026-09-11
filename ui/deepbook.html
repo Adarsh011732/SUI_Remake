@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepBook v3 — Institutional Liquidity Gateway &amp; Multi-Wallet Node Engine</title>
+  
+  <!-- Universal Cyber Design Tokens -->
+  <link rel="stylesheet" href="theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: var(--bg-color, #02040a);
+      color: #ffffff;
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+    }
+
+    /* ── WORKSPACE ROOT CONTAINER ── */
+    .gateway-page-container {
+      position: absolute;
+      top: var(--nav-height, 64px);
+      left: 0;
+      width: 100vw;
+      height: calc(100vh - var(--nav-height, 64px));
+      display: flex;
+      flex-direction: column;
+      background: #01040a;
+      overflow: hidden;
+    }
+
+    /* Top Sub-Nav Mode Switcher Strip */
+    .portal-mode-nav-bar {
+      height: 44px;
+      background: rgba(3, 8, 20, 0.95);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.16);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 24px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      z-index: 20;
+    }
+
+    .mode-nav-pills {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mode-nav-pill {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      padding: 6px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .mode-nav-pill:hover {
+      background: rgba(56, 189, 248, 0.12);
+      color: #fff;
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    .mode-nav-pill.active {
+      background: rgba(56, 189, 248, 0.18);
+      color: #38bdf8;
+      border-color: #38bdf8;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+    }
+
+    .mode-nav-pill .p-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 8px #00ff88;
+    }
+
+    .gateway-sub-status {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: #64748b;
+      font-size: 10.5px;
+    }
+
+    .gateway-sub-status .val { color: #38bdf8; font-weight: 700; }
+    .gateway-sub-status .val.green { color: #00ff88; }
+
+    /* ══════════════════════════════════════════════════════════════
+       SPACIOUS 3D INSTITUTIONAL GATEWAY & MULTI-WALLET WORKSPACE
+       ══════════════════════════════════════════════════════════════ */
+    .institutional-gateway-view {
+      display: grid;
+      grid-template-columns: 1fr 520px;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+      position: relative;
+    }
+
+    @media (max-width: 1200px) {
+      .institutional-gateway-view { grid-template-columns: 1fr 440px; }
+    }
+
+    @media (max-width: 960px) {
+      .institutional-gateway-view { grid-template-columns: 1fr; }
+      .gateway-left-3d { display: none; }
+    }
+
+    /* Left 3D Mysticeti Sphere Canvas Container */
+    .gateway-left-3d {
+      position: relative;
+      background: radial-gradient(circle at 50% 50%, #031336 0%, #010308 100%);
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 32px 40px;
+    }
+
+    #geodesic-3d-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 1;
+    }
+
+    .gateway-header-tagline {
+      position: relative;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    .gateway-header-tagline h2 {
+      font-size: 26px;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .gateway-header-tagline h2 .sub-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      padding: 3px 10px;
+      border-radius: 4px;
+      background: rgba(0, 255, 136, 0.12);
+      color: #00ff88;
+      border: 1px solid rgba(0, 255, 136, 0.3);
+    }
+
+    .gateway-header-tagline p {
+      font-size: 12px;
+      color: #94a3b8;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 6px;
+    }
+
+    /* Telemetry HUD Bottom-Left Card */
+    .gateway-telemetry-card {
+      position: relative;
+      z-index: 5;
+      background: rgba(6, 11, 25, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: 12px;
+      padding: 20px 24px;
+      backdrop-filter: blur(16px);
+      max-width: 480px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+      box-shadow: 0 12px 36px rgba(0, 0, 0, 0.7);
+    }
+
+    .tel-metric-box .lbl {
+      font-size: 9.5px;
+      text-transform: uppercase;
+      color: #64748b;
+      font-family: 'JetBrains Mono', monospace;
+      letter-spacing: 0.5px;
+    }
+
+    .tel-metric-box .val {
+      font-size: 13.5px;
+      font-weight: 700;
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 3px;
+    }
+
+    .tel-metric-box .val.green { color: #00ff88; }
+
+    /* Right Dedicated Portal Sidebar */
+    .gateway-right-portal {
+      background: rgba(3, 7, 18, 0.96);
+      border-left: 1px solid rgba(56, 189, 248, 0.16);
+      padding: 28px 30px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      overflow-y: auto;
+      z-index: 10;
+    }
+
+    .portal-panel-title h3 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .portal-panel-title p {
+      font-size: 11px;
+      color: #64748b;
+      font-family: 'JetBrains Mono', monospace;
+      margin-top: 4px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .portal-broker-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-top: 18px;
+      margin-bottom: 18px;
+    }
+
+    .broker-tab {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      border-radius: 6px;
+      padding: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      color: #94a3b8;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.2s;
+    }
+
+    .broker-tab.active {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+      color: #fff;
+    }
+
+    /* CSV Upload Zone */
+    .csv-drop-box {
+      border: 2px dashed rgba(56, 189, 248, 0.35);
+      background: rgba(56, 189, 248, 0.03);
+      border-radius: 10px;
+      padding: 22px;
+      text-align: center;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      margin-bottom: 16px;
+    }
+
+    .csv-drop-box:hover, .csv-drop-box.dragover {
+      border-color: #00ff88;
+      background: rgba(0, 255, 136, 0.08);
+      box-shadow: 0 0 20px rgba(0, 255, 136, 0.25);
+    }
+
+    .csv-drop-box svg {
+      stroke: #38bdf8;
+      margin-bottom: 8px;
+    }
+
+    .csv-drop-box .csv-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: #fff;
+    }
+
+    .csv-drop-box .csv-sub {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      color: #94a3b8;
+      margin-top: 4px;
+    }
+
+    /* Terminal Console Window */
+    .console-stream-box {
+      background: #02050f;
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      border-radius: 8px;
+      padding: 12px 14px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      line-height: 1.45;
+      color: #00ff88;
+      max-height: 110px;
+      overflow-y: auto;
+      margin-bottom: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .console-stream-box .log-line.warn { color: #f59e0b; }
+    .console-stream-box .log-line.cyan { color: #38bdf8; }
+
+    /* Sub-Wallet Table / Checklist */
+    .sub-wallets-block {
+      background: rgba(6, 14, 36, 0.6);
+      border: 1px solid rgba(56, 189, 248, 0.16);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      max-height: 220px;
+      overflow-y: auto;
+      margin-bottom: 18px;
+    }
+
+    .sw-header-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #64748b;
+      text-transform: uppercase;
+      padding-bottom: 8px;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      margin-bottom: 8px;
+    }
+
+    .sw-item-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 5px 8px;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      transition: background 0.15s;
+    }
+
+    .sw-item-row:hover { background: rgba(56, 189, 248, 0.08); }
+
+    .sw-left-chk {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .sw-left-chk input[type="checkbox"] {
+      accent-color: #00ff88;
+      cursor: pointer;
+    }
+
+    .proceed-gateway-btn {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 14px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 4px 20px rgba(6, 182, 212, 0.35);
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+
+    .proceed-gateway-btn:hover {
+      background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%);
+      transform: translateY(-1px);
+      box-shadow: 0 6px 28px rgba(6, 182, 212, 0.5);
+    }
+  </style>
+</head>
+
+<body class="cyber-theme">
+
+  <!-- Universal Cyber Navigation Header -->
+  <header class="top-nav">
+    <a href="index.html" class="brand-block">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12,2C12,2 4,10 4,14C4,18.42 7.58,22 12,22C16.42,22 20,18.42 20,14C20,10 12,2 12,2Z" />
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>FluidBLCX</h1>
+        <div class="sub">SOVEREIGN WEB3 EXECUTION ARCHITECTURE</div>
+      </div>
+    </a>
+
+    <nav class="nav-modules-strip">
+      <a href="index.html" class="nav-module-link" title="Genesis 3D Architecture">
+        <span>Home</span>
+      </a>
+      <a href="compiler.html" class="nav-module-link" title="Move Bytecode Compiler">
+        <span>Compiler</span>
+      </a>
+      <a href="deepbook.html" class="nav-module-link active" title="DeepBook v3 Liquidity">
+        <span>DeepBook v3</span>
+      </a>
+      <a href="walrus_vault.html" class="nav-module-link" title="Walrus Decentralized Vault">
+        <span>Walrus Vault</span>
+      </a>
+      <a href="security_dashboard.html" class="nav-module-link" title="Security Sentinel">
+        <span>Security</span>
+      </a>
+      <a href="wallet1.html" class="nav-module-link" title="Portfolio &amp; QuantX Wallet">
+        <span>Wallet</span>
+      </a>
+      <a href="loginpage.html" class="nav-module-link highlight" title="Web3 Login Portal">
+        <span>Login &rarr;</span>
+      </a>
+    </nav>
+
+    <div class="nav-ticker-strip">
+      <div class="ticker-item">
+        <span class="ticker-label">DEEPBOOK v3:</span>
+        <span class="ticker-val green"><span class="status-dot-pulse"></span> ONLINE</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-label">MYSTICETI L1:</span>
+        <span class="ticker-val cyan">11ms LATENCY</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-label">NETWORK:</span>
+        <span class="ticker-val green">SUI TESTNET</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Root Container -->
+  <main class="gateway-page-container">
+
+    <!-- Top Sub-Nav Mode Switcher Strip -->
+    <div class="portal-mode-nav-bar">
+      <div class="mode-nav-pills">
+        <div class="mode-nav-pill active">
+          <span class="p-dot"></span>
+          <span>🌐 Institutional Gateway &amp; Multi-Wallet Node</span>
+        </div>
+        <a href="deepbook_trade.html" class="mode-nav-pill">
+          <span>⚡ Live CLOB &amp; AI Execution Terminal &rarr;</span>
+        </a>
+      </div>
+
+      <div class="gateway-sub-status">
+        <span>LEDGER: <span class="val">0xDEEP3_CLUSTER_Alpha</span></span>
+        <span>•</span>
+        <span>VERIFICATION: <span class="val green" id="topVerifStatus">ECDSA_SEC_P256</span></span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         SPACIOUS INSTITUTIONAL GATEWAY VIEW
+         ══════════════════════════════════════════════════════════════ -->
+    <div class="institutional-gateway-view">
+      
+      <!-- Left: 3D Geodesic Mysticeti Sphere & Telemetry HUD -->
+      <div class="gateway-left-3d">
+        <canvas id="geodesic-3d-canvas"></canvas>
+
+        <div class="gateway-header-tagline">
+          <h2>
+            <span>DEEPBOOK ENGINE V3</span>
+            <span class="sub-tag">MAINNET &amp; TESTNET ACTIVE</span>
+          </h2>
+          <p>DECENTRALIZED LIQUIDITY POOL LAYER • PARALLEL NODE PROVISIONING</p>
+        </div>
+
+        <div class="gateway-telemetry-card">
+          <div class="tel-metric-box">
+            <div class="lbl">Consensus Framework</div>
+            <div class="val">MYSTICETI L1 ENGINE</div>
+          </div>
+          <div class="tel-metric-box">
+            <div class="lbl">Verification State</div>
+            <div class="val green" id="gatewayVerifState">ECDSA_SEC_P256</div>
+          </div>
+          <div class="tel-metric-box">
+            <div class="lbl">Network Latency</div>
+            <div class="val">11 ms</div>
+          </div>
+          <div class="tel-metric-box">
+            <div class="lbl">Core Ledger Cluster</div>
+            <div class="val">0xDEEP3_CLUSTER_Alpha</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Right: Dedicated Access Portal Sidebar -->
+      <div class="gateway-right-portal">
+        <div>
+          <div class="portal-panel-title">
+            <h3>
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+                <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z" />
+              </svg>
+              <span>DeepBook Access Portal</span>
+            </h3>
+            <p>V3 HIGH-FREQUENCY MULTI-WALLET EXECUTION GATEWAY</p>
+          </div>
+
+          <div class="portal-broker-tabs">
+            <button class="broker-tab active" id="tabInstBroker" onclick="setBrokerType('inst')">
+              🏢 Institutional Broker
+            </button>
+            <button class="broker-tab" id="tabRetailTrader" onclick="setBrokerType('retail')">
+              👤 Retail Trader
+            </button>
+          </div>
+
+          <!-- CSV Upload Dropzone -->
+          <div class="csv-drop-box" id="csvDropZone">
+            <input type="file" id="csvFileInput" accept=".csv" style="display:none;" />
+            <svg width="34" height="34" viewBox="0 0 24 24" fill="none" stroke-width="2">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+              <polyline points="17 8 12 3 7 8" />
+              <line x1="12" y1="3" x2="12" y2="15" />
+            </svg>
+            <div class="csv-title" id="csvDropTitle">Upload Wallet CSV Configuration</div>
+            <div class="csv-sub" id="csvDropSub">Drop or choose your portfolio .csv file with credentials</div>
+            <button class="bw-btn" style="margin-top: 10px; padding: 5px 12px; font-size: 10.5px; background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); color: #38bdf8;" onclick="loadSamplePortfolioCsv(event)">
+              📄 Quick-Load Sample Portfolio CSV
+            </button>
+          </div>
+
+          <!-- Console Terminal Stream -->
+          <div class="console-stream-box" id="gatewayConsoleLogs">
+            <div class="log-line">[SYS_GATEWAY] Ready. Upload credential configuration to start parallel trading node mapping...</div>
+          </div>
+
+          <!-- Sub-Wallet Selection Checklist -->
+          <div class="sub-wallets-block">
+            <div class="sw-header-row">
+              <span>SUB-WALLET SELECTION</span>
+              <span id="selectedWalletsCount" style="color: #38bdf8;">10 wallets · 10 selected</span>
+            </div>
+            <div id="subWalletsList" style="display: flex; flex-direction: column; gap: 2px;">
+              <!-- Populated via JS -->
+            </div>
+          </div>
+        </div>
+
+        <a href="deepbook_trade.html" class="proceed-gateway-btn" id="btnProceedExecution">
+          <span>⚡ Proceed with 10 Wallets to Execution Terminal &rarr;</span>
+        </a>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    function setBrokerType(type) {
+      document.getElementById('tabInstBroker').classList.toggle('active', type === 'inst');
+      document.getElementById('tabRetailTrader').classList.toggle('active', type === 'retail');
+    }
+
+    /* ─── 3D GEODESIC MYSTICETI SPHERE (THREE.JS) ─── */
+    let geoScene, geoCamera, geoRenderer, geoCage, geoCore, geoParticles;
+    let isBatchVerified = false;
+
+    function initGeodesicSphere3D() {
+      const canvas = document.getElementById('geodesic-3d-canvas');
+      if (!canvas) return;
+
+      const parent = canvas.parentElement;
+      const width = parent.clientWidth || 800;
+      const height = parent.clientHeight || 600;
+
+      geoScene = new THREE.Scene();
+      geoCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+      geoCamera.position.z = 8.5;
+
+      geoRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      geoRenderer.setSize(width, height);
+      geoRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+      // 1. Outer Geodesic Wireframe Cage
+      const cageGeom = new THREE.IcosahedronGeometry(2.8, 2);
+      const cageWire = new THREE.WireframeGeometry(cageGeom);
+      const cageMat = new THREE.LineBasicMaterial({
+        color: 0x0284c7,
+        transparent: true,
+        opacity: 0.55
+      });
+      geoCage = new THREE.LineSegments(cageWire, cageMat);
+      geoScene.add(geoCage);
+
+      // 2. Inner Faceted Core with Glowing Polyhedral Faces
+      const coreGeom = new THREE.IcosahedronGeometry(2.3, 1);
+      const coreMat = new THREE.MeshPhongMaterial({
+        color: 0x0369a1,
+        emissive: 0x0284c7,
+        emissiveIntensity: 0.7,
+        flatShading: true,
+        transparent: true,
+        opacity: 0.85,
+        shininess: 100
+      });
+      geoCore = new THREE.Mesh(coreGeom, coreMat);
+      geoScene.add(geoCore);
+
+      // 3. Highlighted Bright Facets
+      const highlightGeom = new THREE.IcosahedronGeometry(2.32, 0);
+      const highlightMat = new THREE.MeshBasicMaterial({
+        color: 0x38bdf8,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.9
+      });
+      geoCore.add(new THREE.Mesh(highlightGeom, highlightMat));
+
+      // 4. Ambient & Directional Lights
+      const ambLight = new THREE.AmbientLight(0xffffff, 0.3);
+      geoScene.add(ambLight);
+
+      const ptLight1 = new THREE.PointLight(0x38bdf8, 2.5, 50);
+      ptLight1.position.set(6, 6, 8);
+      geoScene.add(ptLight1);
+
+      const ptLight2 = new THREE.PointLight(0x00ff88, 1.5, 50);
+      ptLight2.position.set(-6, -6, 5);
+      geoScene.add(ptLight2);
+
+      // 5. Star / Particle Dust
+      const dustCount = 150;
+      const dustGeom = new THREE.BufferGeometry();
+      const dustPos = new Float32Array(dustCount * 3);
+      for (let i = 0; i < dustCount * 3; i += 3) {
+        const theta = Math.random() * Math.PI * 2;
+        const phi = Math.acos((Math.random() * 2) - 1);
+        const r = 3.2 + Math.random() * 2.5;
+        dustPos[i] = r * Math.sin(phi) * Math.cos(theta);
+        dustPos[i + 1] = r * Math.sin(phi) * Math.sin(theta);
+        dustPos[i + 2] = r * Math.cos(phi);
+      }
+      dustGeom.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+      const dustMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.08, transparent: true, opacity: 0.75 });
+      geoParticles = new THREE.Points(dustGeom, dustMat);
+      geoScene.add(geoParticles);
+
+      animateGeodesic();
+      window.addEventListener('resize', onGeodesicResize);
+    }
+
+    function onGeodesicResize() {
+      const canvas = document.getElementById('geodesic-3d-canvas');
+      if (!canvas || !geoRenderer || !geoCamera) return;
+      const parent = canvas.parentElement;
+      const width = parent.clientWidth;
+      const height = parent.clientHeight;
+      geoCamera.aspect = width / height;
+      geoCamera.updateProjectionMatrix();
+      geoRenderer.setSize(width, height);
+    }
+
+    function setSphereVerifiedColor() {
+      isBatchVerified = true;
+      if (geoCore) {
+        geoCore.material.color.setHex(0x047857);
+        geoCore.material.emissive.setHex(0x00ff88);
+        geoCore.material.emissiveIntensity = 0.95;
+      }
+      if (geoCage) {
+        geoCage.material.color.setHex(0x00ff88);
+      }
+    }
+
+    function animateGeodesic() {
+      requestAnimationFrame(animateGeodesic);
+      if (geoCage) {
+        geoCage.rotation.y += 0.004;
+        geoCage.rotation.x += 0.002;
+      }
+      if (geoCore) {
+        geoCore.rotation.y += 0.005;
+        geoCore.rotation.x += 0.003;
+      }
+      if (geoParticles) {
+        geoParticles.rotation.y += 0.0015;
+      }
+      if (geoRenderer && geoScene && geoCamera) {
+        geoRenderer.render(geoScene, geoCamera);
+      }
+    }
+
+    /* ─── SUB-WALLETS DATA & CSV BATCH ENGINE ─── */
+    const sampleWallets = [
+      { id: 1, name: 'Wallet-1 (Alpha-Fund)', address: '0xa3b8...0001', alloc: '10.6%', bal: '27,472 SUI', token: 'SUI', active: true },
+      { id: 2, name: 'Wallet-2 (Beta-Trading)', address: '0xa3b8...0002', alloc: '8.4%', bal: '35,860 USDC', token: 'USDC', active: true },
+      { id: 3, name: 'Wallet-3 (Gamma-Arb)', address: '0xa3b8...0003', alloc: '6.7%', bal: '34,862 DEEP', token: 'DEEP', active: true },
+      { id: 4, name: 'Wallet-4 (Delta-LP)', address: '0xa3b8...0004', alloc: '5.6%', bal: '44,274 SUI', token: 'SUI', active: true },
+      { id: 5, name: 'Wallet-5 (Epsilon-MM)', address: '0xa3b8...0005', alloc: '5.0%', bal: '24,110 USDC', token: 'USDC', active: true },
+      { id: 6, name: 'Wallet-6 (Zeta-Hedge)', address: '0xa3b8...0006', alloc: '4.5%', bal: '13,233 SUI', token: 'SUI', active: true },
+      { id: 7, name: 'Wallet-7 (Eta-Liquid)', address: '0xa3b8...0007', alloc: '3.9%', bal: '18,762 DEEP', token: 'DEEP', active: true },
+      { id: 8, name: 'Wallet-8 (Theta-Swap)', address: '0xa3b8...0008', alloc: '3.9%', bal: '12,182 USDC', token: 'USDC', active: true },
+      { id: 9, name: 'Wallet-9 (Iota-Book)', address: '0xa3b8...0009', alloc: '3.4%', bal: '41,181 SUI', token: 'SUI', active: true },
+      { id: 10, name: 'Wallet-10 (Kappa-Pool)', address: '0xa3b8...000a', alloc: '3.4%', bal: '18,797 DEEP', token: 'DEEP', active: true }
+    ];
+
+    function renderSubWallets() {
+      const list = document.getElementById('subWalletsList');
+      if (!list) return;
+      list.innerHTML = '';
+
+      sampleWallets.forEach(w => {
+        const div = document.createElement('div');
+        div.className = 'sw-item-row';
+        div.innerHTML = `
+          <div class="sw-left-chk">
+            <input type="checkbox" id="chk_w_${w.id}" ${w.active ? 'checked' : ''} onchange="toggleWallet(${w.id})" />
+            <label for="chk_w_${w.id}" style="cursor: pointer; color: ${w.active ? '#fff' : '#64748b'};">${w.name}</label>
+          </div>
+          <div style="display: flex; align-items: center; gap: 8px;">
+            <span style="color: #38bdf8; font-size: 9.5px;">${w.alloc}</span>
+            <span style="color: #00ff88; font-size: 10px;">${w.bal}</span>
+          </div>
+        `;
+        list.appendChild(div);
+      });
+      updateSelectedWalletsCount();
+    }
+
+    function toggleWallet(id) {
+      const w = sampleWallets.find(x => x.id === id);
+      if (w) w.active = !w.active;
+      renderSubWallets();
+    }
+
+    function updateSelectedWalletsCount() {
+      const count = sampleWallets.filter(w => w.active).length;
+      document.getElementById('selectedWalletsCount').textContent = `${sampleWallets.length} wallets · ${count} selected`;
+      document.getElementById('btnProceedExecution').innerHTML = `<span>⚡ Proceed with ${count} Wallets to Execution Terminal &rarr;</span>`;
+    }
+
+    function loadSamplePortfolioCsv(e) {
+      if (e) e.stopPropagation();
+      const consoleBox = document.getElementById('gatewayConsoleLogs');
+      consoleBox.innerHTML = '';
+
+      const lines = [
+        '[SYS_GATEWAY] Reading credentials portfolio.csv...',
+        '[NODE-SYNC-01] Alpha-Fund-001 + 0xa3b8...0001 - Allocation: 10.6%',
+        '[NODE-SYNC-02] Beta-Trading-002 + 0xa3b8...0002 - Allocation: 8.4%',
+        '[NODE-SYNC-03] Gamma-Arb-003 + 0xa3b8...0003 - Allocation: 6.7%',
+        '[NODE-SYNC-04] Delta-LP-004 + 0xa3b8...0004 - Allocation: 5.6%',
+        '[NODE-SYNC-05] Epsilon-Market-005 + 0xa3b8...0005 - Allocation: 5.0%',
+        '[NODE-SYNC-06] Zeta-Hedge-006 + 0xa3b8...0006 - Allocation: 4.5%',
+        '[NODE-SYNC-07] Eta-Liquid-007 + 0xa3b8...0007 - Allocation: 3.9%',
+        '[NODE-SYNC-08] Theta-Swap-008 + 0xa3b8...0008 - Allocation: 3.9%',
+        '[NODE-SYNC-09] Iota-Book-009 + 0xa3b8...0009 - Allocation: 3.4%',
+        '[NODE-SYNC-10] Kappa-Pool-010 + 0xa3b8...000a - Allocation: 3.4%',
+        '[SUCCESS] 10 wallet(s) mapped. Mysticeti L1 Consensus Armed.'
+      ];
+
+      lines.forEach((line, idx) => {
+        setTimeout(() => {
+          const div = document.createElement('div');
+          div.className = 'log-line' + (idx === lines.length - 1 ? ' cyan' : '');
+          div.textContent = line;
+          consoleBox.appendChild(div);
+          consoleBox.scrollTop = consoleBox.scrollHeight;
+        }, idx * 60);
+      });
+
+      setTimeout(() => {
+        setSphereVerifiedColor();
+        document.getElementById('gatewayVerifState').textContent = 'WALLET_BATCH_OK';
+        document.getElementById('topVerifStatus').textContent = 'WALLET_BATCH_OK';
+        document.getElementById('csvDropTitle').textContent = '✅ 10 Institutional Wallets Synced';
+        document.getElementById('csvDropSub').textContent = 'portfolio.csv parsed · Mysten Mysticeti Consensus Validated';
+      }, lines.length * 60 + 50);
+    }
+
+    // CSV Dropzone listeners
+    const csvDrop = document.getElementById('csvDropZone');
+    const csvInput = document.getElementById('csvFileInput');
+    csvDrop.addEventListener('click', () => csvInput.click());
+    csvInput.addEventListener('change', () => loadSamplePortfolioCsv());
+
+    window.addEventListener('DOMContentLoaded', () => {
+      initGeodesicSphere3D();
+      renderSubWallets();
+    });
+  </script>
+</body>
+</html>

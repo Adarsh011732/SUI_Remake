@@ -1,0 +1,1186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>DeepBook v3 — Live CLOB &amp; Autonomous AI Execution Terminal</title>
+  
+  <!-- Universal Cyber Design Tokens -->
+  <link rel="stylesheet" href="theme.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <style>
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html, body {
+      width: 100%;
+      height: 100%;
+      background: var(--bg-color, #02040a);
+      color: #ffffff;
+      font-family: 'Space Grotesk', -apple-system, BlinkMacSystemFont, sans-serif;
+      overflow: hidden;
+    }
+
+    /* ── WORKSPACE ROOT CONTAINER ── */
+    .terminal-container {
+      position: absolute;
+      top: var(--nav-height, 64px);
+      left: 0;
+      width: 100vw;
+      height: calc(100vh - var(--nav-height, 64px));
+      display: flex;
+      flex-direction: column;
+      background: #01040a;
+      overflow: hidden;
+    }
+
+    /* Top Sub-Nav Mode Switcher Strip */
+    .portal-mode-nav-bar {
+      height: 42px;
+      background: rgba(3, 8, 20, 0.95);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.16);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 0 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      z-index: 20;
+    }
+
+    .mode-nav-pills {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .mode-nav-pill {
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      color: #94a3b8;
+      padding: 5px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      text-decoration: none;
+      transition: all 0.2s ease;
+    }
+
+    .mode-nav-pill:hover {
+      background: rgba(56, 189, 248, 0.12);
+      color: #fff;
+      border-color: rgba(56, 189, 248, 0.35);
+    }
+
+    .mode-nav-pill.active {
+      background: rgba(56, 189, 248, 0.18);
+      color: #38bdf8;
+      border-color: #38bdf8;
+      box-shadow: 0 0 12px rgba(56, 189, 248, 0.2);
+    }
+
+    .mode-nav-pill.active .p-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 8px #00ff88;
+    }
+
+    /* ══════════════════════════════════════════════════════════════
+       4-TIER TRADING & AI EXECUTION TERMINAL MATRIX
+       ══════════════════════════════════════════════════════════════ */
+    .trading-terminal-view {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+      overflow: hidden;
+    }
+
+    /* ── TIER 0: 12-COIN LIVE MARKET DATA MARQUEE ── */
+    .market-12coins-marquee {
+      background: rgba(3, 8, 20, 0.95);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.12);
+      display: flex;
+      align-items: center;
+      overflow-x: auto;
+      white-space: nowrap;
+      padding: 0 16px;
+      gap: 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      height: 38px;
+      flex-shrink: 0;
+      scrollbar-width: none;
+    }
+    .market-12coins-marquee::-webkit-scrollbar { display: none; }
+
+    .marquee-badge-label {
+      font-size: 9px;
+      font-weight: 800;
+      color: #38bdf8;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 2px 8px;
+      border-radius: 4px;
+      letter-spacing: 1px;
+      flex-shrink: 0;
+    }
+
+    .marquee-coin-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      cursor: pointer;
+      padding: 3px 8px;
+      border-radius: 4px;
+      transition: background 0.2s;
+    }
+    .marquee-coin-item:hover { background: rgba(255, 255, 255, 0.05); }
+    .marquee-coin-item.active { background: rgba(56, 189, 248, 0.15); border: 1px solid rgba(56, 189, 248, 0.3); }
+
+    .marquee-coin-item .sym { font-weight: 700; color: #fff; }
+    .marquee-coin-item .val { color: #94a3b8; font-size: 10.5px; }
+    .marquee-coin-item .chg.green { color: #00ff88; font-weight: 600; }
+    .marquee-coin-item .chg.red { color: #f43f5e; font-weight: 600; }
+
+    /* ── TIER 1: ACTIVE PAIR METRICS STRIP ── */
+    .market-ticker-strip {
+      background: rgba(6, 11, 25, 0.9);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.16);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 20px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11.5px;
+      flex-shrink: 0;
+    }
+
+    .pair-brand-lockup {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .pair-select-btn {
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.35);
+      color: #38bdf8;
+      font-weight: 800;
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .pair-select-btn .dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #00ff88;
+      box-shadow: 0 0 8px #00ff88;
+    }
+
+    .ticker-metrics-row {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .metric-item {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .metric-item .lbl { font-size: 8.5px; color: #64748b; text-transform: uppercase; }
+    .metric-item .val { font-weight: 700; color: #fff; font-size: 11.5px; }
+    .metric-item .val.green { color: #00ff88; }
+    .metric-item .val.cyan { color: #38bdf8; }
+    .metric-item .val.gold { color: #f59e0b; }
+
+    /* ── TIER 2: 4-COLUMN TRADING MATRIX ── */
+    .trading-core-grid {
+      display: grid;
+      grid-template-columns: 2.2fr 1.2fr 1.3fr 1.3fr;
+      flex: 1;
+      min-height: 0;
+      background: #000;
+    }
+
+    @media (max-width: 1400px) {
+      .trading-core-grid { grid-template-columns: 2fr 1.1fr 1.2fr 1.2fr; }
+    }
+
+    /* Column 1: Candlestick Chart Pane */
+    .chart-pane {
+      border-right: 1px solid rgba(56, 189, 248, 0.16);
+      display: flex;
+      flex-direction: column;
+      background: #02050f;
+      position: relative;
+    }
+
+    .chart-controls-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 8px 14px;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.12);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+    }
+
+    .tf-pills {
+      display: flex;
+      gap: 6px;
+    }
+
+    .tf-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      padding: 3px 8px;
+      border-radius: 4px;
+      cursor: pointer;
+      font-size: 10px;
+      font-weight: 600;
+      transition: all 0.15s;
+    }
+
+    .tf-pill.active, .tf-pill:hover {
+      background: rgba(56, 189, 248, 0.18);
+      border-color: #38bdf8;
+      color: #fff;
+    }
+
+    .chart-canvas-wrap {
+      flex: 1;
+      position: relative;
+      min-height: 0;
+    }
+
+    #candlestickCanvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: block;
+    }
+
+    /* Column 2: Order Book */
+    .orderbook-pane {
+      border-right: 1px solid rgba(56, 189, 248, 0.16);
+      display: flex;
+      flex-direction: column;
+      background: #030816;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+    }
+
+    .panel-section-title {
+      padding: 8px 12px;
+      background: rgba(255, 255, 255, 0.02);
+      border-bottom: 1px solid rgba(56, 189, 248, 0.12);
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #94a3b8;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .ob-header {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      padding: 6px 12px;
+      font-size: 9px;
+      color: #64748b;
+      text-transform: uppercase;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+    }
+
+    .ob-header span:last-child { text-align: right; }
+    .ob-header span:nth-child(2) { text-align: center; }
+
+    .ob-rows-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 6px 12px;
+      overflow-y: auto;
+    }
+
+    .ob-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      padding: 2.5px 0;
+      position: relative;
+      font-size: 10.5px;
+    }
+
+    .ob-row span:last-child { text-align: right; color: #94a3b8; }
+    .ob-row span:nth-child(2) { text-align: center; color: #fff; }
+    .ob-row .price.red { color: #f43f5e; font-weight: 700; }
+    .ob-row .price.green { color: #00ff88; font-weight: 700; }
+
+    .ob-depth-bar {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      border-radius: 2px;
+    }
+    .ob-depth-bar.red { background: rgba(244, 63, 94, 0.12); }
+    .ob-depth-bar.green { background: rgba(0, 255, 136, 0.12); }
+
+    .ob-spread-divider {
+      padding: 6px 0;
+      margin: 4px 0;
+      border-top: 1px dashed rgba(56, 189, 248, 0.25);
+      border-bottom: 1px dashed rgba(56, 189, 248, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 10px;
+      font-weight: 700;
+      color: #38bdf8;
+    }
+
+    /* Column 3: Order Execution Form */
+    .order-form-pane {
+      border-right: 1px solid rgba(56, 189, 248, 0.16);
+      display: flex;
+      flex-direction: column;
+      background: #020612;
+      padding: 14px;
+      gap: 12px;
+      overflow-y: auto;
+    }
+
+    .order-type-tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 4px;
+      background: rgba(255, 255, 255, 0.03);
+      padding: 3px;
+      border-radius: 6px;
+      border: 1px solid rgba(255, 255, 255, 0.06);
+    }
+
+    .ot-btn {
+      background: transparent;
+      border: none;
+      color: #94a3b8;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 6px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+
+    .ot-btn.active {
+      background: rgba(56, 189, 248, 0.2);
+      color: #fff;
+    }
+
+    .side-switcher {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+    }
+
+    .side-btn {
+      padding: 8px;
+      border-radius: 6px;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 11.5px;
+      cursor: pointer;
+      border: 1px solid transparent;
+      transition: all 0.2s;
+    }
+
+    .side-btn.buy {
+      background: rgba(0, 255, 136, 0.12);
+      color: #00ff88;
+      border-color: rgba(0, 255, 136, 0.3);
+    }
+    .side-btn.buy.active {
+      background: #00ff88;
+      color: #000;
+      box-shadow: 0 0 16px rgba(0, 255, 136, 0.4);
+    }
+
+    .side-btn.sell {
+      background: rgba(244, 63, 94, 0.12);
+      color: #f43f5e;
+      border-color: rgba(244, 63, 94, 0.3);
+    }
+    .side-btn.sell.active {
+      background: #f43f5e;
+      color: #fff;
+      box-shadow: 0 0 16px rgba(244, 63, 94, 0.4);
+    }
+
+    .form-input-card {
+      background: rgba(6, 14, 36, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      border-radius: 6px;
+      padding: 8px 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .form-input-card .lbl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      color: #64748b;
+      text-transform: uppercase;
+    }
+
+    .form-input-card input {
+      background: transparent;
+      border: none;
+      outline: none;
+      color: #fff;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .pct-pills-row {
+      display: flex;
+      gap: 6px;
+    }
+
+    .pct-pill {
+      flex: 1;
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      color: #94a3b8;
+      padding: 4px 0;
+      border-radius: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.15s;
+    }
+
+    .pct-pill:hover {
+      background: rgba(56, 189, 248, 0.15);
+      border-color: #38bdf8;
+      color: #fff;
+    }
+
+    .submit-order-btn {
+      width: 100%;
+      padding: 12px;
+      background: linear-gradient(135deg, #0284c7 0%, #06b6d4 100%);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      font-family: inherit;
+      font-weight: 800;
+      font-size: 12.5px;
+      cursor: pointer;
+      box-shadow: 0 4px 18px rgba(6, 182, 212, 0.35);
+      transition: all 0.2s;
+      margin-top: auto;
+    }
+
+    .submit-order-btn:hover {
+      background: linear-gradient(135deg, #0ea5e9 0%, #22d3ee 100%);
+      transform: translateY(-1px);
+    }
+
+    /* Column 4: AI Alpha Execution & Liquidity */
+    .ai-and-liquidity-pane {
+      display: flex;
+      flex-direction: column;
+      background: #02050f;
+      padding: 14px;
+      gap: 14px;
+      overflow-y: auto;
+    }
+
+    .ai-agent-card {
+      background: radial-gradient(circle at top left, rgba(168, 85, 247, 0.15) 0%, rgba(6, 11, 25, 0.9) 100%);
+      border: 1px solid rgba(168, 85, 247, 0.35);
+      border-radius: 8px;
+      padding: 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .ai-agent-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      color: #c084fc;
+    }
+
+    .ai-signal-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(0, 255, 136, 0.15);
+      border: 1px solid #00ff88;
+      color: #00ff88;
+      padding: 3px 8px;
+      border-radius: 4px;
+      font-size: 9.5px;
+    }
+
+    .ai-signal-badge .dot {
+      width: 5px;
+      height: 5px;
+      border-radius: 50%;
+      background: #00ff88;
+    }
+
+    .ai-stats-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+    }
+
+    .ai-stat-box {
+      background: rgba(0, 0, 0, 0.4);
+      padding: 6px 8px;
+      border-radius: 4px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+    .ai-stat-box .l { color: #64748b; font-size: 8.5px; }
+    .ai-stat-box .v { font-weight: 700; color: #fff; margin-top: 2px; }
+
+    .ai-exec-btn {
+      padding: 8px;
+      background: linear-gradient(135deg, #7e22ce 0%, #a855f7 100%);
+      border: none;
+      border-radius: 6px;
+      color: #fff;
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 11px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .ai-exec-btn:hover { background: linear-gradient(135deg, #9333ea 0%, #c084fc 100%); }
+
+    .liquidity-box {
+      background: rgba(6, 14, 36, 0.6);
+      border: 1px solid rgba(56, 189, 248, 0.18);
+      border-radius: 8px;
+      padding: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .liquidity-header {
+      display: flex;
+      justify-content: space-between;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: #94a3b8;
+    }
+
+    .pool-depth-bar-wrap {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+    }
+
+    .pool-bar-track {
+      height: 8px;
+      background: rgba(255, 255, 255, 0.05);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+    }
+
+    .pool-bar-fill.sui { background: #38bdf8; width: 62%; }
+    .pool-bar-fill.usdc { background: #00ff88; width: 38%; }
+
+    /* ── TIER 3: BOTTOM LEDGER TRAY ── */
+    .bottom-ledger-tray {
+      height: 140px;
+      background: rgba(2, 6, 18, 0.96);
+      border-top: 1px solid rgba(56, 189, 248, 0.16);
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      flex-shrink: 0;
+    }
+
+    .ledger-pane {
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid rgba(56, 189, 248, 0.12);
+      padding: 8px 16px;
+      overflow: hidden;
+    }
+
+    .ledger-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 9.5px;
+      color: #64748b;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+
+    .ledger-list-scroll {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .trade-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 2px 0;
+    }
+    .trade-row .p.green { color: #00ff88; font-weight: 700; }
+    .trade-row .p.red { color: #f43f5e; font-weight: 700; }
+  </style>
+</head>
+
+<body class="cyber-theme">
+
+  <!-- Universal Cyber Navigation Header -->
+  <header class="top-nav">
+    <a href="index.html" class="brand-block">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12,2C12,2 4,10 4,14C4,18.42 7.58,22 12,22C16.42,22 20,18.42 20,14C20,10 12,2 12,2Z" />
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>FluidBLCX</h1>
+        <div class="sub">SOVEREIGN WEB3 EXECUTION ARCHITECTURE</div>
+      </div>
+    </a>
+
+    <nav class="nav-modules-strip">
+      <a href="index.html" class="nav-module-link" title="Genesis 3D Architecture">
+        <span>Home</span>
+      </a>
+      <a href="compiler.html" class="nav-module-link" title="Move Bytecode Compiler">
+        <span>Compiler</span>
+      </a>
+      <a href="deepbook.html" class="nav-module-link active" title="DeepBook v3 Liquidity">
+        <span>DeepBook v3</span>
+      </a>
+      <a href="walrus_vault.html" class="nav-module-link" title="Walrus Decentralized Vault">
+        <span>Walrus Vault</span>
+      </a>
+      <a href="security_dashboard.html" class="nav-module-link" title="Security Sentinel">
+        <span>Security</span>
+      </a>
+      <a href="wallet1.html" class="nav-module-link" title="Portfolio &amp; QuantX Wallet">
+        <span>Wallet</span>
+      </a>
+      <a href="loginpage.html" class="nav-module-link highlight" title="Web3 Login Portal">
+        <span>Login &rarr;</span>
+      </a>
+    </nav>
+
+    <div class="nav-ticker-strip">
+      <div class="ticker-item">
+        <span class="ticker-label">DEEPBOOK CLOB:</span>
+        <span class="ticker-val green"><span class="status-dot-pulse"></span> ACTIVE</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-label">MATCH ENGINE:</span>
+        <span class="ticker-val cyan">MYSTICETI L1</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-label">NETWORK:</span>
+        <span class="ticker-val green">SUI TESTNET</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Root Container -->
+  <main class="terminal-container">
+
+    <!-- Top Sub-Nav Mode Switcher Strip -->
+    <div class="portal-mode-nav-bar">
+      <div class="mode-nav-pills">
+        <a href="deepbook.html" class="mode-nav-pill">
+          <span>🌐 Institutional Gateway &amp; Multi-Wallet Node</span>
+        </a>
+        <div class="mode-nav-pill active">
+          <span class="p-dot"></span>
+          <span>⚡ Live CLOB &amp; AI Execution Terminal</span>
+        </div>
+      </div>
+
+      <div style="color: #64748b; font-size: 10.5px; display: flex; gap: 14px;">
+        <span>CORE: <span style="color: #38bdf8; font-weight: 700;">8xDEEP3_CLUSTER_Alpha</span></span>
+        <span>•</span>
+        <span>TPS: <span style="color: #00ff88; font-weight: 700;">297,420 TX/SEC</span></span>
+      </div>
+    </div>
+
+    <!-- ══════════════════════════════════════════════════════════════
+         4-TIER TRADING & AI EXECUTION TERMINAL MATRIX
+         ══════════════════════════════════════════════════════════════ -->
+    <div class="trading-terminal-view">
+
+      <!-- TIER 0: 12-COIN LIVE DATA MARQUEE -->
+      <div class="market-12coins-marquee" id="coinsMarquee">
+        <span class="marquee-badge-label">12-ASSET L2 MATRIX:</span>
+        <div class="marquee-coin-item active" onclick="switchActivePair('SUI/USDC', 18.420, '+14.82%')"><span class="sym">SUI</span><span class="val">$18.420</span><span class="chg green">+14.82%</span></div>
+        <div class="marquee-coin-item" onclick="switchActivePair('BTC/USDC', 94250.0, '+3.41%')"><span class="sym">BTC</span><span class="val">$94,250</span><span class="chg green">+3.41%</span></div>
+        <div class="marquee-coin-item" onclick="switchActivePair('ETH/USDC', 3420.50, '+5.12%')"><span class="sym">ETH</span><span class="val">$3,420.50</span><span class="chg green">+5.12%</span></div>
+        <div class="marquee-coin-item" onclick="switchActivePair('SOL/USDC', 214.80, '+8.20%')"><span class="sym">SOL</span><span class="val">$214.80</span><span class="chg green">+8.20%</span></div>
+        <div class="marquee-coin-item" onclick="switchActivePair('PAXG/USDC', 2680.40, '+1.24%')"><span class="sym" style="color: #f59e0b;">PAXG (GOLD)</span><span class="val">$2,680.40</span><span class="chg green">+1.24%</span></div>
+        <div class="marquee-coin-item" onclick="switchActivePair('CETUS/SUI', 0.4210, '-2.15%')"><span class="sym">CETUS</span><span class="val">$0.4210</span><span class="chg red">-2.15%</span></div>
+        <div class="marquee-coin-item" onclick="switchActivePair('NAVX/SUI', 0.1840, '+6.80%')"><span class="sym">NAVX</span><span class="val">$0.1840</span><span class="chg green">+6.80%</span></div>
+        <div class="marquee-coin-item" onclick="switchActivePair('DEEP/SUI', 0.0890, '+18.40%')"><span class="sym">DEEP</span><span class="val">$0.0890</span><span class="chg green">+18.40%</span></div>
+        <div class="marquee-coin-item" onclick="switchActivePair('WAL/SUI', 1.2450, '+4.30%')"><span class="sym">WAL</span><span class="val">$1.2450</span><span class="chg green">+4.30%</span></div>
+        <div class="marquee-coin-item" onclick="switchActivePair('USDC/USDT', 1.0001, '0.00%')"><span class="sym">USDC</span><span class="val">$1.0001</span><span class="chg green">0.00%</span></div>
+        <div class="marquee-coin-item" onclick="switchActivePair('USDT/USD', 0.9999, '0.00%')"><span class="sym">USDT</span><span class="val">$0.9999</span><span class="chg red">-0.01%</span></div>
+        <div class="marquee-coin-item" onclick="switchActivePair('BLCX/USDC', 4.520, '+24.50%')"><span class="sym" style="color:#38bdf8;">BLCX</span><span class="val">$4.520</span><span class="chg green">+24.50%</span></div>
+      </div>
+
+      <!-- TIER 1: ACTIVE PAIR METRICS STRIP -->
+      <div class="market-ticker-strip">
+        <div class="pair-brand-lockup">
+          <div class="pair-select-btn" id="activePairBtn">
+            <span class="dot"></span>
+            <span id="activePairText">SUI / USDC</span>
+          </div>
+          <span style="color: #94a3b8;">DeepBook v3 Native CLOB</span>
+        </div>
+
+        <div class="ticker-metrics-row">
+          <div class="metric-item">
+            <span class="lbl">Last Spot Price</span>
+            <span class="val green" id="lastPriceTicker">$18.420</span>
+          </div>
+          <div class="metric-item">
+            <span class="lbl">24h Change</span>
+            <span class="val green" id="activePair24hChg">+14.82% &uarr;</span>
+          </div>
+          <div class="metric-item">
+            <span class="lbl">24h High</span>
+            <span class="val">$19.140</span>
+          </div>
+          <div class="metric-item">
+            <span class="lbl">24h Low</span>
+            <span class="val">$17.820</span>
+          </div>
+          <div class="metric-item">
+            <span class="lbl">DeepBook TVL</span>
+            <span class="val cyan">$248.6M</span>
+          </div>
+          <div class="metric-item">
+            <span class="lbl">Gold &amp; RWA Bridge</span>
+            <span class="val gold">PAXG ACTIVE</span>
+          </div>
+          <div class="metric-item">
+            <span class="lbl">Active Batch Wallets</span>
+            <span class="val green" id="activeBatchWalletsLabel">10 NODES</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- TIER 2: 4-COLUMN TRADING MATRIX -->
+      <div class="trading-core-grid">
+
+        <!-- Column 1: Candlestick Chart -->
+        <div class="chart-pane">
+          <div class="chart-controls-strip">
+            <div class="tf-pills">
+              <button class="tf-pill">1m</button>
+              <button class="tf-pill active">5m</button>
+              <button class="tf-pill">15m</button>
+              <button class="tf-pill">1h</button>
+              <button class="tf-pill">1D</button>
+            </div>
+            <div style="color: #64748b;">
+              <span>L2 LIVE API STREAM · 12 COINS</span>
+            </div>
+          </div>
+          <div class="chart-canvas-wrap">
+            <canvas id="candlestickCanvas"></canvas>
+          </div>
+        </div>
+
+        <!-- Column 2: Live L2 Order Book -->
+        <div class="orderbook-pane">
+          <div class="panel-section-title">
+            <span>02. Live L2 Order Book</span>
+            <span style="color: #00ff88;">REAL-TIME CLOB</span>
+          </div>
+          <div class="ob-header">
+            <span>Price (USDC)</span>
+            <span>Size</span>
+            <span>Total</span>
+          </div>
+
+          <div class="ob-rows-container">
+            <!-- Asks (Red) -->
+            <div id="obAsksBlock" style="display: flex; flex-direction: column; gap: 2px;">
+              <div class="ob-row"><span class="price red">18.450</span><span class="size">42.8K</span><span class="total">789.7K</span><div class="ob-depth-bar red" style="width: 65%;"></div></div>
+              <div class="ob-row"><span class="price red">18.440</span><span class="size">19.2K</span><span class="total">354.0K</span><div class="ob-depth-bar red" style="width: 30%;"></div></div>
+              <div class="ob-row"><span class="price red">18.430</span><span class="size">84.1K</span><span class="total">1.55M</span><div class="ob-depth-bar red" style="width: 90%;"></div></div>
+              <div class="ob-row"><span class="price red">18.425</span><span class="size">12.0K</span><span class="total">221.1K</span><div class="ob-depth-bar red" style="width: 20%;"></div></div>
+            </div>
+
+            <!-- Mid Spread -->
+            <div class="ob-spread-divider">
+              <span>MID SPREAD: $0.001</span>
+              <span style="color: #00ff88;" id="midSpreadPrice">$18.420 &uarr;</span>
+            </div>
+
+            <!-- Bids (Green) -->
+            <div id="obBidsBlock" style="display: flex; flex-direction: column; gap: 2px;">
+              <div class="ob-row"><span class="price green">18.420</span><span class="size">112.5K</span><span class="total">2.07M</span><div class="ob-depth-bar green" style="width: 95%;"></div></div>
+              <div class="ob-row"><span class="price green">18.410</span><span class="size">68.3K</span><span class="total">1.25M</span><div class="ob-depth-bar green" style="width: 60%;"></div></div>
+              <div class="ob-row"><span class="price green">18.400</span><span class="size">240.0K</span><span class="total">4.41M</span><div class="ob-depth-bar green" style="width: 100%;"></div></div>
+              <div class="ob-row"><span class="price green">18.390</span><span class="size">35.6K</span><span class="total">654.6K</span><div class="ob-depth-bar green" style="width: 35%;"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Column 3: Trading Execution Form -->
+        <div class="order-form-pane">
+          <div class="panel-section-title" style="padding: 0 0 6px 0; border: none; background: transparent;">
+            <span>03. Execution Terminal</span>
+            <span style="color: #38bdf8;">PTB ATOMIC</span>
+          </div>
+
+          <div class="order-type-tabs">
+            <button class="ot-btn active">Limit</button>
+            <button class="ot-btn">Market</button>
+            <button class="ot-btn">Swap</button>
+          </div>
+
+          <div class="side-switcher">
+            <button class="side-btn buy active" id="btnBuySide" onclick="switchSide('buy')">BUY ASSET</button>
+            <button class="side-btn sell" id="btnSellSide" onclick="switchSide('sell')">SELL ASSET</button>
+          </div>
+
+          <div class="form-input-card">
+            <span class="lbl">Order Price (USDC)</span>
+            <input type="number" id="orderPriceInput" value="18.420" step="0.001" />
+          </div>
+
+          <div class="form-input-card">
+            <span class="lbl">Order Amount</span>
+            <input type="number" id="orderAmountInput" value="500" step="10" />
+          </div>
+
+          <div class="pct-pills-row">
+            <button class="pct-pill" onclick="setPct(0.25)">25%</button>
+            <button class="pct-pill" onclick="setPct(0.50)">50%</button>
+            <button class="pct-pill" onclick="setPct(0.75)">75%</button>
+            <button class="pct-pill" onclick="setPct(1.00)">100%</button>
+          </div>
+
+          <div style="font-family: 'JetBrains Mono', monospace; font-size: 10.5px; display: flex; justify-content: space-between; color: #94a3b8;">
+            <span>Est. Total:</span>
+            <span style="color: #fff; font-weight: 700;" id="orderEstTotal">$9,210.00</span>
+          </div>
+
+          <button class="submit-order-btn" id="btnSubmitOrder" onclick="executeClobOrder()">
+            EXECUTE MOVE PTB ORDER &rarr;
+          </button>
+        </div>
+
+        <!-- Column 4: AI Execution & Liquidity -->
+        <div class="ai-and-liquidity-pane">
+          
+          <!-- Execution of AI -->
+          <div class="ai-agent-card">
+            <div class="ai-agent-header">
+              <span>04. Execution of AI</span>
+              <div class="ai-signal-badge"><span class="dot"></span><span>STRONG BUY</span></div>
+            </div>
+            <div style="font-size: 11px; color: #e9d5ff; line-height: 1.3;">
+              Autonomous market-making agent detecting orderbook slippage inefficiencies.
+            </div>
+            <div class="ai-stats-grid">
+              <div class="ai-stat-box">
+                <div class="l">Model Confidence</div>
+                <div class="v" style="color: #00ff88;">94.2% Alpha</div>
+              </div>
+              <div class="ai-stat-box">
+                <div class="l">Arbitrage Spread</div>
+                <div class="v" style="color: #38bdf8;">+1.42% Gain</div>
+              </div>
+            </div>
+            <button class="ai-exec-btn" onclick="executeAiArbitrage()">
+              ⚡ Dispatch AI Alpha Trade
+            </button>
+          </div>
+
+          <!-- Liquidity Pools -->
+          <div class="liquidity-box">
+            <div class="liquidity-header">
+              <span>01. Deep Liquidity Pools</span>
+              <span style="color: #00ff88;">14.8% APY</span>
+            </div>
+            <div class="pool-depth-bar-wrap">
+              <div style="display: flex; justify-content: space-between; color: #94a3b8;">
+                <span>Pool Reserve Balance:</span>
+                <span style="color: #fff; font-weight: 700;">$248.6M TVL</span>
+              </div>
+              <div class="pool-bar-track">
+                <div class="pool-bar-fill sui"></div>
+                <div class="pool-bar-fill usdc"></div>
+              </div>
+              <div style="display: flex; justify-content: space-between; font-size: 8.5px; color: #64748b;">
+                <span>62% Base Asset (SUI/GOLD)</span>
+                <span>38% Quote (USDC)</span>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      <!-- TIER 3: BOTTOM LEDGER TRAY -->
+      <div class="bottom-ledger-tray">
+        <!-- Left: Real-Time Trade Stream -->
+        <div class="ledger-pane">
+          <div class="ledger-header">
+            <span>Recent Market Trades (On-Chain)</span>
+            <span style="color: #00ff88;">● Live L2 Stream</span>
+          </div>
+          <div class="ledger-list-scroll" id="tradesStream">
+            <div class="trade-row"><span class="p green">18.420</span><span>+450 SUI</span><span>19:50:24</span></div>
+            <div class="trade-row"><span class="p green">18.420</span><span>+1,200 SUI</span><span>19:50:20</span></div>
+            <div class="trade-row"><span class="p red">18.410</span><span>-820 SUI</span><span>19:50:14</span></div>
+            <div class="trade-row"><span class="p green">2680.40</span><span>+2.5 PAXG (Gold)</span><span>19:50:08</span></div>
+          </div>
+        </div>
+
+        <!-- Right: Active Orders & Filled PTBs -->
+        <div class="ledger-pane">
+          <div class="ledger-header">
+            <span>Active Orders &amp; Executions</span>
+            <span style="color: #38bdf8;">Account PTBs</span>
+          </div>
+          <div class="ledger-list-scroll" id="ordersStream">
+            <div class="trade-row"><span style="color: #00ff88;">BUY SUI</span><span>500 @ $18.420</span><span style="color: #38bdf8;">0xe8f4...b1a2 (FILLED)</span></div>
+            <div class="trade-row"><span style="color: #f59e0b;">BUY GOLD</span><span>1.5 PAXG @ $2,680.40</span><span style="color: #00ff88;">0xptb_gold_ok (FILLED)</span></div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script>
+    /* ─── REAL-TIME CANDLESTICK CHART & MARKET SCRIPT ─── */
+    const canvas = document.getElementById('candlestickCanvas');
+    const ctx = canvas.getContext('2d');
+    let candles = [];
+    let currentPrice = 18.420;
+    let activeSymbol = 'SUI';
+
+    function resizeChart() {
+      if (!canvas || !canvas.parentElement) return;
+      const parent = canvas.parentElement;
+      canvas.width = parent.clientWidth * window.devicePixelRatio;
+      canvas.height = parent.clientHeight * window.devicePixelRatio;
+      ctx.scale(window.devicePixelRatio, window.devicePixelRatio);
+      drawChart();
+    }
+
+    function initCandles(base = 18.420) {
+      candles = [];
+      let p = base * 0.96;
+      for (let i = 0; i < 40; i++) {
+        const change = (Math.random() - 0.46) * (base * 0.008);
+        const open = p;
+        const close = p + change;
+        const high = Math.max(open, close) + Math.random() * (base * 0.005);
+        const low = Math.min(open, close) - Math.random() * (base * 0.005);
+        const vol = Math.random() * 80 + 20;
+        candles.push({ open, close, high, low, vol });
+        p = close;
+      }
+      currentPrice = p;
+    }
+
+    function drawChart() {
+      if (!canvas) return;
+      const width = canvas.width / window.devicePixelRatio;
+      const height = canvas.height / window.devicePixelRatio;
+      ctx.clearRect(0, 0, width, height);
+
+      if (candles.length === 0) return;
+
+      let minP = Infinity, maxP = -Infinity;
+      candles.forEach(c => {
+        if (c.low < minP) minP = c.low;
+        if (c.high > maxP) maxP = c.high;
+      });
+      const padding = (maxP - minP) * 0.1 || 1;
+      minP -= padding;
+      maxP += padding;
+
+      const candleW = Math.max(4, (width - 60) / candles.length - 4);
+      const toY = (price) => height - 35 - ((price - minP) / (maxP - minP)) * (height - 60);
+
+      ctx.strokeStyle = 'rgba(56, 189, 248, 0.06)';
+      ctx.lineWidth = 1;
+      for (let i = 1; i <= 4; i++) {
+        const y = (height / 5) * i;
+        ctx.beginPath();
+        ctx.moveTo(0, y);
+        ctx.lineTo(width, y);
+        ctx.stroke();
+      }
+
+      candles.forEach((c, idx) => {
+        const x = 20 + idx * (candleW + 4);
+        const isUp = c.close >= c.open;
+        const color = isUp ? '#00ff88' : '#f43f5e';
+
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(x + candleW / 2, toY(c.high));
+        ctx.lineTo(x + candleW / 2, toY(c.low));
+        ctx.stroke();
+
+        ctx.fillStyle = color;
+        const topY = toY(Math.max(c.open, c.close));
+        const btmY = toY(Math.min(c.open, c.close));
+        const bodyH = Math.max(2, btmY - topY);
+        ctx.fillRect(x, topY, candleW, bodyH);
+      });
+
+      // Price Line
+      const curY = toY(currentPrice);
+      ctx.strokeStyle = '#38bdf8';
+      ctx.setLineDash([4, 4]);
+      ctx.beginPath();
+      ctx.moveTo(0, curY);
+      ctx.lineTo(width, curY);
+      ctx.stroke();
+      ctx.setLineDash([]);
+
+      ctx.fillStyle = '#38bdf8';
+      ctx.font = '700 10px "JetBrains Mono", monospace';
+      ctx.fillText(`$${currentPrice.toFixed(3)}`, width - 55, curY - 4);
+    }
+
+    function switchActivePair(pair, basePrice, chg) {
+      activeSymbol = pair.split('/')[0];
+      document.getElementById('activePairText').textContent = pair;
+      document.getElementById('lastPriceTicker').textContent = `$${basePrice >= 100 ? basePrice.toLocaleString() : basePrice.toFixed(3)}`;
+      document.getElementById('activePair24hChg').textContent = `${chg} \u2191`;
+      document.getElementById('orderPriceInput').value = basePrice;
+      updateEstTotal();
+      initCandles(basePrice);
+      drawChart();
+
+      document.querySelectorAll('.marquee-coin-item').forEach(el => {
+        el.classList.toggle('active', el.textContent.includes(activeSymbol));
+      });
+    }
+
+    function switchSide(side) {
+      document.getElementById('btnBuySide').classList.toggle('active', side === 'buy');
+      document.getElementById('btnSellSide').classList.toggle('active', side === 'sell');
+      const btn = document.getElementById('btnSubmitOrder');
+      btn.textContent = side === 'buy' ? 'EXECUTE MOVE PTB BUY ORDER \u2192' : 'EXECUTE MOVE PTB SELL ORDER \u2192';
+      btn.style.background = side === 'buy' ? 'linear-gradient(135deg, #059669 0%, #10b981 100%)' : 'linear-gradient(135deg, #e11d48 0%, #f43f5e 100%)';
+    }
+
+    function setPct(pct) {
+      const price = parseFloat(document.getElementById('orderPriceInput').value) || 18.42;
+      const amt = Math.round(1000 * pct);
+      document.getElementById('orderAmountInput').value = amt;
+      updateEstTotal();
+    }
+
+    function updateEstTotal() {
+      const p = parseFloat(document.getElementById('orderPriceInput').value) || 0;
+      const a = parseFloat(document.getElementById('orderAmountInput').value) || 0;
+      document.getElementById('orderEstTotal').textContent = `$${(p * a).toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+    }
+
+    document.getElementById('orderPriceInput').addEventListener('input', updateEstTotal);
+    document.getElementById('orderAmountInput').addEventListener('input', updateEstTotal);
+
+    function executeClobOrder() {
+      const p = document.getElementById('orderPriceInput').value;
+      const a = document.getElementById('orderAmountInput').value;
+      const isBuy = document.getElementById('btnBuySide').classList.contains('active');
+      const sideText = isBuy ? 'BUY' : 'SELL';
+      const sideColor = isBuy ? '#00ff88' : '#f43f5e';
+
+      const ordersStream = document.getElementById('ordersStream');
+      const div = document.createElement('div');
+      div.className = 'trade-row';
+      const hex = '0x' + Math.random().toString(16).substr(2, 6);
+      div.innerHTML = `<span style="color: ${sideColor}; font-weight: 700;">${sideText} ${activeSymbol}</span><span>${a} @ $${p}</span><span style="color: #38bdf8;">${hex}...ptb_ok</span>`;
+      ordersStream.insertBefore(div, ordersStream.firstChild);
+    }
+
+    function executeAiArbitrage() {
+      const tradesStream = document.getElementById('tradesStream');
+      const div = document.createElement('div');
+      div.className = 'trade-row';
+      div.innerHTML = `<span class="p green">${currentPrice.toFixed(3)}</span><span style="color: #c084fc; font-weight: 700;">+2,400 ${activeSymbol} (AI ARB)</span><span>JUST NOW</span>`;
+      tradesStream.insertBefore(div, tradesStream.firstChild);
+    }
+
+    window.addEventListener('resize', resizeChart);
+    window.addEventListener('DOMContentLoaded', () => {
+      initCandles();
+      setTimeout(resizeChart, 60);
+    });
+  </script>
+</body>
+</html>

@@ -1,5 +1,606 @@
 <!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta http-equiv="refresh" content="0;url=startingpart.html"><title>FluidBLCX</title></head>
-<body><script>location.href='startingpart.html';</script></body>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FluidBLCX — Sovereign Web3 Execution Architecture</title>
+  
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- CSS -->
+  <link rel="stylesheet" href="frontpage.css">
+  
+  <!-- Three.js + SVGLoader + GSAP -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/SVGLoader.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+</head>
+<body>
+
+  <!-- Persistent 3D WebGL Background Canvas -->
+  <canvas id="webgl-canvas"></canvas>
+
+  <!-- Cyber Grid & Vignette -->
+  <div class="cyber-grid"></div>
+  <div class="vignette"></div>
+
+  <!-- ── FIXED TOP NAVIGATION ── -->
+  <header class="top-nav">
+    <div class="brand-block">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12,2C12,2 4,10 4,14C4,18.42 7.58,22 12,22C16.42,22 20,18.42 20,14C20,10 12,2 12,2Z" />
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>FluidBLCX</h1>
+        <div class="sub">SOVEREIGN WEB3 EXECUTION ARCHITECTURE</div>
+      </div>
+    </div>
+
+    <!-- Central Feature Navigation (Compiler, DeepBook, Vault, Security, Trade, Wallet, Login) -->
+    <nav class="nav-modules-strip">
+      <a href="index.html" class="nav-module-link active" title="Genesis 3D Architecture">
+        <span>Home</span>
+      </a>
+      <a href="compiler.html" class="nav-module-link" title="Move Bytecode Compiler">
+        <span>Compiler</span>
+      </a>
+      <a href="deepbook.html" class="nav-module-link" title="DeepBook v3 Liquidity">
+        <span>DeepBook v3</span>
+      </a>
+      <a href="walrus_vault.html" class="nav-module-link" title="Walrus Decentralized Vault">
+        <span>Walrus Vault</span>
+      </a>
+      <a href="security_dashboard.html" class="nav-module-link" title="Security Sentinel">
+        <span>Security</span>
+      </a>
+      <a href="wallet1.html" class="nav-module-link" title="Portfolio &amp; Wallet">
+        <span>Wallet</span>
+      </a>
+      <a href="loginpage.html" class="nav-module-link highlight" title="Web3 Login Portal">
+        <span>Login &rarr;</span>
+      </a>
+    </nav>
+
+    <!-- Live Telemetry Ticker Strip -->
+    <div class="nav-ticker-strip">
+      <div class="ticker-item">
+        <span class="ticker-label">SUI TPS:</span>
+        <span class="ticker-val green">297,412 PEAK</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-label">EPOCH:</span>
+        <span class="ticker-val">#542</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-label">GAS ORACLE:</span>
+        <span class="ticker-val cyan">750 MIST</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-label">CONSENSUS:</span>
+        <span class="ticker-val">MYSTICETI DAG</span>
+      </div>
+    </div>
+
+    <div class="nav-actions">
+      <button id="soundToggleBtn" class="bw-btn active" title="Toggle Synthesizer SFX">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+          <path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+          <path d="M19.07 4.93a10 10 0 0 1 0 14.14"></path>
+        </svg>
+        <span id="soundText">SFX ON</span>
+      </button>
+
+      <button id="quickNextBtn" class="bw-btn">
+        <span>NEXT &darr;</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ── FIXED VERTICAL LEVEL SCRUBBER (RIGHT) ── -->
+  <nav class="vertical-scrubber">
+    <div class="scrubber-track">
+      <div class="scrubber-fill" id="scrubberFill"></div>
+    </div>
+
+    <button class="scrubber-item active" data-target="section-intro" title="Genesis Block">
+      <span class="scrubber-tag">00. Genesis Block</span>
+      <span class="scrubber-bullet"></span>
+    </button>
+
+    <button class="scrubber-item" data-target="section-sui" title="Level 1: Sui Block">
+      <span class="scrubber-tag">01. Sui Core</span>
+      <span class="scrubber-bullet"></span>
+    </button>
+
+    <button class="scrubber-item" data-target="section-hft" title="Level 2: HFT Engine">
+      <span class="scrubber-tag">02. DeepBook HFT</span>
+      <span class="scrubber-bullet"></span>
+    </button>
+
+    <button class="scrubber-item" data-target="section-walrus" title="Level 3: Walrus Vault">
+      <span class="scrubber-tag">03. Walrus Vault</span>
+      <span class="scrubber-bullet"></span>
+    </button>
+
+    <button class="scrubber-item" data-target="section-ai" title="Level 4: AI Model Defense">
+      <span class="scrubber-tag">04. AI Defense</span>
+      <span class="scrubber-bullet"></span>
+    </button>
+  </nav>
+
+  <!-- ── VERTICAL SCROLL SECTIONS ── -->
+  <main class="scroll-container">
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- INTRO SECTION: 3D BLOCK (IMMEDIATE ZERO-DELAY EXPLOSION ON SCROLL) -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="level-section intro-section" id="section-intro">
+      <div class="intro-hero-content">
+        <div class="intro-badge">
+          <span class="intro-dot"></span>
+          <span>MONOLITHIC BLOCKCHAIN GENESIS</span>
+        </div>
+        <p class="intro-subtitle">SCROLL DOWN TO INSTANTLY SHATTER &amp; ENTER ARCHITECTURE</p>
+
+        <div class="scroll-indicator-wrap" id="scrollIndicator">
+          <div class="mouse-scroll-icon">
+            <div class="mouse-wheel"></div>
+          </div>
+          <span class="scroll-label">SCROLL TO SHATTER IMMEDIATELY</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- LEVEL 01: SUI BLOCKCHAIN CORE (REAL 3D EXTRUDED SUI LOGO) -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="level-section" id="section-sui">
+      <div class="level-info-pane">
+        <div class="level-header-tag">
+          <span class="level-num-badge">01</span>
+          <span>EXECUTION FOUNDATION</span>
+        </div>
+        <h2 class="level-title">Official Sui 3D Logo &amp; Core</h2>
+        <p class="level-desc">
+          Powered by the native Move VM object-centric architecture with sub-second finality (~390ms). The 3D view features the <strong>real mathematical 3D extruded Sui logo</strong> with its signature fluid S-curve stream ribbon in crystal white and electric cyan crystal backing.
+        </p>
+
+        <div class="level-specs-grid">
+          <div class="spec-box">
+            <div class="spec-label">Consensus Engine</div>
+            <div class="spec-val cyan">Mysticeti DAG</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Contract Runtime</div>
+            <div class="spec-val">Move Bytecode VM</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Settlement Latency</div>
+            <div class="spec-val green">390 ms Sub-Second</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Transaction Format</div>
+            <div class="spec-val">Programmable PTB</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 18px;">
+          <a href="compiler.html" class="surge-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+            <span>LAUNCH MOVE COMPILER &rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="level-stage-pane">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" stroke-width="2">
+                <path d="M12,2C12,2 4,10 4,14C4,18.42 7.58,22 12,22C16.42,22 20,18.42 20,14C20,10 12,2 12,2Z" />
+              </svg>
+              <span>On-Chain Block Telemetry &amp; Node Graph</span>
+            </div>
+            <span class="stage-status-indicator green">ACTIVE / SUI MAIN</span>
+          </div>
+
+          <div style="display: flex; gap: 10px; margin-bottom: 12px;">
+            <button id="pulseBlockBtn" class="bw-btn" style="flex: 1; justify-content: center; border-color: rgba(56, 189, 248, 0.4); color: #38bdf8;">
+              <span>INJECT MOVE PTB PULSE</span>
+            </button>
+            <button id="toggleWireframeBtn" class="bw-btn">
+              <span>WIREFRAME</span>
+            </button>
+          </div>
+
+          <div class="sui-telemetry-feed" id="suiTelemetryFeed">
+            <div class="telemetry-row">
+              <span>[0xe4d805] PTB Transaction Digest:</span>
+              <span class="telemetry-tag cyan">0xe4d8053466...aff6d72a</span>
+            </div>
+            <div class="telemetry-row">
+              <span>Execution Consensus:</span>
+              <span class="telemetry-tag green">MYSTICETI VALIDATED (104/104 QUORUM)</span>
+            </div>
+            <div class="telemetry-row">
+              <span>Gas Unit Cost:</span>
+              <span class="telemetry-tag">1,480 MIST (&lt; $0.0001)</span>
+            </div>
+            <div class="telemetry-row">
+              <span>Object Routing:</span>
+              <span class="telemetry-tag">PARALLEL_NON_CONFLICTING</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- LEVEL 02: DEEPBOOK HFT ENGINE (COLOURFUL CHART + CLOB ARCHITECTURE) -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="level-section wide-section" id="section-hft">
+      <div class="level-info-pane">
+        <div class="level-header-tag">
+          <span class="level-num-badge">02</span>
+          <span>HIGH-FREQUENCY TRADING</span>
+        </div>
+        <h2 class="level-title">DeepBook v3 Liquidity Engine</h2>
+        <p class="level-desc">
+          High-performance Central Limit Order Book (CLOB) natively built on Sui. When you scroll here, the <strong>market trade surge triggers automatically</strong>, driving rapid buy executions, parabolic candlestick expansion, and sub-millisecond atomic order matching.
+        </p>
+
+        <!-- Dynamic CLOB Matching Pipeline Tree -->
+        <div class="clob-pipeline-card">
+          <div class="pipeline-title">DEEPBOOK MATCHING ENGINE PIPELINE</div>
+          <div class="clob-steps-row">
+            <div class="clob-step active">
+              <span class="step-num">01</span>
+              <span class="step-text">Taker Order Ingest</span>
+            </div>
+            <span class="pipeline-arrow">&rarr;</span>
+            <div class="clob-step active">
+              <span class="step-num">02</span>
+              <span class="step-text">CLOB Price-Time Priority</span>
+            </div>
+            <span class="pipeline-arrow">&rarr;</span>
+            <div class="clob-step active">
+              <span class="step-num">03</span>
+              <span class="step-text">Sui Atomic Settlement</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="level-specs-grid">
+          <div class="spec-box">
+            <div class="spec-label">Order Latency</div>
+            <div class="spec-val green">&lt; 15 ms</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Market Status</div>
+            <div class="spec-val green" id="hftMarketStatus">AUTO SURGING &uarr;</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Spread</div>
+            <div class="spec-val">$0.001</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Velocity</div>
+            <div class="spec-val green" id="marketVelocityVal">+348.6% / SEC</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 18px;">
+          <a href="deepbook.html" class="surge-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+            <span>LAUNCH DEEPBOOK TERMINAL &rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="level-stage-pane">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00ff88" stroke-width="2">
+                <line x1="18" y1="20" x2="18" y2="10"></line>
+                <line x1="12" y1="20" x2="12" y2="4"></line>
+                <line x1="6" y1="20" x2="6" y2="14"></line>
+              </svg>
+              <span>Colourful Candlestick Matrix (SUI / USDC)</span>
+            </div>
+            <div class="chart-stats-row">
+              <span>LAST: <strong class="stat-val-highlight green" id="chartPriceVal">$18.420</strong></span>
+              <span>24H VOL: <strong class="stat-val-highlight cyan">$248.6M</strong></span>
+            </div>
+          </div>
+
+          <!-- Colourful Candlestick Canvas + Orderbook Depth Grid -->
+          <div class="chart-and-orderbook-grid">
+            <div class="chart-container">
+              <canvas id="candlestickCanvas"></canvas>
+            </div>
+
+            <!-- Mini Live Orderbook Depth Ladder -->
+            <div class="orderbook-depth-panel">
+              <div class="ob-header">
+                <span>PRICE</span>
+                <span>SIZE</span>
+              </div>
+              <div class="ob-list asks" id="obAsksList">
+                <div class="ob-row ask"><span class="price red">18.450</span><span class="size">42.8K</span></div>
+                <div class="ob-row ask"><span class="price red">18.440</span><span class="size">19.2K</span></div>
+                <div class="ob-row ask"><span class="price red">18.430</span><span class="size">84.1K</span></div>
+              </div>
+              <div class="ob-spread-divider">SPREAD $0.001 · MID: 18.425</div>
+              <div class="ob-list bids" id="obBidsList">
+                <div class="ob-row bid"><span class="price green">18.420</span><span class="size">112.5K</span></div>
+                <div class="ob-row bid"><span class="price green">18.410</span><span class="size">68.3K</span></div>
+                <div class="ob-row bid"><span class="price green">18.400</span><span class="size">240.0K</span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="chart-controls-bar">
+            <div class="auto-surge-badge">
+              <span class="pulse-green-dot"></span>
+              <span>AUTOMATED ALGORITHMIC TRADE SURGE ACTIVE</span>
+            </div>
+
+            <button id="resetChartBtn" class="bw-btn" style="font-size: 10px;">
+              <span>RESET SIMULATION</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- LEVEL 03: WALRUS VAULT (CLICK GREEN BLOCK TO BURST & VIEW SEPARATE PROCESS) -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="level-section" id="section-walrus">
+      <div class="level-info-pane">
+        <div class="level-header-tag">
+          <span class="level-num-badge">03</span>
+          <span>DECENTRALIZED ENCRYPTION</span>
+        </div>
+        <h2 class="level-title">Walrus Vault &amp; Blob Sharding</h2>
+        <p class="level-desc">
+          Zero-trust decentralized blob storage. <strong>Click the 3D Green Vault Block on the left</strong> — it will violently burst, and the full multi-stage file sharding and Merkle Tree synthesis process will be demonstrated on the sample Sui Logo image in a dedicated showcase view!
+        </p>
+
+        <div class="level-specs-grid">
+          <div class="spec-box">
+            <div class="spec-label">Cipher Algorithm</div>
+            <div class="spec-val cyan">AES-GCM-256 + IV</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Erasure Coding</div>
+            <div class="spec-val green">RedStuff 2/3 Quorum</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Sliver Shards</div>
+            <div class="spec-val">8 Image Tiles</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Tree Verification</div>
+            <div class="spec-val cyan">BLAKE2b Root Hash</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="level-stage-pane">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2">
+                <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+                <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+              </svg>
+              <span>Walrus Media Blob Dispersal Control</span>
+            </div>
+            <span class="stage-status-indicator green" id="vaultStatusText">CLICK 3D GREEN BLOCK TO BURST</span>
+          </div>
+
+          <div class="walrus-stage-wrapper">
+            <!-- Middle Interactive Block with Sui Logo Sample Image -->
+            <div class="lock-visual-box" id="walrusSampleFileBox" style="cursor: pointer;" title="Click to burst green block &amp; view separate sharding process">
+              <div class="sui-sample-thumb-wrap" id="suiSampleThumbWrap">
+                <img src="sui_sample_logo.png" alt="Sui Logo Sample Image" class="sui-sample-thumb" id="suiSampleThumbImg">
+                <div class="thumb-badge">SAMPLE BLOB</div>
+              </div>
+
+              <div style="flex: 1;">
+                <div style="font-family: var(--font-mono); font-size: 11px; color: var(--color-cyan); margin-bottom: 4px;">SAMPLE FILE PAYLOAD:</div>
+                <div style="font-family: var(--font-mono); font-size: 14px; font-weight: 700; color: #fff;">sui_brand_identity_vector.png (64 MB)</div>
+                <div style="font-family: var(--font-mono); font-size: 10px; color: var(--color-green); margin-top: 4px;">&larr; Click the 3D Green Block on the left or the button below to burst &amp; view process</div>
+              </div>
+
+              <button id="unlockAndSplitBtn" class="surge-btn">
+                <span>BURST &amp; VIEW PROCESS &rarr;</span>
+              </button>
+              <a href="walrus_vault.html" class="bw-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 6px;">
+                <span>OPEN WALRUS VAULT &rarr;</span>
+              </a>
+            </div>
+
+            <div class="walrus-info-callout">
+              <div class="callout-icon">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#22c55e" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+              </div>
+              <div class="callout-text">
+                Clicking the 3D green vault triggers an explosive detonation, slicing the Sui Logo image into 8 erasure-coded shards and arranging them into an expansive Merkle Tree.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <!-- LEVEL 04: AI SENTINEL DEFENSE (HOLDING OUT MODEL IN HAND) -->
+    <!-- ════════════════════════════════════════════════════════════════ -->
+    <section class="level-section" id="section-ai">
+      <div class="level-info-pane">
+        <div class="level-header-tag">
+          <span class="level-num-badge">04</span>
+          <span>GUARDIAN ARCHITECTURE</span>
+        </div>
+        <h2 class="level-title">AI Sentinel Holding Model In Hand</h2>
+        <p class="level-desc">
+          The cybernetic AI Guardian holds the foundational neural model in its open palm, safeguarding it against adversarial threats. Active concentric defense shield rings encircle the model in hand, vaporizing <strong>LLM data poisoning</strong> tokens and quarantining <strong>bot swarm floods</strong> before they reach model weights.
+        </p>
+
+        <div class="level-specs-grid">
+          <div class="spec-box">
+            <div class="spec-label">Model Protection</div>
+            <div class="spec-val cyan">Held in Cyber Palm</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Shield Deflection</div>
+            <div class="spec-val green">99.8% Interception</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Rate Limiter</div>
+            <div class="spec-val">Adaptive 100/min</div>
+          </div>
+          <div class="spec-box">
+            <div class="spec-label">Active Attacks Deflected</div>
+            <div class="spec-val green" id="interceptedCount">0 THREATS</div>
+          </div>
+        </div>
+
+        <div style="margin-top: 18px;">
+          <a href="security_dashboard.html" class="surge-btn" style="text-decoration: none; display: inline-flex; align-items: center; gap: 8px;">
+            <span>LAUNCH SECURITY DASHBOARD &rarr;</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="level-stage-pane">
+        <div class="stage-card">
+          <div class="stage-header">
+            <div class="stage-title">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#a855f7" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+              </svg>
+              <span>Model Shield Controls &amp; Attack Simulator</span>
+            </div>
+            <span class="stage-status-indicator green">MODEL SHIELD ARMED</span>
+          </div>
+
+          <div class="ai-stage-wrapper">
+            <div class="ai-attack-triggers">
+              <button id="triggerPoisonBtn" class="attack-action-btn">
+                <span>1. SIMULATE LLM POISON ATTACK</span>
+                <small>Inject corrupted tokens targeting model in hand</small>
+              </button>
+
+              <button id="triggerBotAttackBtn" class="attack-action-btn">
+                <span>2. SIMULATE BOT ATTACKER SWARM</span>
+                <small>Deploy automated DDoS injection packets</small>
+              </button>
+            </div>
+
+            <div class="defense-terminal" id="defenseTerminalLog">
+              <div class="log-entry">
+                <span class="log-time">[00:01:14]</span>
+                <span>AI Sentinel standing guard. Model safely cradled in cyber hand.</span>
+              </div>
+              <div class="log-entry">
+                <span class="log-time">[00:01:18]</span>
+                <span>Isolation Forest anomaly filter primed across all input embedding tensors.</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <!-- DEDICATED SEPARATE WALRUS SHARDING & MERKLE TREE MODAL PROCESS VIEW -->
+  <!-- ═══════════════════════════════════════════════════════════════════ -->
+  <div class="modal-overlay" id="walrusProcessModal">
+    <div class="modal-dialog process-dialog">
+      <div class="modal-header">
+        <div class="modal-title-wrap">
+          <div class="modal-badge-icon walrus-theme">
+            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect>
+              <path d="M7 11V7a5 5 0 0 1 10 0v4"></path>
+            </svg>
+          </div>
+          <div>
+            <h2>Walrus Protocol: Media Blob Dispersal Process</h2>
+            <span class="modal-subtitle">Sample Payload: sui_brand_identity_vector.png &rarr; 8 Shards &rarr; Merkle Tree</span>
+          </div>
+        </div>
+        <button class="modal-close-btn" id="closeWalrusModalBtn">&times;</button>
+      </div>
+
+      <div class="modal-body process-body">
+        <!-- Process Step Breadcrumbs -->
+        <div class="process-steps-bar">
+          <div class="p-step active" id="pStep1">
+            <span class="p-num">1</span>
+            <span>Raw File Ingestion</span>
+          </div>
+          <span class="p-arrow">&rarr;</span>
+          <div class="p-step active" id="pStep2">
+            <span class="p-num">2</span>
+            <span>Image Shattering (8 Shards)</span>
+          </div>
+          <span class="p-arrow">&rarr;</span>
+          <div class="p-step active" id="pStep3">
+            <span class="p-num">3</span>
+            <span>Hierarchical Merkle Tree</span>
+          </div>
+          <span class="p-arrow">&rarr;</span>
+          <div class="p-step active" id="pStep4">
+            <span class="p-num">4</span>
+            <span>On-Chain Seal Root Hash</span>
+          </div>
+        </div>
+
+        <!-- Big Expansive Canvas for Merkle Tree -->
+        <div class="modal-tree-canvas-container">
+          <canvas id="modalTreeCanvas"></canvas>
+        </div>
+
+        <!-- Shard Detail Inspector (Live Interaction) -->
+        <div class="shard-inspector-footer" id="shardInspectorFooter">
+          <div class="inspector-col">
+            <span class="ins-label">ACTIVE SHARD INSPECTION:</span>
+            <span class="ins-val green" id="insShardId">All 8 Erasure-Coded Shards Active</span>
+          </div>
+          <div class="inspector-col">
+            <span class="ins-label">ENCRYPTION CIPHER:</span>
+            <span class="ins-val">AES-256-GCM + IV-96</span>
+          </div>
+          <div class="inspector-col">
+            <span class="ins-label">ROOT PROOF HASH:</span>
+            <span class="ins-val cyan">0xWALRUS_MERKLE_ROOT_7c94aff6</span>
+          </div>
+          <div class="inspector-col">
+            <button id="rerunProcessBtn" class="surge-btn" style="font-size: 10px; padding: 6px 14px;">
+              <span>RE-RUN PROCESS &orarr;</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- JavaScript Scrollytelling Engine -->
+  <script src="frontpage.js"></script>
+</body>
 </html>

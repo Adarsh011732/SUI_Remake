@@ -5,24 +5,25 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Quantum.Core Premium Institutional Trading Terminal</title>
+  <link rel="stylesheet" href="theme.css">
   <style>
     @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;700&display=swap');
 
     :root {
-      --bg-main: #020617;
-      --bg-panel: #090f20;
-      --bg-input: #0f172a;
-      --bg-dropdown: #0f172a;
-      --border: rgba(255, 255, 255, 0.06);
-      --border-focus: #2563eb;
+      --bg-main: #02040a;
+      --bg-panel: rgba(6, 11, 25, 0.88);
+      --bg-input: #0b152d;
+      --bg-dropdown: #0b152d;
+      --border: rgba(56, 189, 248, 0.18);
+      --border-focus: #38bdf8;
       --text-main: #f8fafc;
-      --text-muted: #64748b;
-      --green: #10b981;
-      --green-glow: rgba(16, 185, 129, 0.12);
+      --text-muted: #94a3b8;
+      --green: #00ff88;
+      --green-glow: rgba(0, 255, 136, 0.15);
       --red: #f43f5e;
-      --red-glow: rgba(244, 63, 94, 0.12);
-      --accent: #3b82f6;
-      --accent-glow: rgba(59, 130, 246, 0.2);
+      --red-glow: rgba(244, 63, 94, 0.15);
+      --accent: #38bdf8;
+      --accent-glow: rgba(56, 189, 248, 0.25);
       --font-mono: 'JetBrains Mono', monospace;
     }
 
@@ -45,7 +46,10 @@
     #terminal-wrapper {
       display: grid;
       grid-template-rows: 52px 1fr 240px;
-      height: 100vh;
+      margin-top: var(--nav-height, 64px);
+      height: calc(100vh - var(--nav-height, 64px));
+      position: relative;
+      z-index: 5;
     }
 
     /* TIER 1: HIGH-PREMIUM ACCOUNT TELEMETRY STRIP */
@@ -648,7 +652,68 @@
   </style>
 </head>
 
-<body>
+<body class="cyber-theme">
+
+  <!-- Cyber Grid Background -->
+  <div class="cyber-grid-overlay"></div>
+  <div class="cyber-vignette-overlay"></div>
+
+  <!-- Universal Cyber Navigation Header -->
+  <header class="top-nav">
+    <a href="index.html" class="brand-block">
+      <div class="brand-icon">
+        <svg viewBox="0 0 24 24">
+          <path d="M12,2C12,2 4,10 4,14C4,18.42 7.58,22 12,22C16.42,22 20,18.42 20,14C20,10 12,2 12,2Z" />
+        </svg>
+      </div>
+      <div class="brand-text">
+        <h1>FluidBLCX</h1>
+        <div class="sub">SOVEREIGN WEB3 EXECUTION ARCHITECTURE</div>
+      </div>
+    </a>
+
+    <nav class="nav-modules-strip">
+      <a href="index.html" class="nav-module-link" title="Genesis 3D Architecture">
+        <span>Home</span>
+      </a>
+      <a href="compiler.html" class="nav-module-link" title="Move Bytecode Compiler">
+        <span>Compiler</span>
+      </a>
+      <a href="deepbook.html" class="nav-module-link" title="DeepBook v3 Liquidity">
+        <span>DeepBook v3</span>
+      </a>
+      <a href="walrus_vault.html" class="nav-module-link" title="Walrus Decentralized Vault">
+        <span>Walrus Vault</span>
+      </a>
+      <a href="security_dashboard.html" class="nav-module-link" title="Security Sentinel">
+        <span>Security</span>
+      </a>
+      <a href="tradewindow.html" class="nav-module-link active" title="DeepBook Swap Terminal">
+        <span>Trade</span>
+      </a>
+      <a href="wallet1.html" class="nav-module-link" title="Portfolio &amp; Wallet">
+        <span>Wallet</span>
+      </a>
+      <a href="loginpage.html" class="nav-module-link highlight" title="Web3 Login Portal">
+        <span>Login &rarr;</span>
+      </a>
+    </nav>
+
+    <div class="nav-ticker-strip">
+      <div class="ticker-item">
+        <span class="ticker-label">SUI TPS:</span>
+        <span class="ticker-val green">297,412 PEAK</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-label">EPOCH:</span>
+        <span class="ticker-val cyan">#542</span>
+      </div>
+      <div class="ticker-item">
+        <span class="ticker-label">NETWORK:</span>
+        <span class="ticker-val green"><span class="status-dot-pulse"></span> SUI TESTNET</span>
+      </div>
+    </div>
+  </header>
 
   <div id="terminal-wrapper">
 

@@ -4,7 +4,17 @@
     { "src": "api/**", "use": "@vercel/node" }
   ],
   "routes": [
-    { "src": "/", "dest": "/ui/startingpage.html" },
+    { "src": "/startingpart(.*)", "status": 301, "headers": { "Location": "/index.html" } },
+    { "src": "/startingpage(.*)", "status": 301, "headers": { "Location": "/index.html" } },
+    { "src": "/home", "status": 301, "headers": { "Location": "/index.html" } },
+    { "src": "/", "dest": "/ui/index.html" },
+    { "src": "/compiler", "dest": "/ui/compiler.html" },
+    { "src": "/deepbook", "dest": "/ui/Deepbookv3ui/Deepbookv3.html" },
+    { "src": "/walrus-vault", "dest": "/ui/walrus_vault.html" },
+    { "src": "/security-dashboard", "dest": "/ui/security_dashboard.html" },
+    { "src": "/trade", "dest": "/ui/tradewindow.html" },
+    { "src": "/wallet", "dest": "/ui/wallet1.html" },
+    { "src": "/login", "dest": "/ui/loginpage.html" },
     { "src": "/api/(.*)", "dest": "/api/$1" },
     { "src": "/(.*)", "dest": "/ui/$1" }
   ],

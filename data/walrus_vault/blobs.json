@@ -1,0 +1,1062 @@
+[
+  {
+    "blobId": "0xBLOB_a28601682433...1b5f",
+    "storedKey": "blob_1789139262835_d52b327c",
+    "name": "Adarsh_Yadav_202401100200018_ADBMS_LAB_3_Cursor_Programs.docx",
+    "mimeType": "application/vnd.openxmlformats-officedocument.wordprocessingml.document",
+    "originalSize": 37183,
+    "packagedSize": 37211,
+    "shardSize": 6202,
+    "shardsCount": 8,
+    "rootHash": "0xc9039c81d40d4b0aa530404d",
+    "merkleTree": {
+      "rootHash": "0xc9039c81d40d4b0aa530404d",
+      "interHashes": [
+        "0x8cfa06f8b48978ed",
+        "0xa694ce6f959681ef"
+      ],
+      "branchHashes": [
+        "0x560ecdbe356c49ba",
+        "0x98da0ffd5a485f5c",
+        "0x49d42a1042de5159",
+        "0xe6cf0b7cd51e9cd4"
+      ],
+      "leafHashes": [
+        "0x82c8a4d9b5fb2570",
+        "0xc6cc1ce331490d83",
+        "0xe1695fc0bbc4b225",
+        "0xbd26a6347ea5236d",
+        "0xb7b2194f3575185e",
+        "0x6569cd2a1f83452f",
+        "0xd662e22d3a027652",
+        "0xe1874bc04ee6d253"
+      ]
+    },
+    "shards": [
+      {
+        "id": 0,
+        "label": "SHARD #01 (DATA)",
+        "hash": "0x82c8a4d9b5fb2570",
+        "size": 6202,
+        "fileName": "blob_1789139262835_d52b327c_shard_0.bin",
+        "isParity": false
+      },
+      {
+        "id": 1,
+        "label": "SHARD #02 (DATA)",
+        "hash": "0xc6cc1ce331490d83",
+        "size": 6202,
+        "fileName": "blob_1789139262835_d52b327c_shard_1.bin",
+        "isParity": false
+      },
+      {
+        "id": 2,
+        "label": "SHARD #03 (DATA)",
+        "hash": "0xe1695fc0bbc4b225",
+        "size": 6202,
+        "fileName": "blob_1789139262835_d52b327c_shard_2.bin",
+        "isParity": false
+      },
+      {
+        "id": 3,
+        "label": "SHARD #04 (DATA)",
+        "hash": "0xbd26a6347ea5236d",
+        "size": 6202,
+        "fileName": "blob_1789139262835_d52b327c_shard_3.bin",
+        "isParity": false
+      },
+      {
+        "id": 4,
+        "label": "SHARD #05 (DATA)",
+        "hash": "0xb7b2194f3575185e",
+        "size": 6202,
+        "fileName": "blob_1789139262835_d52b327c_shard_4.bin",
+        "isParity": false
+      },
+      {
+        "id": 5,
+        "label": "SHARD #06 (DATA)",
+        "hash": "0x6569cd2a1f83452f",
+        "size": 6202,
+        "fileName": "blob_1789139262835_d52b327c_shard_5.bin",
+        "isParity": false
+      },
+      {
+        "id": 6,
+        "label": "SHARD #07 (PARITY)",
+        "hash": "0xd662e22d3a027652",
+        "size": 6202,
+        "fileName": "blob_1789139262835_d52b327c_shard_6.bin",
+        "isParity": true
+      },
+      {
+        "id": 7,
+        "label": "SHARD #08 (PARITY)",
+        "hash": "0xe1874bc04ee6d253",
+        "size": 6202,
+        "fileName": "blob_1789139262835_d52b327c_shard_7.bin",
+        "isParity": true
+      }
+    ],
+    "cipher": "AES-256-GCM + IV-96",
+    "erasureProtocol": "Reed-Solomon (6+2 Quorum)",
+    "certifiedEpoch": 542,
+    "expiryEpoch": 680,
+    "status": "CERTIFIED ACTIVE",
+    "storedAt": "2026-09-11T15:07:42.844Z"
+  },
+  {
+    "blobId": "0xBLOB_4aba77b3c498...6fa5",
+    "storedKey": "blob_1789138867951_84e84baa",
+    "name": "Resume_college.pdf",
+    "mimeType": "application/pdf",
+    "originalSize": 131453,
+    "packagedSize": 131481,
+    "shardSize": 21914,
+    "shardsCount": 8,
+    "rootHash": "0x043f75b0565f03219654200f",
+    "merkleTree": {
+      "rootHash": "0x043f75b0565f03219654200f",
+      "interHashes": [
+        "0xbb0347be9ed264ad",
+        "0x827cf2cd658af7df"
+      ],
+      "branchHashes": [
+        "0xd50e0b051441c5f9",
+        "0x8e91d9a42eab70d0",
+        "0x126f5e4449322b01",
+        "0x553b0b1e7c3725cb"
+      ],
+      "leafHashes": [
+        "0x8c14e26568f6184e",
+        "0x04ad7e86aa067a5c",
+        "0x38e1a4cecc705d49",
+        "0xe87efde23bbcfa61",
+        "0x16ca8be367a14c81",
+        "0x9002ea26e3b1de1e",
+        "0x14595242b36f8f34",
+        "0x884449ff7863348f"
+      ]
+    },
+    "shards": [
+      {
+        "id": 0,
+        "label": "SHARD #01 (DATA)",
+        "hash": "0x8c14e26568f6184e",
+        "size": 21914,
+        "fileName": "blob_1789138867951_84e84baa_shard_0.bin",
+        "isParity": false
+      },
+      {
+        "id": 1,
+        "label": "SHARD #02 (DATA)",
+        "hash": "0x04ad7e86aa067a5c",
+        "size": 21914,
+        "fileName": "blob_1789138867951_84e84baa_shard_1.bin",
+        "isParity": false
+      },
+      {
+        "id": 2,
+        "label": "SHARD #03 (DATA)",
+        "hash": "0x38e1a4cecc705d49",
+        "size": 21914,
+        "fileName": "blob_1789138867951_84e84baa_shard_2.bin",
+        "isParity": false
+      },
+      {
+        "id": 3,
+        "label": "SHARD #04 (DATA)",
+        "hash": "0xe87efde23bbcfa61",
+        "size": 21914,
+        "fileName": "blob_1789138867951_84e84baa_shard_3.bin",
+        "isParity": false
+      },
+      {
+        "id": 4,
+        "label": "SHARD #05 (DATA)",
+        "hash": "0x16ca8be367a14c81",
+        "size": 21914,
+        "fileName": "blob_1789138867951_84e84baa_shard_4.bin",
+        "isParity": false
+      },
+      {
+        "id": 5,
+        "label": "SHARD #06 (DATA)",
+        "hash": "0x9002ea26e3b1de1e",
+        "size": 21914,
+        "fileName": "blob_1789138867951_84e84baa_shard_5.bin",
+        "isParity": false
+      },
+      {
+        "id": 6,
+        "label": "SHARD #07 (PARITY)",
+        "hash": "0x14595242b36f8f34",
+        "size": 21914,
+        "fileName": "blob_1789138867951_84e84baa_shard_6.bin",
+        "isParity": true
+      },
+      {
+        "id": 7,
+        "label": "SHARD #08 (PARITY)",
+        "hash": "0x884449ff7863348f",
+        "size": 21914,
+        "fileName": "blob_1789138867951_84e84baa_shard_7.bin",
+        "isParity": true
+      }
+    ],
+    "cipher": "AES-256-GCM + IV-96",
+    "erasureProtocol": "Reed-Solomon (6+2 Quorum)",
+    "certifiedEpoch": 542,
+    "expiryEpoch": 680,
+    "status": "CERTIFIED ACTIVE",
+    "storedAt": "2026-09-11T15:01:07.966Z"
+  },
+  {
+    "blobId": "0xBLOB_e8cb64e24333...5983",
+    "storedKey": "blob_1789138763428_6a24895c",
+    "name": "Adarsh Singh.pdf",
+    "mimeType": "application/pdf",
+    "originalSize": 132000,
+    "packagedSize": 132028,
+    "shardSize": 22005,
+    "shardsCount": 8,
+    "rootHash": "0x099f9f6202390c7a35e2a55c",
+    "merkleTree": {
+      "rootHash": "0x099f9f6202390c7a35e2a55c",
+      "interHashes": [
+        "0x347bfa48c2befe5d",
+        "0xe233d50140afa51e"
+      ],
+      "branchHashes": [
+        "0x44cb5ee5350623c4",
+        "0xe99f3208eb5b24c0",
+        "0xae57affaaef3c57e",
+        "0x1d051dc647601455"
+      ],
+      "leafHashes": [
+        "0x90094fc1b56cd27f",
+        "0xa7f79aaed5661568",
+        "0xf2834f610152b998",
+        "0xddb07f689c0c8f67",
+        "0x6ccb882b2b279585",
+        "0x7cdb6d6988467a06",
+        "0x9ba3961ca62de12d",
+        "0x11968dff081779cc"
+      ]
+    },
+    "shards": [
+      {
+        "id": 0,
+        "label": "SHARD #01 (DATA)",
+        "hash": "0x90094fc1b56cd27f",
+        "size": 22005,
+        "fileName": "blob_1789138763428_6a24895c_shard_0.bin",
+        "isParity": false
+      },
+      {
+        "id": 1,
+        "label": "SHARD #02 (DATA)",
+        "hash": "0xa7f79aaed5661568",
+        "size": 22005,
+        "fileName": "blob_1789138763428_6a24895c_shard_1.bin",
+        "isParity": false
+      },
+      {
+        "id": 2,
+        "label": "SHARD #03 (DATA)",
+        "hash": "0xf2834f610152b998",
+        "size": 22005,
+        "fileName": "blob_1789138763428_6a24895c_shard_2.bin",
+        "isParity": false
+      },
+      {
+        "id": 3,
+        "label": "SHARD #04 (DATA)",
+        "hash": "0xddb07f689c0c8f67",
+        "size": 22005,
+        "fileName": "blob_1789138763428_6a24895c_shard_3.bin",
+        "isParity": false
+      },
+      {
+        "id": 4,
+        "label": "SHARD #05 (DATA)",
+        "hash": "0x6ccb882b2b279585",
+        "size": 22005,
+        "fileName": "blob_1789138763428_6a24895c_shard_4.bin",
+        "isParity": false
+      },
+      {
+        "id": 5,
+        "label": "SHARD #06 (DATA)",
+        "hash": "0x7cdb6d6988467a06",
+        "size": 22005,
+        "fileName": "blob_1789138763428_6a24895c_shard_5.bin",
+        "isParity": false
+      },
+      {
+        "id": 6,
+        "label": "SHARD #07 (PARITY)",
+        "hash": "0x9ba3961ca62de12d",
+        "size": 22005,
+        "fileName": "blob_1789138763428_6a24895c_shard_6.bin",
+        "isParity": true
+      },
+      {
+        "id": 7,
+        "label": "SHARD #08 (PARITY)",
+        "hash": "0x11968dff081779cc",
+        "size": 22005,
+        "fileName": "blob_1789138763428_6a24895c_shard_7.bin",
+        "isParity": true
+      }
+    ],
+    "cipher": "AES-256-GCM + IV-96",
+    "erasureProtocol": "Reed-Solomon (6+2 Quorum)",
+    "certifiedEpoch": 542,
+    "expiryEpoch": 680,
+    "status": "CERTIFIED ACTIVE",
+    "storedAt": "2026-09-11T14:59:23.436Z"
+  },
+  {
+    "blobId": "0xBLOB_cc4bc7e40096...d872",
+    "storedKey": "blob_1789138270597_f317b358",
+    "name": "Logo maker project - September 09, 2026 at 20.00.00.mp4",
+    "mimeType": "video/mp4",
+    "originalSize": 348738,
+    "packagedSize": 348766,
+    "shardSize": 58128,
+    "shardsCount": 8,
+    "rootHash": "0xc5825be172e8c901cbfe4f07",
+    "merkleTree": {
+      "rootHash": "0xc5825be172e8c901cbfe4f07",
+      "interHashes": [
+        "0x0ab3b42da3c778d0",
+        "0x79cd9905a2c5806b"
+      ],
+      "branchHashes": [
+        "0xb593de4487fe2a14",
+        "0xe73c34f7869b8fa7",
+        "0xa2852c00f5401b01",
+        "0x03c863e46330f35d"
+      ],
+      "leafHashes": [
+        "0x961f84eaa1384f70",
+        "0xcc7822dcb17b375c",
+        "0x4ed8004f5324740b",
+        "0x470b17adeebc20d1",
+        "0x5d5e0c1d0bcfc2d7",
+        "0x5ea57c31a40c3f40",
+        "0x8592969ab8e41aa2",
+        "0x95e3398482c8cdda"
+      ]
+    },
+    "shards": [
+      {
+        "id": 0,
+        "label": "SHARD #01 (DATA)",
+        "hash": "0x961f84eaa1384f70",
+        "size": 58128,
+        "fileName": "blob_1789138270597_f317b358_shard_0.bin",
+        "isParity": false
+      },
+      {
+        "id": 1,
+        "label": "SHARD #02 (DATA)",
+        "hash": "0xcc7822dcb17b375c",
+        "size": 58128,
+        "fileName": "blob_1789138270597_f317b358_shard_1.bin",
+        "isParity": false
+      },
+      {
+        "id": 2,
+        "label": "SHARD #03 (DATA)",
+        "hash": "0x4ed8004f5324740b",
+        "size": 58128,
+        "fileName": "blob_1789138270597_f317b358_shard_2.bin",
+        "isParity": false
+      },
+      {
+        "id": 3,
+        "label": "SHARD #04 (DATA)",
+        "hash": "0x470b17adeebc20d1",
+        "size": 58128,
+        "fileName": "blob_1789138270597_f317b358_shard_3.bin",
+        "isParity": false
+      },
+      {
+        "id": 4,
+        "label": "SHARD #05 (DATA)",
+        "hash": "0x5d5e0c1d0bcfc2d7",
+        "size": 58128,
+        "fileName": "blob_1789138270597_f317b358_shard_4.bin",
+        "isParity": false
+      },
+      {
+        "id": 5,
+        "label": "SHARD #06 (DATA)",
+        "hash": "0x5ea57c31a40c3f40",
+        "size": 58128,
+        "fileName": "blob_1789138270597_f317b358_shard_5.bin",
+        "isParity": false
+      },
+      {
+        "id": 6,
+        "label": "SHARD #07 (PARITY)",
+        "hash": "0x8592969ab8e41aa2",
+        "size": 58128,
+        "fileName": "blob_1789138270597_f317b358_shard_6.bin",
+        "isParity": true
+      },
+      {
+        "id": 7,
+        "label": "SHARD #08 (PARITY)",
+        "hash": "0x95e3398482c8cdda",
+        "size": 58128,
+        "fileName": "blob_1789138270597_f317b358_shard_7.bin",
+        "isParity": true
+      }
+    ],
+    "cipher": "AES-256-GCM + IV-96",
+    "erasureProtocol": "Reed-Solomon (6+2 Quorum)",
+    "certifiedEpoch": 542,
+    "expiryEpoch": 680,
+    "status": "CERTIFIED ACTIVE",
+    "storedAt": "2026-09-11T14:51:10.613Z"
+  },
+  {
+    "blobId": "0xBLOB_c258f79a6c4e...20a9",
+    "storedKey": "blob_1789138214799_8790b400",
+    "name": "Adarsh Singh_LAB-3 Assignment-3.pdf",
+    "mimeType": "application/pdf",
+    "originalSize": 359339,
+    "packagedSize": 359367,
+    "shardSize": 59895,
+    "shardsCount": 8,
+    "rootHash": "0x2f7d4d844f61d39550661fea",
+    "merkleTree": {
+      "rootHash": "0x2f7d4d844f61d39550661fea",
+      "interHashes": [
+        "0x4bb3859cc34d1dc4",
+        "0xc8de414dfdf91104"
+      ],
+      "branchHashes": [
+        "0x56aa313afd9278f8",
+        "0x1a64b3ee23acf3d1",
+        "0xcc54d0486ae28230",
+        "0x1092979d1376e943"
+      ],
+      "leafHashes": [
+        "0x59ecadf7fe007eb2",
+        "0x70031823d228db92",
+        "0x889e03c7426d310a",
+        "0x1b9eb25292d99426",
+        "0x481f15d7a01e4d1c",
+        "0x7f0e553dbb685413",
+        "0xe88eae006b2d6e06",
+        "0x5dc401cfeb952d3a"
+      ]
+    },
+    "shards": [
+      {
+        "id": 0,
+        "label": "SHARD #01 (DATA)",
+        "hash": "0x59ecadf7fe007eb2",
+        "size": 59895,
+        "fileName": "blob_1789138214799_8790b400_shard_0.bin",
+        "isParity": false
+      },
+      {
+        "id": 1,
+        "label": "SHARD #02 (DATA)",
+        "hash": "0x70031823d228db92",
+        "size": 59895,
+        "fileName": "blob_1789138214799_8790b400_shard_1.bin",
+        "isParity": false
+      },
+      {
+        "id": 2,
+        "label": "SHARD #03 (DATA)",
+        "hash": "0x889e03c7426d310a",
+        "size": 59895,
+        "fileName": "blob_1789138214799_8790b400_shard_2.bin",
+        "isParity": false
+      },
+      {
+        "id": 3,
+        "label": "SHARD #04 (DATA)",
+        "hash": "0x1b9eb25292d99426",
+        "size": 59895,
+        "fileName": "blob_1789138214799_8790b400_shard_3.bin",
+        "isParity": false
+      },
+      {
+        "id": 4,
+        "label": "SHARD #05 (DATA)",
+        "hash": "0x481f15d7a01e4d1c",
+        "size": 59895,
+        "fileName": "blob_1789138214799_8790b400_shard_4.bin",
+        "isParity": false
+      },
+      {
+        "id": 5,
+        "label": "SHARD #06 (DATA)",
+        "hash": "0x7f0e553dbb685413",
+        "size": 59895,
+        "fileName": "blob_1789138214799_8790b400_shard_5.bin",
+        "isParity": false
+      },
+      {
+        "id": 6,
+        "label": "SHARD #07 (PARITY)",
+        "hash": "0xe88eae006b2d6e06",
+        "size": 59895,
+        "fileName": "blob_1789138214799_8790b400_shard_6.bin",
+        "isParity": true
+      },
+      {
+        "id": 7,
+        "label": "SHARD #08 (PARITY)",
+        "hash": "0x5dc401cfeb952d3a",
+        "size": 59895,
+        "fileName": "blob_1789138214799_8790b400_shard_7.bin",
+        "isParity": true
+      }
+    ],
+    "cipher": "AES-256-GCM + IV-96",
+    "erasureProtocol": "Reed-Solomon (6+2 Quorum)",
+    "certifiedEpoch": 542,
+    "expiryEpoch": 680,
+    "status": "CERTIFIED ACTIVE",
+    "storedAt": "2026-09-11T14:50:14.809Z"
+  },
+  {
+    "blobId": "0xBLOB_fdaac652fb38...e3b7",
+    "storedKey": "blob_1789138169326_e658c2f6",
+    "name": "random-data-1789062959890.csv",
+    "mimeType": "text/csv",
+    "originalSize": 398,
+    "packagedSize": 426,
+    "shardSize": 71,
+    "shardsCount": 8,
+    "rootHash": "0xdd3647568ea3b099e4187251",
+    "merkleTree": {
+      "rootHash": "0xdd3647568ea3b099e4187251",
+      "interHashes": [
+        "0xc1a4e15b77cdbf8e",
+        "0x18a594ea3e15fe98"
+      ],
+      "branchHashes": [
+        "0x1b8d2b9c7df527a5",
+        "0xfbee01af14325acb",
+        "0x9a5e6c97871eef3c",
+        "0x13d60634c636d667"
+      ],
+      "leafHashes": [
+        "0xafcd5684a375f06f",
+        "0x3ba3cf756311a5c9",
+        "0x1f205d20d5e1eab7",
+        "0xdc56507d6238236f",
+        "0xe12ae333fdedd0f3",
+        "0xd515af0d8939ff65",
+        "0xad974136decbf4d3",
+        "0x956f9e17d0966151"
+      ]
+    },
+    "shards": [
+      {
+        "id": 0,
+        "label": "SHARD #01 (DATA)",
+        "hash": "0xafcd5684a375f06f",
+        "size": 71,
+        "fileName": "blob_1789138169326_e658c2f6_shard_0.bin",
+        "isParity": false
+      },
+      {
+        "id": 1,
+        "label": "SHARD #02 (DATA)",
+        "hash": "0x3ba3cf756311a5c9",
+        "size": 71,
+        "fileName": "blob_1789138169326_e658c2f6_shard_1.bin",
+        "isParity": false
+      },
+      {
+        "id": 2,
+        "label": "SHARD #03 (DATA)",
+        "hash": "0x1f205d20d5e1eab7",
+        "size": 71,
+        "fileName": "blob_1789138169326_e658c2f6_shard_2.bin",
+        "isParity": false
+      },
+      {
+        "id": 3,
+        "label": "SHARD #04 (DATA)",
+        "hash": "0xdc56507d6238236f",
+        "size": 71,
+        "fileName": "blob_1789138169326_e658c2f6_shard_3.bin",
+        "isParity": false
+      },
+      {
+        "id": 4,
+        "label": "SHARD #05 (DATA)",
+        "hash": "0xe12ae333fdedd0f3",
+        "size": 71,
+        "fileName": "blob_1789138169326_e658c2f6_shard_4.bin",
+        "isParity": false
+      },
+      {
+        "id": 5,
+        "label": "SHARD #06 (DATA)",
+        "hash": "0xd515af0d8939ff65",
+        "size": 71,
+        "fileName": "blob_1789138169326_e658c2f6_shard_5.bin",
+        "isParity": false
+      },
+      {
+        "id": 6,
+        "label": "SHARD #07 (PARITY)",
+        "hash": "0xad974136decbf4d3",
+        "size": 71,
+        "fileName": "blob_1789138169326_e658c2f6_shard_6.bin",
+        "isParity": true
+      },
+      {
+        "id": 7,
+        "label": "SHARD #08 (PARITY)",
+        "hash": "0x956f9e17d0966151",
+        "size": 71,
+        "fileName": "blob_1789138169326_e658c2f6_shard_7.bin",
+        "isParity": true
+      }
+    ],
+    "cipher": "AES-256-GCM + IV-96",
+    "erasureProtocol": "Reed-Solomon (6+2 Quorum)",
+    "certifiedEpoch": 542,
+    "expiryEpoch": 680,
+    "status": "CERTIFIED ACTIVE",
+    "storedAt": "2026-09-11T14:49:29.335Z"
+  },
+  {
+    "blobId": "0xBLOB_2b2f8939ffe1...be78",
+    "storedKey": "blob_1789137947364_951024c7",
+    "name": "test_smart_contract.move",
+    "mimeType": "text/plain",
+    "originalSize": 48,
+    "packagedSize": 76,
+    "shardSize": 13,
+    "shardsCount": 8,
+    "rootHash": "0x287ec1695692bfae690b90c1",
+    "merkleTree": {
+      "rootHash": "0x287ec1695692bfae690b90c1",
+      "interHashes": [
+        "0xc7b0289910af7fa7",
+        "0x258de2253c0c6879"
+      ],
+      "branchHashes": [
+        "0x958bd0063bf6a24a",
+        "0x6891a1a1613072d1",
+        "0xd6cf33b428df7f63",
+        "0x882aa49658458121"
+      ],
+      "leafHashes": [
+        "0x64967b6b847c4a59",
+        "0xe887f6f65d9a7826",
+        "0x161a81c799e0c7f7",
+        "0xb2b4fb151f51df1d",
+        "0x7fa3ef673edd8351",
+        "0x6ca13dc16da9ef90",
+        "0x3b2e48394320ea1a",
+        "0xb6651fb2978c1d48"
+      ]
+    },
+    "shards": [
+      {
+        "id": 0,
+        "label": "SHARD #01 (DATA)",
+        "hash": "0x64967b6b847c4a59",
+        "size": 13,
+        "fileName": "blob_1789137947364_951024c7_shard_0.bin",
+        "isParity": false
+      },
+      {
+        "id": 1,
+        "label": "SHARD #02 (DATA)",
+        "hash": "0xe887f6f65d9a7826",
+        "size": 13,
+        "fileName": "blob_1789137947364_951024c7_shard_1.bin",
+        "isParity": false
+      },
+      {
+        "id": 2,
+        "label": "SHARD #03 (DATA)",
+        "hash": "0x161a81c799e0c7f7",
+        "size": 13,
+        "fileName": "blob_1789137947364_951024c7_shard_2.bin",
+        "isParity": false
+      },
+      {
+        "id": 3,
+        "label": "SHARD #04 (DATA)",
+        "hash": "0xb2b4fb151f51df1d",
+        "size": 13,
+        "fileName": "blob_1789137947364_951024c7_shard_3.bin",
+        "isParity": false
+      },
+      {
+        "id": 4,
+        "label": "SHARD #05 (DATA)",
+        "hash": "0x7fa3ef673edd8351",
+        "size": 13,
+        "fileName": "blob_1789137947364_951024c7_shard_4.bin",
+        "isParity": false
+      },
+      {
+        "id": 5,
+        "label": "SHARD #06 (DATA)",
+        "hash": "0x6ca13dc16da9ef90",
+        "size": 13,
+        "fileName": "blob_1789137947364_951024c7_shard_5.bin",
+        "isParity": false
+      },
+      {
+        "id": 6,
+        "label": "SHARD #07 (PARITY)",
+        "hash": "0x3b2e48394320ea1a",
+        "size": 13,
+        "fileName": "blob_1789137947364_951024c7_shard_6.bin",
+        "isParity": true
+      },
+      {
+        "id": 7,
+        "label": "SHARD #08 (PARITY)",
+        "hash": "0xb6651fb2978c1d48",
+        "size": 13,
+        "fileName": "blob_1789137947364_951024c7_shard_7.bin",
+        "isParity": true
+      }
+    ],
+    "cipher": "AES-256-GCM + IV-96",
+    "erasureProtocol": "Reed-Solomon (6+2 Quorum)",
+    "certifiedEpoch": 542,
+    "expiryEpoch": 680,
+    "status": "CERTIFIED ACTIVE",
+    "storedAt": "2026-09-11T14:45:47.368Z"
+  },
+  {
+    "blobId": "0xBLOB_b1278953b3e7...817b",
+    "storedKey": "blob_1789137486523_f39f7825",
+    "name": "fluid_workspace.move",
+    "mimeType": "text/plain",
+    "originalSize": 658,
+    "packagedSize": 686,
+    "shardSize": 115,
+    "shardsCount": 8,
+    "rootHash": "0x11f9e90d14fd6bc46030e72a",
+    "merkleTree": {
+      "rootHash": "0x11f9e90d14fd6bc46030e72a",
+      "interHashes": [
+        "0x79062ec9a5ff1c35",
+        "0xb1ccad64b9db56fa"
+      ],
+      "branchHashes": [
+        "0xe91cc72ca47c53e6",
+        "0x74c40298efa80bb4",
+        "0x376861512cb901fe",
+        "0xa47c4cd5b26dddbd"
+      ],
+      "leafHashes": [
+        "0xd54603d56d8760b9",
+        "0x6ebca4944388d804",
+        "0x3349edde0153abed",
+        "0x268f7d8cd89e7694",
+        "0x8a967c59f339828e",
+        "0x6156e7e893e5d837",
+        "0xbbca91290176fbf8",
+        "0x2e1dd27c536e1c15"
+      ]
+    },
+    "shards": [
+      {
+        "id": 0,
+        "label": "SHARD #01 (DATA)",
+        "hash": "0xd54603d56d8760b9",
+        "size": 115,
+        "fileName": "blob_1789137486523_f39f7825_shard_0.bin",
+        "isParity": false
+      },
+      {
+        "id": 1,
+        "label": "SHARD #02 (DATA)",
+        "hash": "0x6ebca4944388d804",
+        "size": 115,
+        "fileName": "blob_1789137486523_f39f7825_shard_1.bin",
+        "isParity": false
+      },
+      {
+        "id": 2,
+        "label": "SHARD #03 (DATA)",
+        "hash": "0x3349edde0153abed",
+        "size": 115,
+        "fileName": "blob_1789137486523_f39f7825_shard_2.bin",
+        "isParity": false
+      },
+      {
+        "id": 3,
+        "label": "SHARD #04 (DATA)",
+        "hash": "0x268f7d8cd89e7694",
+        "size": 115,
+        "fileName": "blob_1789137486523_f39f7825_shard_3.bin",
+        "isParity": false
+      },
+      {
+        "id": 4,
+        "label": "SHARD #05 (DATA)",
+        "hash": "0x8a967c59f339828e",
+        "size": 115,
+        "fileName": "blob_1789137486523_f39f7825_shard_4.bin",
+        "isParity": false
+      },
+      {
+        "id": 5,
+        "label": "SHARD #06 (DATA)",
+        "hash": "0x6156e7e893e5d837",
+        "size": 115,
+        "fileName": "blob_1789137486523_f39f7825_shard_5.bin",
+        "isParity": false
+      },
+      {
+        "id": 6,
+        "label": "SHARD #07 (PARITY)",
+        "hash": "0xbbca91290176fbf8",
+        "size": 115,
+        "fileName": "blob_1789137486523_f39f7825_shard_6.bin",
+        "isParity": true
+      },
+      {
+        "id": 7,
+        "label": "SHARD #08 (PARITY)",
+        "hash": "0x2e1dd27c536e1c15",
+        "size": 115,
+        "fileName": "blob_1789137486523_f39f7825_shard_7.bin",
+        "isParity": true
+      }
+    ],
+    "cipher": "AES-256-GCM + IV-96",
+    "erasureProtocol": "Reed-Solomon (6+2 Quorum)",
+    "certifiedEpoch": 542,
+    "expiryEpoch": 680,
+    "status": "CERTIFIED ACTIVE",
+    "storedAt": "2026-09-11T14:38:06.530Z"
+  },
+  {
+    "blobId": "0xBLOB_7cb804784d98...40d6",
+    "storedKey": "blob_1789137486532_a52ddb7f",
+    "name": "deepbook_risk_allocation.csv",
+    "mimeType": "text/csv",
+    "originalSize": 208,
+    "packagedSize": 236,
+    "shardSize": 40,
+    "shardsCount": 8,
+    "rootHash": "0x639a12822f751f2830e5528c",
+    "merkleTree": {
+      "rootHash": "0x639a12822f751f2830e5528c",
+      "interHashes": [
+        "0xf042ddf9a990bded",
+        "0x19c18db3a79661ce"
+      ],
+      "branchHashes": [
+        "0xdb976ccb86b17208",
+        "0x6fa274ec3dc87eed",
+        "0x65f63dc616f6bb88",
+        "0xba1f30e55581c16c"
+      ],
+      "leafHashes": [
+        "0x912f72a1f9ad6fbd",
+        "0xaedc0acaf5bde17b",
+        "0x93cc4d791a638657",
+        "0xf0e08df8aef2cb2d",
+        "0x1f9e82a159937f98",
+        "0x464b26013b405ec1",
+        "0xd303e15cf3bc72a3",
+        "0x3ccf4a5f644ea819"
+      ]
+    },
+    "shards": [
+      {
+        "id": 0,
+        "label": "SHARD #01 (DATA)",
+        "hash": "0x912f72a1f9ad6fbd",
+        "size": 40,
+        "fileName": "blob_1789137486532_a52ddb7f_shard_0.bin",
+        "isParity": false
+      },
+      {
+        "id": 1,
+        "label": "SHARD #02 (DATA)",
+        "hash": "0xaedc0acaf5bde17b",
+        "size": 40,
+        "fileName": "blob_1789137486532_a52ddb7f_shard_1.bin",
+        "isParity": false
+      },
+      {
+        "id": 2,
+        "label": "SHARD #03 (DATA)",
+        "hash": "0x93cc4d791a638657",
+        "size": 40,
+        "fileName": "blob_1789137486532_a52ddb7f_shard_2.bin",
+        "isParity": false
+      },
+      {
+        "id": 3,
+        "label": "SHARD #04 (DATA)",
+        "hash": "0xf0e08df8aef2cb2d",
+        "size": 40,
+        "fileName": "blob_1789137486532_a52ddb7f_shard_3.bin",
+        "isParity": false
+      },
+      {
+        "id": 4,
+        "label": "SHARD #05 (DATA)",
+        "hash": "0x1f9e82a159937f98",
+        "size": 40,
+        "fileName": "blob_1789137486532_a52ddb7f_shard_4.bin",
+        "isParity": false
+      },
+      {
+        "id": 5,
+        "label": "SHARD #06 (DATA)",
+        "hash": "0x464b26013b405ec1",
+        "size": 40,
+        "fileName": "blob_1789137486532_a52ddb7f_shard_5.bin",
+        "isParity": false
+      },
+      {
+        "id": 6,
+        "label": "SHARD #07 (PARITY)",
+        "hash": "0xd303e15cf3bc72a3",
+        "size": 40,
+        "fileName": "blob_1789137486532_a52ddb7f_shard_6.bin",
+        "isParity": true
+      },
+      {
+        "id": 7,
+        "label": "SHARD #08 (PARITY)",
+        "hash": "0x3ccf4a5f644ea819",
+        "size": 40,
+        "fileName": "blob_1789137486532_a52ddb7f_shard_7.bin",
+        "isParity": true
+      }
+    ],
+    "cipher": "AES-256-GCM + IV-96",
+    "erasureProtocol": "Reed-Solomon (6+2 Quorum)",
+    "certifiedEpoch": 542,
+    "expiryEpoch": 680,
+    "status": "CERTIFIED ACTIVE",
+    "storedAt": "2026-09-11T14:38:06.536Z"
+  },
+  {
+    "blobId": "0xBLOB_a02d74f2a667...b685",
+    "storedKey": "blob_1789137486537_56c415e4",
+    "name": "sui_brand_identity_vector.svg",
+    "mimeType": "image/svg+xml",
+    "originalSize": 490,
+    "packagedSize": 518,
+    "shardSize": 87,
+    "shardsCount": 8,
+    "rootHash": "0x99570eb1db4e2364d2f4d36e",
+    "merkleTree": {
+      "rootHash": "0x99570eb1db4e2364d2f4d36e",
+      "interHashes": [
+        "0x8061a5bca80b50e6",
+        "0xd93c117c00a0ab1a"
+      ],
+      "branchHashes": [
+        "0x1a05810b0b3229c3",
+        "0x62283f5564575ea3",
+        "0xce75ac80279d6092",
+        "0x87950cb9fbe3fe45"
+      ],
+      "leafHashes": [
+        "0xf7c0c832e1560a98",
+        "0xf615eb151a6e35d7",
+        "0x9fe0d58d9ba3b1e9",
+        "0x36f58d1b0ddd3c95",
+        "0xa956d2dded06cbe9",
+        "0x876da2a93b2ca5d2",
+        "0xb30d9b7daced1993",
+        "0x566cddaab867ef11"
+      ]
+    },
+    "shards": [
+      {
+        "id": 0,
+        "label": "SHARD #01 (DATA)",
+        "hash": "0xf7c0c832e1560a98",
+        "size": 87,
+        "fileName": "blob_1789137486537_56c415e4_shard_0.bin",
+        "isParity": false
+      },
+      {
+        "id": 1,
+        "label": "SHARD #02 (DATA)",
+        "hash": "0xf615eb151a6e35d7",
+        "size": 87,
+        "fileName": "blob_1789137486537_56c415e4_shard_1.bin",
+        "isParity": false
+      },
+      {
+        "id": 2,
+        "label": "SHARD #03 (DATA)",
+        "hash": "0x9fe0d58d9ba3b1e9",
+        "size": 87,
+        "fileName": "blob_1789137486537_56c415e4_shard_2.bin",
+        "isParity": false
+      },
+      {
+        "id": 3,
+        "label": "SHARD #04 (DATA)",
+        "hash": "0x36f58d1b0ddd3c95",
+        "size": 87,
+        "fileName": "blob_1789137486537_56c415e4_shard_3.bin",
+        "isParity": false
+      },
+      {
+        "id": 4,
+        "label": "SHARD #05 (DATA)",
+        "hash": "0xa956d2dded06cbe9",
+        "size": 87,
+        "fileName": "blob_1789137486537_56c415e4_shard_4.bin",
+        "isParity": false
+      },
+      {
+        "id": 5,
+        "label": "SHARD #06 (DATA)",
+        "hash": "0x876da2a93b2ca5d2",
+        "size": 87,
+        "fileName": "blob_1789137486537_56c415e4_shard_5.bin",
+        "isParity": false
+      },
+      {
+        "id": 6,
+        "label": "SHARD #07 (PARITY)",
+        "hash": "0xb30d9b7daced1993",
+        "size": 87,
+        "fileName": "blob_1789137486537_56c415e4_shard_6.bin",
+        "isParity": true
+      },
+      {
+        "id": 7,
+        "label": "SHARD #08 (PARITY)",
+        "hash": "0x566cddaab867ef11",
+        "size": 87,
+        "fileName": "blob_1789137486537_56c415e4_shard_7.bin",
+        "isParity": true
+      }
+    ],
+    "cipher": "AES-256-GCM + IV-96",
+    "erasureProtocol": "Reed-Solomon (6+2 Quorum)",
+    "certifiedEpoch": 542,
+    "expiryEpoch": 680,
+    "status": "CERTIFIED ACTIVE",
+    "storedAt": "2026-09-11T14:38:06.541Z"
+  }
+]
