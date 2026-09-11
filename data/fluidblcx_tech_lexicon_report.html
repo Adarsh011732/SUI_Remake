@@ -1,0 +1,596 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>FluidBLCX — Master Technology, Architecture & Lexicon Specification</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;600;700;800&display=swap');
+
+    @page {
+      size: A4 landscape;
+      margin: 12mm 14mm 12mm 14mm;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: #050814;
+      color: #e2e8f0;
+      font-family: 'Space Grotesk', -apple-system, sans-serif;
+      font-size: 10px;
+      line-height: 1.4;
+      -webkit-print-color-adjust: exact !important;
+      print-color-adjust: exact !important;
+    }
+
+    /* ── HEADER BANNER ── */
+    .report-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: linear-gradient(135deg, #091530 0%, #030816 100%);
+      border: 1.5px solid #00ff88;
+      border-radius: 8px;
+      padding: 14px 20px;
+      margin-bottom: 14px;
+      box-shadow: 0 4px 20px rgba(0, 255, 136, 0.15);
+    }
+
+    .header-left {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .brand-emblem {
+      width: 42px;
+      height: 42px;
+      background: #000;
+      border: 1.5px solid #00ff88;
+      border-radius: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .brand-emblem svg {
+      width: 24px;
+      height: 24px;
+      fill: #00ff88;
+    }
+
+    .header-title h1 {
+      font-size: 18px;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.5px;
+    }
+
+    .header-title p {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      color: #38bdf8;
+      margin-top: 2px;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
+    .header-meta-pills {
+      display: flex;
+      gap: 8px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+    }
+
+    .meta-pill {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      padding: 5px 10px;
+      border-radius: 5px;
+      text-align: right;
+    }
+
+    .meta-pill .lbl { color: #64748b; font-size: 7.5px; text-transform: uppercase; }
+    .meta-pill .val { color: #00ff88; font-weight: 700; margin-top: 1px; }
+
+    /* ── MASTER DATAFRAME TABLE ── */
+    .table-container {
+      width: 100%;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      background: rgba(3, 7, 18, 0.95);
+    }
+
+    table.master-df-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 8.5px;
+    }
+
+    table.master-df-table thead th {
+      background: #091329;
+      color: #38bdf8;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      padding: 8px 10px;
+      border-bottom: 2px solid #00ff88;
+      text-align: left;
+    }
+
+    table.master-df-table tbody tr {
+      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    table.master-df-table tbody tr:nth-child(even) {
+      background: rgba(255, 255, 255, 0.015);
+    }
+
+    table.master-df-table tbody td {
+      padding: 5.5px 8px;
+      vertical-align: top;
+      color: #cbd5e1;
+    }
+
+    .idx-cell {
+      font-family: 'JetBrains Mono', monospace;
+      font-weight: 700;
+      color: #38bdf8;
+      width: 26px;
+      text-align: center;
+    }
+
+    .cat-badge {
+      display: inline-block;
+      padding: 2px 5px;
+      border-radius: 3px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5px;
+      font-weight: 700;
+      background: rgba(56, 189, 248, 0.12);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      color: #38bdf8;
+      white-space: nowrap;
+    }
+
+    .cat-badge.green { background: rgba(0, 255, 136, 0.12); border-color: rgba(0, 255, 136, 0.35); color: #00ff88; }
+    .cat-badge.amber { background: rgba(245, 158, 11, 0.12); border-color: rgba(245, 158, 11, 0.35); color: #f59e0b; }
+    .cat-badge.purple { background: rgba(168, 85, 247, 0.12); border-color: rgba(168, 85, 247, 0.35); color: #c084fc; }
+
+    .term-name {
+      font-weight: 700;
+      color: #fff;
+      font-size: 9px;
+    }
+
+    .mod-name {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5px;
+      color: #94a3b8;
+    }
+
+    .desc-cell {
+      font-size: 8px;
+      line-height: 1.35;
+      color: #e2e8f0;
+    }
+
+    .spec-cell {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5px;
+      color: #00ff88;
+      line-height: 1.3;
+    }
+
+    /* Page Break Utility */
+    .page-break {
+      page-break-after: always;
+    }
+
+    /* Footer */
+    .report-footer {
+      margin-top: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 7.5px;
+      color: #64748b;
+      padding-top: 6px;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── PAGE 1: HEADER & MASTER DATAFRAME PART 1 ── -->
+  <header class="report-header">
+    <div class="header-left">
+      <div class="brand-emblem">
+        <svg viewBox="0 0 24 24">
+          <path d="M12,2C12,2 4,10 4,14C4,18.42 7.58,22 12,22C16.42,22 20,18.42 20,14C20,10 12,2 12,2Z" />
+        </svg>
+      </div>
+      <div class="header-title">
+        <h1>FluidBLCX — Master Architecture & Technology Lexicon Specification</h1>
+        <p>Sovereign Sui Web3 Execution • DeepBook v3 CLOB • Walrus Vault 8-Shard Erasure Coding • AI Sentinel</p>
+      </div>
+    </div>
+    <div class="header-meta-pills">
+      <div class="meta-pill">
+        <div class="lbl">NETWORK TARGET</div>
+        <div class="val">SUI L1 / MYSTICETI</div>
+      </div>
+      <div class="meta-pill">
+        <div class="lbl">CIPHER STANDARD</div>
+        <div class="val">AES-256-GCM + IV-96</div>
+      </div>
+      <div class="meta-pill">
+        <div class="lbl">SPEC VERSION</div>
+        <div class="val">v3.4.0 (2026 ARCH)</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="table-container">
+    <table class="master-df-table">
+      <thead>
+        <tr>
+          <th style="width: 28px; text-align: center;">#</th>
+          <th style="width: 110px;">Category</th>
+          <th style="width: 160px;">Technology / Concept</th>
+          <th style="width: 140px;">Module Target</th>
+          <th>Technical Definition &amp; Architectural Role</th>
+          <th style="width: 240px;">Technical Specs &amp; Parameters</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="idx-cell">01</td>
+          <td><span class="cat-badge green">Blockchain Core</span></td>
+          <td><div class="term-name">Sui L1 Network</div></td>
+          <td><div class="mod-name">Core Infrastructure</div></td>
+          <td class="desc-cell">High-throughput Layer 1 blockchain optimized for parallel transaction execution, horizontal validator scaling, and sub-second finality.</td>
+          <td class="spec-cell">Move VM, parallel processing, horizontal scale, sub-second finality</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">02</td>
+          <td><span class="cat-badge green">Consensus</span></td>
+          <td><div class="term-name">Mysticeti Consensus Engine</div></td>
+          <td><div class="mod-name">L1 Consensus Layer</div></td>
+          <td class="desc-cell">Next-generation DAG-based consensus protocol powering Sui, reducing validator commit latency to unprecedented speeds.</td>
+          <td class="spec-cell">11ms–390ms latency, BFT fault tolerance, asynchronous DAG rounds</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">03</td>
+          <td><span class="cat-badge green">Smart Contracts</span></td>
+          <td><div class="term-name">Sui Move</div></td>
+          <td><div class="mod-name">Compiler &amp; Contracts</div></td>
+          <td class="desc-cell">Object-centric smart contract programming language focused on safe resource management, asset ownership, and bytecode verification.</td>
+          <td class="spec-cell">Linear logic, capability security, byte-level verification</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">04</td>
+          <td><span class="cat-badge green">Execution Model</span></td>
+          <td><div class="term-name">Programmable Transaction Blocks (PTB)</div></td>
+          <td><div class="mod-name">Compiler &amp; DeepBook</div></td>
+          <td class="desc-cell">Atomic multi-instruction execution bundles allowing developers to chain up to 1,024 commands in a single transaction with output passing.</td>
+          <td class="spec-cell">Atomic execution, zero gas wastage on chained calls, composable</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">05</td>
+          <td><span class="cat-badge green">Data Model</span></td>
+          <td><div class="term-name">Object-Centric Storage Model</div></td>
+          <td><div class="mod-name">Sui Core State</div></td>
+          <td class="desc-cell">Data architecture where everything is an object with globally unique 32-byte UID, versioning, and explicit ownership (Owned vs Shared).</td>
+          <td class="spec-cell">UID, TxContext, shared objects, dynamic field extensions</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">06</td>
+          <td><span class="cat-badge amber">Cryptography</span></td>
+          <td><div class="term-name">ECDSA SEC_P256</div></td>
+          <td><div class="mod-name">Gateway &amp; Security</div></td>
+          <td class="desc-cell">Elliptic Curve Digital Signature Algorithm over the NIST P-256 prime curve used for high-security institutional authorization.</td>
+          <td class="spec-cell">256-bit key length, asymmetric keypairs, cryptographic validation</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">07</td>
+          <td><span class="cat-badge amber">Cryptography</span></td>
+          <td><div class="term-name">Ed25519</div></td>
+          <td><div class="mod-name">Wallet &amp; Key Management</div></td>
+          <td class="desc-cell">High-speed Edwards-curve digital signature algorithm standard for fast Web3 keypair creation and transaction signing.</td>
+          <td class="spec-cell">128-bit security level, resistant to side-channel attacks</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">08</td>
+          <td><span class="cat-badge amber">Storage</span></td>
+          <td><div class="term-name">Walrus Protocol</div></td>
+          <td><div class="mod-name">Walrus Decentralized Vault</div></td>
+          <td class="desc-cell">Decentralized blob archival protocol designed for large binary payloads on Sui using erasure coding and certified storage epochs.</td>
+          <td class="spec-cell">Epoch-based storage, high availability, decentralized shard routing</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">09</td>
+          <td><span class="cat-badge amber">Cryptography</span></td>
+          <td><div class="term-name">AES-256-GCM</div></td>
+          <td><div class="mod-name">Walrus Backend Storage</div></td>
+          <td class="desc-cell">Advanced Encryption Standard in Galois/Counter Mode providing authenticated symmetric encryption and integrity verification.</td>
+          <td class="spec-cell">256-bit symmetric cipher, 96-bit IV, 128-bit authentication tag</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">10</td>
+          <td><span class="cat-badge amber">Coding Theory</span></td>
+          <td><div class="term-name">Reed-Solomon (8, 6) Erasure Coding</div></td>
+          <td><div class="mod-name">Walrus Shard Engine</div></td>
+          <td class="desc-cell">Algebraic error-correction algorithm partitioning payloads into 6 primary data shards + 2 parity shards (tolerating loss of any 2 shards).</td>
+          <td class="spec-cell">N=8, K=6, P=2, deterministic matrix multiplication, fault recovery</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">11</td>
+          <td><span class="cat-badge amber">Data Structures</span></td>
+          <td><div class="term-name">Merkle Tree &amp; Root</div></td>
+          <td><div class="mod-name">Walrus Proof Engine</div></td>
+          <td class="desc-cell">Cryptographic binary hash tree where leaf nodes store SHA-256 shard digests and parent nodes hash combined pairs to a root.</td>
+          <td class="spec-cell">SHA-256 hashing, logarithmic inclusion proofs O(log N), tamper-proof</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">12</td>
+          <td><span class="cat-badge green">DeFi &amp; Liquidity</span></td>
+          <td><div class="term-name">DeepBook v3 CLOB</div></td>
+          <td><div class="mod-name">DeepBook Trading Engine</div></td>
+          <td class="desc-cell">On-chain Central Limit Order Book with ultra-low latency matching, maker rebates, and native Move atomic execution.</td>
+          <td class="spec-cell">Zero orderbook indexing latency, order ID hashing, depth ladders</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">13</td>
+          <td><span class="cat-badge">3D Graphics</span></td>
+          <td><div class="term-name">Geodesic Mysticeti Sphere</div></td>
+          <td><div class="mod-name">Institutional Gateway</div></td>
+          <td class="desc-cell">Real-time 3D polyhedral visualization of consensus state with icosahedral faces, wireframe cage, and particle dust.</td>
+          <td class="spec-cell">Three.js WebGL, IcosahedronGeometry, emissive color shifting</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">14</td>
+          <td><span class="cat-badge">3D Graphics</span></td>
+          <td><div class="term-name">Holographic Tesseract Vault Cube</div></td>
+          <td><div class="mod-name">Walrus 3D Stage</div></td>
+          <td class="desc-cell">Multi-tiered 3D storage vault model that physically explodes into an 8-shard constellation with dynamic laser links.</td>
+          <td class="spec-cell">BoxGeometry, TorusGeometry, gyroscopic rotation, laser vectors</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">15</td>
+          <td><span class="cat-badge green">Institutional DeFi</span></td>
+          <td><div class="term-name">Multi-Wallet CSV Batch Provisioning</div></td>
+          <td><div class="mod-name">DeepBook Gateway</div></td>
+          <td class="desc-cell">Ingestion pipeline that parses institutional .csv portfolios and assigns allocations across 10 parallel node clusters.</td>
+          <td class="spec-cell">portfolio.csv, parallel node streaming [NODE-SYNC-01..10]</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">16</td>
+          <td><span class="cat-badge green">Market Data</span></td>
+          <td><div class="term-name">12-Asset L2 Matrix</div></td>
+          <td><div class="mod-name">CLOB Terminal Marquee</div></td>
+          <td class="desc-cell">Real-time streaming market data ticker tracking spot prices, 24h percentage changes, and spreads for 12 major assets.</td>
+          <td class="spec-cell">SUI, BTC, ETH, SOL, PAXG, CETUS, NAVX, DEEP, WAL, USDC, USDT, BLCX</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">17</td>
+          <td><span class="cat-badge">Visualization</span></td>
+          <td><div class="term-name">HTML5 Canvas Candlestick Engine</div></td>
+          <td><div class="mod-name">CLOB Charting Pane</div></td>
+          <td class="desc-cell">Custom high-performance 2D canvas charting engine rendering real-time OHLCV bars and dynamic price lines.</td>
+          <td class="spec-cell">Dynamic scale normalizer, crosshair coordinates, 1m/5m/15m/1h/1D</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">18</td>
+          <td><span class="cat-badge green">Trading Interface</span></td>
+          <td><div class="term-name">Level 2 (L2) Order Book</div></td>
+          <td><div class="mod-name">CLOB Depth Ladder</div></td>
+          <td class="desc-cell">Live visual orderbook displaying active Bid and Ask limits with proportional depth bars and real-time spread calculations.</td>
+          <td class="spec-cell">Spread-meter, ask depth (red), bid depth (green), size aggregation</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="report-footer">
+    <span>FluidBLCX Architecture Specification • Section 1 of 2</span>
+    <span>Consensus Engine: Mysten Mysticeti • Cipher Standard: AES-256-GCM</span>
+    <span>Page 1 / 2</span>
+  </div>
+
+  <div class="page-break"></div>
+
+  <!-- ── PAGE 2: MASTER DATAFRAME PART 2 & ARCHITECTURE STACK ── -->
+  <header class="report-header" style="margin-top: 6px;">
+    <div class="header-left">
+      <div class="brand-emblem">
+        <svg viewBox="0 0 24 24">
+          <path d="M12,2C12,2 4,10 4,14C4,18.42 7.58,22 12,22C16.42,22 20,18.42 20,14C20,10 12,2 12,2Z" />
+        </svg>
+      </div>
+      <div class="header-title">
+        <h1>FluidBLCX — Master Architecture & Technology Lexicon Specification (Cont.)</h1>
+        <p>AI Alpha Execution • Threat Sentinel • Visual PTB Compiler • Obsidian Design Tokens</p>
+      </div>
+    </div>
+    <div class="header-meta-pills">
+      <div class="meta-pill">
+        <div class="lbl">TOTAL SYSTEM NODES</div>
+        <div class="val">35 CORE SPECIFICATIONS</div>
+      </div>
+      <div class="meta-pill">
+        <div class="lbl">ARCHIVAL CODE</div>
+        <div class="val">REED-SOLOMON RS(8,6)</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="table-container">
+    <table class="master-df-table">
+      <thead>
+        <tr>
+          <th style="width: 28px; text-align: center;">#</th>
+          <th style="width: 110px;">Category</th>
+          <th style="width: 160px;">Technology / Concept</th>
+          <th style="width: 140px;">Module Target</th>
+          <th>Technical Definition &amp; Architectural Role</th>
+          <th style="width: 240px;">Technical Specs &amp; Parameters</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="idx-cell">19</td>
+          <td><span class="cat-badge purple">Artificial Intelligence</span></td>
+          <td><div class="term-name">Autonomous AI Alpha Execution Agent</div></td>
+          <td><div class="mod-name">AI Alpha Pane</div></td>
+          <td class="desc-cell">Machine learning-inspired market-making agent monitoring orderbook micro-slippage and generating high-confidence arbitrage signals.</td>
+          <td class="spec-cell">94.2% Alpha confidence metric, +1.42% arbitrage spread detection</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">20</td>
+          <td><span class="cat-badge green">DeFi Infrastructure</span></td>
+          <td><div class="term-name">Deep Liquidity Reserve Pools</div></td>
+          <td><div class="mod-name">CLOB Reserve Pane</div></td>
+          <td class="desc-cell">Real-time automated market liquidity tracking showing Total Value Locked ($248.6M TVL), pool reserve balances, and base/quote ratios.</td>
+          <td class="spec-cell">$248.6M TVL, 14.8% APY, dual-asset liquidity reserve ratio track</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">21</td>
+          <td><span class="cat-badge">Audio Synthesis</span></td>
+          <td><div class="term-name">Web Audio API Synthesizer</div></td>
+          <td><div class="mod-name">Interactive Audio Layer</div></td>
+          <td class="desc-cell">Procedural client-side audio oscillator generating tactile sound effects for detonations, shatters, orders, and cryptographic validations.</td>
+          <td class="spec-cell">AudioContext, createOscillator, frequency modulation (saw/square/sine)</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">22</td>
+          <td><span class="cat-badge">Animation Engine</span></td>
+          <td><div class="term-name">GSAP (GreenSock Animation Platform)</div></td>
+          <td><div class="mod-name">UI Interaction &amp; Shatter</div></td>
+          <td class="desc-cell">Physics-based animation library driving UI micro-interactions, elastic camera shakes, and file-preview shatter particle explosions.</td>
+          <td class="spec-cell">gsap.to(), gsap.fromTo(), cubic-bezier curves, back-out springs</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">23</td>
+          <td><span class="cat-badge amber">Security &amp; Auditing</span></td>
+          <td><div class="term-name">Security Sentinel Dashboard</div></td>
+          <td><div class="mod-name">Threat Defense Center</div></td>
+          <td class="desc-cell">Real-time monitoring hub aggregating firewall status, threat intelligence metrics, and smart contract vulnerability analysis.</td>
+          <td class="spec-cell">Live network anomaly scanning, gas exhaustion guards, risk scoring</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">24</td>
+          <td><span class="cat-badge purple">AI Defense</span></td>
+          <td><div class="term-name">Poison AI &amp; Adversarial Prompt Firewall</div></td>
+          <td><div class="mod-name">Security Sentinel</div></td>
+          <td class="desc-cell">Semantic filtering engine detecting prompt injection, model jailbreaks, and adversarial input vectors attacking LLM agents.</td>
+          <td class="spec-cell">Token anomaly detection, prompt sanitization, behavioral boundaries</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">25</td>
+          <td><span class="cat-badge amber">Smart Contract Security</span></td>
+          <td><div class="term-name">Trojan Bots &amp; Malicious Bytecode Detector</div></td>
+          <td><div class="mod-name">Security Sentinel</div></td>
+          <td class="desc-cell">Static analysis engine inspecting Move packages for reentrancy vectors, unconstrained capability leaks, and flash loan drain traps.</td>
+          <td class="spec-cell">Move bytecode disassembler, call-graph analysis, capability audit</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">26</td>
+          <td><span class="cat-badge purple">AI NLP Parsing</span></td>
+          <td><div class="term-name">IntentParser Engine</div></td>
+          <td><div class="mod-name">Move Compiler Workspace</div></td>
+          <td class="desc-cell">Natural language compiler converting conversational human financial intents into valid structured Move PTB commands.</td>
+          <td class="spec-cell">Lexical parsing, token classification, multi-step transaction synthesis</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">27</td>
+          <td><span class="cat-badge">Visual Programming</span></td>
+          <td><div class="term-name">Dynamic SVG Graph Connectors</div></td>
+          <td><div class="mod-name">Move Compiler Workspace</div></td>
+          <td class="desc-cell">Interactive visual programming workspace connecting Inputs, Guardrails, Commands, and Outputs via dynamic cubic Bezier curves.</td>
+          <td class="spec-cell">SVG path, cubic bezier M x1 y1 C cx1 cy1 cx2 cy2 x2 y2</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">28</td>
+          <td><span class="cat-badge green">Asset Management</span></td>
+          <td><div class="term-name">QuantX Portfolio &amp; Algorithmic Trading</div></td>
+          <td><div class="mod-name">Wallet &amp; Trade Terminal</div></td>
+          <td class="desc-cell">Institutional portfolio tracker and algorithmic trading window with automated rebalancing and risk-weighted allocation.</td>
+          <td class="spec-cell">Multi-token balance accounting, PnL analytics, multi-wallet tracking</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">29</td>
+          <td><span class="cat-badge amber">Web3 Auth</span></td>
+          <td><div class="term-name">Biometric &amp; Keypair Web3 Login Portal</div></td>
+          <td><div class="mod-name">Web3 Authentication</div></td>
+          <td class="desc-cell">High-security onboarding portal supporting Web3 wallets (Sui Wallet, Ethos, Slush) and cryptographic keypair authentication.</td>
+          <td class="spec-cell">Obsidian cyber styling, holographic inputs, WebAuthn integration</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">30</td>
+          <td><span class="cat-badge">Design System</span></td>
+          <td><div class="term-name">Obsidian Cyberpunk Design Tokens</div></td>
+          <td><div class="mod-name">Universal Styling (theme.css)</div></td>
+          <td class="desc-cell">Unified, luxury dark-mode design system with curated HSL colors, glassmorphic cards, and glowing neon accents.</td>
+          <td class="spec-cell">#02040a (Base), #00ff88 (Emerald), #38bdf8 (Cyan), #f59e0b (Amber)</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">31</td>
+          <td><span class="cat-badge">Typography</span></td>
+          <td><div class="term-name">Space Grotesk &amp; JetBrains Mono</div></td>
+          <td><div class="mod-name">Typography Tokens</div></td>
+          <td class="desc-cell">Premium Google font pairing combining a geometric grotesque for titles and a monospaced font for telemetry and code.</td>
+          <td class="spec-cell">Variable weights 400–800, tabular numbers, high legibility</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">32</td>
+          <td><span class="cat-badge green">Backend Server</span></td>
+          <td><div class="term-name">Node.js &amp; Express.js REST Engine</div></td>
+          <td><div class="mod-name">Server Architecture (server.js)</div></td>
+          <td class="desc-cell">High-performance backend handling cryptographic blob sharding, file retrieval, Merkle tree calculation, and static asset delivery.</td>
+          <td class="spec-cell">express.json({ limit: '50mb' }), CORS headers, modular REST API</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">33</td>
+          <td><span class="cat-badge amber">Persistence</span></td>
+          <td><div class="term-name">Physical Shard Storage &amp; Registry</div></td>
+          <td><div class="mod-name">Backend Storage (data/walrus_vault)</div></td>
+          <td class="desc-cell">Local filesystem persistence engine storing discrete binary shards (.bin) and metadata index (blobs.json).</td>
+          <td class="spec-cell">Binary stream I/O, hash indexing, disk synchronization, atomic writes</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">34</td>
+          <td><span class="cat-badge">Deployment</span></td>
+          <td><div class="term-name">Vercel Edge Configuration</div></td>
+          <td><div class="mod-name">Cloud Infrastructure (vercel.json)</div></td>
+          <td class="desc-cell">Cloud deployment configuration routing dynamic API calls and serving high-frequency client bundles with edge caching.</td>
+          <td class="spec-cell">Serverless functions, rewrite rules, CDN static asset caching</td>
+        </tr>
+        <tr>
+          <td class="idx-cell">35</td>
+          <td><span class="cat-badge green">Architecture Style</span></td>
+          <td><div class="term-name">Pure Vanilla High-Performance Architecture</div></td>
+          <td><div class="mod-name">Core Codebase Philosophy</div></td>
+          <td class="desc-cell">Zero-bloat engineering methodology relying on pure native HTML5, Vanilla JavaScript (ES6+), and CSS3 for instantaneous loads.</td>
+          <td class="spec-cell">Zero heavy framework overhead, 60fps animations, sub-10ms DOM response</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="report-footer">
+    <span>FluidBLCX Architecture Specification • Section 2 of 2</span>
+    <span>Engineering Framework: Pure Vanilla ES6+ WebGL • Zero Heavy Bloat</span>
+    <span>Page 2 / 2</span>
+  </div>
+
+</body>
+</html>
