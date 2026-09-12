@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Yield Farming // Validator Staking & LP Vaults — FluidBLCX</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <style>
+    .yield-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
+    @media (max-width: 900px) {
+      .yield-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .yield-pool-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 24px 28px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: all 0.2s;
+    }
+
+    .yield-pool-card:hover {
+      border-color: rgba(56, 189, 248, 0.3);
+      transform: translateY(-2px);
+    }
+
+    .pool-top-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      margin-bottom: 16px;
+    }
+
+    .pool-name-h3 {
+      font-size: 16px;
+      font-weight: 800;
+      color: #ffffff;
+    }
+
+    .pool-sub {
+      font-size: 11.5px;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+
+    .apy-badge {
+      font-family: var(--font-mono);
+      font-size: 13px;
+      font-weight: 800;
+      color: var(--green);
+      background: rgba(0, 255, 136, 0.08);
+      border: 1px solid rgba(0, 255, 136, 0.25);
+      padding: 4px 10px;
+      border-radius: 8px;
+    }
+
+    .pool-metrics-box {
+      background: rgba(10, 18, 38, 0.8);
+      border: 1px solid rgba(56, 189, 248, 0.12);
+      border-radius: var(--radius-md);
+      padding: 14px 16px;
+      margin-bottom: 20px;
+    }
+
+    .pool-metric-line {
+      display: flex;
+      justify-content: space-between;
+      font-size: 12px;
+      margin-bottom: 8px;
+    }
+
+    .pool-metric-line:last-child {
+      margin-bottom: 0;
+    }
+
+    .pool-metric-line .lbl {
+      color: var(--text-dim);
+    }
+
+    .pool-metric-line .val {
+      font-family: var(--font-mono);
+      font-weight: 700;
+      color: #ffffff;
+    }
+
+    .pool-actions-flex {
+      display: flex;
+      gap: 10px;
+    }
+
+    .btn-pool-action {
+      flex: 1;
+      height: 40px;
+      border-radius: var(--radius-full);
+      font-size: 12.5px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+    }
+
+    .btn-pool-action.primary {
+      background: #0284c7;
+      border: none;
+      color: #ffffff;
+    }
+
+    .btn-pool-action.primary:hover {
+      background: #0ea5e9;
+      box-shadow: 0 0 16px rgba(14, 165, 233, 0.5);
+    }
+
+    .btn-pool-action.secondary {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: var(--text-muted);
+    }
+
+    .btn-pool-action.secondary:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cyber-bg"></div>
+  <div class="cyber-glow"></div>
+
+  <!-- ─── TOP NAVIGATION BAR ─── -->
+  <header class="dash-header">
+    <a href="index.html" class="dash-brand">
+      <div class="brand-waterdrop">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+        </svg>
+      </div>
+      <h1>FluidBLCX</h1>
+    </a>
+
+    <!-- Navigation Pills Group -->
+    <nav class="nav-pills-bar">
+      <a href="portfolio.html" class="nav-pill-item">Portfolio</a>
+      <a href="market.html" class="nav-pill-item">Live Spot Market</a>
+      <a href="swap.html" class="nav-pill-item">Atomic Swap</a>
+      <a href="bridge.html" class="nav-pill-item">Bridge Gateway</a>
+      <a href="yield.html" class="nav-pill-item active">Yield Farming</a>
+      <a href="audit.html" class="nav-pill-item">Ledger Audit</a>
+    </nav>
+
+    <!-- Right Controls -->
+    <div class="nav-right-cluster">
+      <a href="tradewindow.html" class="btn-quant-tradex" title="Launch High-Frequency Trading Terminal">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+          <polyline points="17 6 23 6 23 12"></polyline>
+        </svg>
+        <span>Quant TradeX</span>
+      </a>
+
+      <div class="status-pill" id="walletStatusPill">
+        <span class="status-dot-indicator" id="walletStatusDot"></span>
+        <span id="walletStatusText">Not Connected</span>
+      </div>
+
+      <button class="btn-connect-wallet" id="connectWalletBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+          <path d="M7 15h0M2 10h20"></path>
+        </svg>
+        <span>Connect Wallet</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ─── MAIN TWO-COLUMN DASHBOARD WORKSPACE ─── -->
+  <main class="dash-workspace">
+
+    <!-- LEFT COLUMN: Yield Farming Vaults -->
+    <div class="left-content-column">
+
+      <div class="yield-grid">
+
+        <!-- Pool 1: Sui Validator Node -->
+        <div class="yield-pool-card">
+          <div>
+            <div class="pool-top-flex">
+              <div>
+                <h3 class="pool-name-h3">Sui Sovereign Validator</h3>
+                <div class="pool-sub">Mysten Labs Foundation Node #14</div>
+              </div>
+              <span class="apy-badge">APY: 7.8%</span>
+            </div>
+
+            <div class="pool-metrics-box">
+              <div class="pool-metric-line">
+                <span class="lbl">Staked Principal:</span>
+                <span class="val" style="color: #38bdf8;">520.00 SUI ($377.00)</span>
+              </div>
+              <div class="pool-metric-line">
+                <span class="lbl">Epoch Accrued Yield:</span>
+                <span class="val" style="color: var(--green);">+0.12 SUI</span>
+              </div>
+              <div class="pool-metric-line">
+                <span class="lbl">Lockup Period:</span>
+                <span class="val">Zero-Lock (Instant Unstake)</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pool-actions-flex">
+            <button class="btn-pool-action primary" onclick="showToast('Staked additional 100 SUI to Validator')">Stake SUI</button>
+            <button class="btn-pool-action secondary" onclick="showToast('Harvested +0.12 SUI reward')">Harvest</button>
+          </div>
+        </div>
+
+        <!-- Pool 2: DeepBook v3 Liquidity Pool -->
+        <div class="yield-pool-card">
+          <div>
+            <div class="pool-top-flex">
+              <div>
+                <h3 class="pool-name-h3">DeepBook v3 Hybrid LP</h3>
+                <div class="pool-sub">SUI / USDC Concentrated CLOB</div>
+              </div>
+              <span class="apy-badge">APY: 18.4%</span>
+            </div>
+
+            <div class="pool-metrics-box">
+              <div class="pool-metric-line">
+                <span class="lbl">Staked Principal:</span>
+                <span class="val" style="color: #38bdf8;">2,400.00 LP ($1,840.00)</span>
+              </div>
+              <div class="pool-metric-line">
+                <span class="lbl">Epoch Accrued Yield:</span>
+                <span class="val" style="color: var(--green);">+18.50 DEEP</span>
+              </div>
+              <div class="pool-metric-line">
+                <span class="lbl">Fee Share:</span>
+                <span class="val">0.05% per executed trade</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pool-actions-flex">
+            <button class="btn-pool-action primary" onclick="showToast('Supplied liquidity to DeepBook v3')">Provide LP</button>
+            <button class="btn-pool-action secondary" onclick="showToast('Harvested +18.50 DEEP tokens')">Harvest</button>
+          </div>
+        </div>
+
+        <!-- Pool 3: Cetus Concentrated Liquidity -->
+        <div class="yield-pool-card">
+          <div>
+            <div class="pool-top-flex">
+              <div>
+                <h3 class="pool-name-h3">Cetus Concentrated AMM</h3>
+                <div class="pool-sub">CETUS / SUI Dynamic Range</div>
+              </div>
+              <span class="apy-badge">APY: 24.5%</span>
+            </div>
+
+            <div class="pool-metrics-box">
+              <div class="pool-metric-line">
+                <span class="lbl">Staked Principal:</span>
+                <span class="val" style="color: #38bdf8;">1,150.00 LP ($820.00)</span>
+              </div>
+              <div class="pool-metric-line">
+                <span class="lbl">Epoch Accrued Yield:</span>
+                <span class="val" style="color: var(--green);">+42.80 CETUS</span>
+              </div>
+              <div class="pool-metric-line">
+                <span class="lbl">Price Range:</span>
+                <span class="val">0.3800 &mdash; 0.4600</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pool-actions-flex">
+            <button class="btn-pool-action primary" onclick="showToast('Position updated on Cetus AMM')">Rebalance</button>
+            <button class="btn-pool-action secondary" onclick="showToast('Claimed +42.80 CETUS rewards')">Harvest</button>
+          </div>
+        </div>
+
+        <!-- Pool 4: NAVI Protocol Lending -->
+        <div class="yield-pool-card">
+          <div>
+            <div class="pool-top-flex">
+              <div>
+                <h3 class="pool-name-h3">NAVI Protocol Supply</h3>
+                <div class="pool-sub">USDC Multi-Collateral Vault</div>
+              </div>
+              <span class="apy-badge">APY: 11.2%</span>
+            </div>
+
+            <div class="pool-metrics-box">
+              <div class="pool-metric-line">
+                <span class="lbl">Staked Principal:</span>
+                <span class="val" style="color: #38bdf8;">1,500.00 USDC ($1,500.00)</span>
+              </div>
+              <div class="pool-metric-line">
+                <span class="lbl">Epoch Accrued Yield:</span>
+                <span class="val" style="color: var(--green);">+3.80 NAVX</span>
+              </div>
+              <div class="pool-metric-line">
+                <span class="lbl">Collateral Factor:</span>
+                <span class="val">80.0% LTV Enabled</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="pool-actions-flex">
+            <button class="btn-pool-action primary" onclick="showToast('Supplied USDC to NAVI Vault')">Supply USDC</button>
+            <button class="btn-pool-action secondary" onclick="showToast('Claimed +3.80 NAVX')">Harvest</button>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: Persistent Telemetry Sidebar -->
+    <aside class="right-sidebar-column">
+
+      <!-- Dynamic Telemetry Tracking Widget -->
+      <div class="sidebar-telemetry-card">
+        <div class="timeframe-strip">
+          <div>
+            <div class="sidebar-card-title">Dynamic Telemetry</div>
+            <div class="sidebar-card-sub" style="margin-bottom: 0;">SUI/USDT Spot Matrices</div>
+          </div>
+          <div class="timeframe-btn-group">
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '15M')">15M</button>
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '1H')">1H</button>
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '4H')">4H</button>
+            <button class="timeframe-btn active" onclick="setCandleTimeframe(this, '1D')">1D</button>
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '1W')">1W</button>
+          </div>
+        </div>
+
+        <div class="candlestick-chart-box">
+          <div class="chart-stats-header">
+            <span class="symbol">SUI/USDT</span>
+            <span class="price" id="telemetrySpotPrice">$0.725</span>
+            <span class="change down" id="telemetrySpotChange">&darr; 3.36%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: #64748b; margin-bottom: 8px;">
+            <span>24h H: <span style="color: #00ff88;">$0.782</span></span>
+            <span>24h L: <span style="color: #f43f5e;">$0.698</span></span>
+            <span>Vol: <span style="color: #38bdf8;">42.8M SUI</span></span>
+          </div>
+          <canvas id="telemetryCandleCanvas"></canvas>
+
+          <!-- Liquidity Depth Gauge -->
+          <div class="depth-liquidity-box">
+            <div class="depth-header-row">
+              <span style="color: #00ff88;">BID DEPTH: 67%</span>
+              <span style="color: #f43f5e;">ASK DEPTH: 33%</span>
+            </div>
+            <div class="depth-bar-gauge">
+              <div class="depth-fill-buy" style="width: 67%;"></div>
+              <div class="depth-fill-sell" style="width: 33%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Telemetry Engine Widget -->
+      <div class="engine-status-card">
+        <div class="engine-header-title">SYSTEM TELEMETRY ENGINE</div>
+        
+        <div class="engine-metric-row">
+          <span class="metric-name">Sui Network Gas Load</span>
+          <span class="metric-val" id="telemetryGasLoad">1,980 MIST</span>
+        </div>
+        <div style="height: 4px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; overflow: hidden; margin-bottom: 12px;">
+          <div id="telemetryGasBar" style="width: 48%; height: 100%; background: #38bdf8; transition: width 0.3s ease;"></div>
+        </div>
+
+        <div class="engine-metric-row">
+          <span class="metric-name">Mysticeti Latency</span>
+          <span class="metric-val" style="color: #00ff88;">&lt;390ms FINALITY</span>
+        </div>
+        <div class="engine-metric-row">
+          <span class="metric-name">Node Protocol Status</span>
+          <span class="metric-val green">SECURE_NODE_SYNC_OK</span>
+        </div>
+        <div class="engine-metric-row">
+          <span class="metric-name">Consensus Quorum</span>
+          <span class="metric-val" style="color: #38bdf8;">100/100 VALIDATORS</span>
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

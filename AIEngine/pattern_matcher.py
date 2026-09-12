@@ -2,11 +2,11 @@ import re
 import json
 
 SQLI_PATTERNS = [
-    (r"(\bSELECT\b.*\bFROM\b)", 90),
-    (r"(\bUNION\b.*\bSELECT\b)", 95),
+    (r"(\bSELECT\b[\s\S]*?\bFROM\b)", 90),
+    (r"(\bUNION\b[\s\S]*?\bSELECT\b)", 95),
     (r"(\bDROP\s+TABLE\b)", 95),
-    (r"('?\bOR\b.*\b=\b.*')", 85),
-    (r"('?\bAND\b.*\b=\b.*')", 80),
+    (r"('?\bOR\b[\s\S]*?=\s*[\s\S]*?)", 85),
+    (r"('?\bAND\b[\s\S]*?=\s*[\s\S]*?)", 80),
     (r"(\bEXEC\b.*\()", 90),
     (r"(\bxp_\w+)", 85),
     (r"(sleep\s*\(\s*\d+\s*\))", 80),
@@ -17,6 +17,19 @@ SQLI_PATTERNS = [
     (r"(\bCHAR\b.*\()", 75),
     (r"(\bWAITFOR\b.*\bDELAY\b)", 85),
     (r"(\bINFORMATION_SCHEMA\b)", 80),
+]
+
+LLM_PATTERNS = [
+    (r"(ignore\s+(all\s+)?previous\s+instructions)", 95),
+    (r"(dump\s+.*system\s+prompt)", 95),
+    (r"(\bsystem\s+prompt\b)", 90),
+    (r"(\bjailbreak\b)", 95),
+    (r"(\bdan\s+mode\b)", 90),
+    (r"(disregard\s+guardrails)", 92),
+    (r"(bypass\s+safety\s+filters)", 90),
+    (r"(adversarial\s+prompt\s+injection)", 94),
+    (r"(override\s+guardrails)", 92),
+    (r"(\bseed\s+phrases?\b)", 92),
 ]
 
 XSS_PATTERNS = [
@@ -68,6 +81,7 @@ def scan_payload(payload):
         ("XSS", XSS_PATTERNS),
         ("CMD_INJECTION", CMD_INJECTION_PATTERNS),
         ("PATH_TRAVERSAL", PATH_TRAVERSAL_PATTERNS),
+        ("LLM_PROMPT_INJECTION", LLM_PATTERNS),
     ]
 
     for threat_type, patterns in entries:

@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Live Spot Market // Global Index Matrices — FluidBLCX</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+  <div class="cyber-bg"></div>
+  <div class="cyber-glow"></div>
+
+  <!-- ─── TOP NAVIGATION BAR ─── -->
+  <header class="dash-header">
+    <a href="index.html" class="dash-brand">
+      <div class="brand-waterdrop">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+        </svg>
+      </div>
+      <h1>FluidBLCX</h1>
+    </a>
+
+    <!-- Navigation Pills Group -->
+    <nav class="nav-pills-bar">
+      <a href="portfolio.html" class="nav-pill-item">Portfolio</a>
+      <a href="market.html" class="nav-pill-item active">Live Spot Market</a>
+      <a href="swap.html" class="nav-pill-item">Atomic Swap</a>
+      <a href="bridge.html" class="nav-pill-item">Bridge Gateway</a>
+      <a href="yield.html" class="nav-pill-item">Yield Farming</a>
+      <a href="audit.html" class="nav-pill-item">Ledger Audit</a>
+    </nav>
+
+    <!-- Right Controls -->
+    <div class="nav-right-cluster">
+      <a href="tradewindow.html" class="btn-quant-tradex" title="Launch High-Frequency Trading Terminal">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+          <polyline points="17 6 23 6 23 12"></polyline>
+        </svg>
+        <span>Quant TradeX</span>
+      </a>
+
+      <div class="status-pill" id="walletStatusPill">
+        <span class="status-dot-indicator" id="walletStatusDot"></span>
+        <span id="walletStatusText">Not Connected</span>
+      </div>
+
+      <button class="btn-connect-wallet" id="connectWalletBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+          <path d="M7 15h0M2 10h20"></path>
+        </svg>
+        <span>Connect Wallet</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ─── MAIN TWO-COLUMN DASHBOARD WORKSPACE ─── -->
+  <main class="dash-workspace">
+
+    <!-- LEFT COLUMN: Market Search & Table -->
+    <div class="left-content-column">
+
+      <!-- Market Macro Stats Strip -->
+      <div class="quick-metrics-strip" style="margin-bottom: 0;">
+        <div class="quick-metric-chip">
+          <span class="chip-label">Global 24H Volume</span>
+          <span class="chip-val" style="color: #38bdf8;">$132.89 Billion</span>
+        </div>
+        <div class="quick-metric-chip">
+          <span class="chip-label">Sui Ecosystem TVL</span>
+          <span class="chip-val" style="color: #00ff88;">$1.428 B (+8.2%)</span>
+        </div>
+        <div class="quick-metric-chip">
+          <span class="chip-label">BTC Market Dominance</span>
+          <span class="chip-val">56.42%</span>
+        </div>
+      </div>
+
+      <!-- Quick Category Filter Pills -->
+      <div class="filter-tabs-bar">
+        <button class="filter-tab-pill active" onclick="filterCategory(this, 'all', 'marketTableBody')">All Asset Pairs (8)</button>
+        <button class="filter-tab-pill" onclick="filterCategory(this, 'sui', 'marketTableBody')">Sui Ecosystem</button>
+        <button class="filter-tab-pill" onclick="filterCategory(this, 'l1', 'marketTableBody')">Layer 1 Titans</button>
+        <button class="filter-tab-pill" onclick="filterCategory(this, 'rwa', 'marketTableBody')">RWA &amp; Stables</button>
+      </div>
+
+      <!-- Keyword Search Bar -->
+      <div class="dash-search-container">
+        <svg class="search-icon-svg" viewBox="0 0 24 24">
+          <circle cx="11" cy="11" r="8"></circle>
+          <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+        </svg>
+        <input 
+          type="text" 
+          id="marketSearchInput" 
+          class="dash-search-input" 
+          placeholder="Search market price matrices or asset tickers..."
+        />
+      </div>
+
+      <!-- Dynamic Index Asset Table -->
+      <div class="dash-table-card">
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>DYNAMIC INDEX ASSET</th>
+              <th>SPOT CORE VALUATION</th>
+              <th>24H DELTA &amp; TREND</th>
+              <th>TOTAL CAPITAL VOLUME</th>
+              <th style="text-align: right;">EXECUTION</th>
+            </tr>
+          </thead>
+          <tbody id="marketTableBody">
+            <tr data-category="l1">
+              <td>
+                <div class="token-cell-flex">
+                  <div class="token-icon-orb" style="background: #f7931a; color: #fff; box-shadow: 0 0 10px rgba(247, 147, 26, 0.4);">₿</div>
+                  <div class="token-name-wrap">
+                    <h4>Bitcoin <span class="ticker-sub">BTC / USD</span></h4>
+                  </div>
+                </div>
+              </td>
+              <td class="col-mono">$77,271.00</td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="delta-pill up">&uarr; +0.24%</span>
+                  <svg class="sparkline-svg" viewBox="0 0 80 28">
+                    <path d="M0,20 Q15,22 30,14 T60,8 T80,4" fill="none" stroke="#00ff88" stroke-width="2"></path>
+                    <path d="M0,20 Q15,22 30,14 T60,8 T80,4 L80,28 L0,28 Z" fill="rgba(0, 255, 136, 0.12)" stroke="none"></path>
+                  </svg>
+                </div>
+              </td>
+              <td class="col-mono">$33,174,372,393</td>
+              <td style="text-align: right;">
+                <a href="tradewindow.html?pair=BTC" class="btn-row-action" style="padding: 5px 12px;">Trade PTB &rarr;</a>
+              </td>
+            </tr>
+
+            <tr data-category="l1">
+              <td>
+                <div class="token-cell-flex">
+                  <div class="token-icon-orb" style="background: #3c3c3d; color: #fff; box-shadow: 0 0 10px rgba(60, 60, 61, 0.4);">Ξ</div>
+                  <div class="token-name-wrap">
+                    <h4>Ethereum <span class="ticker-sub">ETH / USD</span></h4>
+                  </div>
+                </div>
+              </td>
+              <td class="col-mono">$2,513.08</td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="delta-pill up">&uarr; +2.23%</span>
+                  <svg class="sparkline-svg" viewBox="0 0 80 28">
+                    <path d="M0,22 Q20,18 40,10 T70,6 T80,2" fill="none" stroke="#00ff88" stroke-width="2"></path>
+                    <path d="M0,22 Q20,18 40,10 T70,6 T80,2 L80,28 L0,28 Z" fill="rgba(0, 255, 136, 0.12)" stroke="none"></path>
+                  </svg>
+                </div>
+              </td>
+              <td class="col-mono">$24,022,171,892</td>
+              <td style="text-align: right;">
+                <a href="tradewindow.html?pair=ETH" class="btn-row-action" style="padding: 5px 12px;">Trade PTB &rarr;</a>
+              </td>
+            </tr>
+
+            <tr data-category="rwa">
+              <td>
+                <div class="token-cell-flex">
+                  <div class="token-icon-orb" style="background: #26a17b; color: #fff; box-shadow: 0 0 10px rgba(38, 161, 123, 0.4);">₮</div>
+                  <div class="token-name-wrap">
+                    <h4>Tether <span class="ticker-sub">USDT / USD</span></h4>
+                  </div>
+                </div>
+              </td>
+              <td class="col-mono">$1.00</td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="delta-pill up">&uarr; +0.02%</span>
+                  <svg class="sparkline-svg" viewBox="0 0 80 28">
+                    <path d="M0,14 Q20,15 40,14 T60,13 T80,14" fill="none" stroke="#38bdf8" stroke-width="2"></path>
+                    <path d="M0,14 Q20,15 40,14 T60,13 T80,14 L80,28 L0,28 Z" fill="rgba(56, 189, 248, 0.1)" stroke="none"></path>
+                  </svg>
+                </div>
+              </td>
+              <td class="col-mono">$68,328,369,089</td>
+              <td style="text-align: right;">
+                <a href="swap.html" class="btn-row-action" style="padding: 5px 12px;">Swap &rarr;</a>
+              </td>
+            </tr>
+
+            <tr data-category="l1">
+              <td>
+                <div class="token-cell-flex">
+                  <div class="token-icon-orb" style="background: #f3ba2f; color: #000; box-shadow: 0 0 10px rgba(243, 186, 47, 0.4);">B</div>
+                  <div class="token-name-wrap">
+                    <h4>BNB <span class="ticker-sub">BNB / USD</span></h4>
+                  </div>
+                </div>
+              </td>
+              <td class="col-mono">$734.39</td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="delta-pill up">&uarr; +2.63%</span>
+                  <svg class="sparkline-svg" viewBox="0 0 80 28">
+                    <path d="M0,20 Q25,20 45,12 T70,8 T80,5" fill="none" stroke="#00ff88" stroke-width="2"></path>
+                    <path d="M0,20 Q25,20 45,12 T70,8 T80,5 L80,28 L0,28 Z" fill="rgba(0, 255, 136, 0.12)" stroke="none"></path>
+                  </svg>
+                </div>
+              </td>
+              <td class="col-mono">$1,198,664,908</td>
+              <td style="text-align: right;">
+                <a href="tradewindow.html?pair=BNB" class="btn-row-action" style="padding: 5px 12px;">Trade PTB &rarr;</a>
+              </td>
+            </tr>
+
+            <tr data-category="l1">
+              <td>
+                <div class="token-cell-flex">
+                  <div class="token-icon-orb" style="background: linear-gradient(135deg, #9945ff, #14f195); color: #fff; box-shadow: 0 0 10px rgba(153, 69, 255, 0.4);">S</div>
+                  <div class="token-name-wrap">
+                    <h4>Solana <span class="ticker-sub">SOL / USD</span></h4>
+                  </div>
+                </div>
+              </td>
+              <td class="col-mono">$101.78</td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="delta-pill up">&uarr; +2.09%</span>
+                  <svg class="sparkline-svg" viewBox="0 0 80 28">
+                    <path d="M0,24 Q20,18 40,14 T65,6 T80,2" fill="none" stroke="#00ff88" stroke-width="2"></path>
+                    <path d="M0,24 Q20,18 40,14 T65,6 T80,2 L80,28 L0,28 Z" fill="rgba(0, 255, 136, 0.12)" stroke="none"></path>
+                  </svg>
+                </div>
+              </td>
+              <td class="col-mono">$4,524,488,699</td>
+              <td style="text-align: right;">
+                <a href="tradewindow.html?pair=SOL" class="btn-row-action" style="padding: 5px 12px;">Trade PTB &rarr;</a>
+              </td>
+            </tr>
+
+            <tr data-category="sui">
+              <td>
+                <div class="token-cell-flex">
+                  <div class="token-icon-orb" style="background: #0284c7; color: #fff; box-shadow: 0 0 12px rgba(2, 132, 199, 0.6);">💧</div>
+                  <div class="token-name-wrap">
+                    <h4>Sui <span class="ticker-sub">SUI / USD</span></h4>
+                  </div>
+                </div>
+              </td>
+              <td class="col-mono">$0.725</td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="delta-pill down">&darr; -2.11%</span>
+                  <svg class="sparkline-svg" viewBox="0 0 80 28">
+                    <path d="M0,6 Q20,10 40,16 T60,22 T80,24" fill="none" stroke="#f43f5e" stroke-width="2"></path>
+                    <path d="M0,6 Q20,10 40,16 T60,22 T80,24 L80,28 L0,28 Z" fill="rgba(244, 63, 94, 0.12)" stroke="none"></path>
+                  </svg>
+                </div>
+              </td>
+              <td class="col-mono">$597,280,421</td>
+              <td style="text-align: right;">
+                <a href="deepbook_trade.html" class="btn-row-action" style="padding: 5px 12px;">DeepBook &rarr;</a>
+              </td>
+            </tr>
+
+            <tr data-category="rwa">
+              <td>
+                <div class="token-cell-flex">
+                  <div class="token-icon-orb" style="background: #fbbf24; color: #000; box-shadow: 0 0 10px rgba(251, 191, 36, 0.4);">🪙</div>
+                  <div class="token-name-wrap">
+                    <h4>Pax Gold <span class="ticker-sub">PAXG / USD</span></h4>
+                  </div>
+                </div>
+              </td>
+              <td class="col-mono">$2,680.40</td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="delta-pill up">&uarr; +1.15%</span>
+                  <svg class="sparkline-svg" viewBox="0 0 80 28">
+                    <path d="M0,18 Q20,16 40,12 T70,8 T80,4" fill="none" stroke="#00ff88" stroke-width="2"></path>
+                    <path d="M0,18 Q20,16 40,12 T70,8 T80,4 L80,28 L0,28 Z" fill="rgba(0, 255, 136, 0.12)" stroke="none"></path>
+                  </svg>
+                </div>
+              </td>
+              <td class="col-mono">$482,100,500</td>
+              <td style="text-align: right;">
+                <a href="deepbook_trade.html" class="btn-row-action" style="padding: 5px 12px;">DeepBook &rarr;</a>
+              </td>
+            </tr>
+
+            <tr data-category="sui">
+              <td>
+                <div class="token-cell-flex">
+                  <div class="token-icon-orb" style="background: #00ff88; color: #000; box-shadow: 0 0 10px rgba(0, 255, 136, 0.5);">D</div>
+                  <div class="token-name-wrap">
+                    <h4>DeepBook <span class="ticker-sub">DEEP / USD</span></h4>
+                  </div>
+                </div>
+              </td>
+              <td class="col-mono">$0.089</td>
+              <td>
+                <div style="display: flex; align-items: center; gap: 8px;">
+                  <span class="delta-pill up">&uarr; +18.40%</span>
+                  <svg class="sparkline-svg" viewBox="0 0 80 28">
+                    <path d="M0,26 Q15,22 35,12 T65,4 T80,1" fill="none" stroke="#00ff88" stroke-width="2"></path>
+                    <path d="M0,26 Q15,22 35,12 T65,4 T80,1 L80,28 L0,28 Z" fill="rgba(0, 255, 136, 0.15)" stroke="none"></path>
+                  </svg>
+                </div>
+              </td>
+              <td class="col-mono">$64,280,100</td>
+              <td style="text-align: right;">
+                <a href="deepbook_trade.html" class="btn-row-action" style="padding: 5px 12px;">DeepBook &rarr;</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: Persistent Telemetry Sidebar -->
+    <aside class="right-sidebar-column">
+
+      <!-- Dynamic Telemetry Tracking Widget -->
+      <div class="sidebar-telemetry-card">
+        <div class="timeframe-strip">
+          <div>
+            <div class="sidebar-card-title">Dynamic Telemetry</div>
+            <div class="sidebar-card-sub" style="margin-bottom: 0;">SUI/USDT Spot Matrices</div>
+          </div>
+          <div class="timeframe-btn-group">
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '15M')">15M</button>
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '1H')">1H</button>
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '4H')">4H</button>
+            <button class="timeframe-btn active" onclick="setCandleTimeframe(this, '1D')">1D</button>
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '1W')">1W</button>
+          </div>
+        </div>
+
+        <div class="candlestick-chart-box">
+          <div class="chart-stats-header">
+            <span class="symbol">SUI/USDT</span>
+            <span class="price" id="telemetrySpotPrice">$0.725</span>
+            <span class="change down" id="telemetrySpotChange">&darr; 3.36%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: #64748b; margin-bottom: 8px;">
+            <span>24h H: <span style="color: #00ff88;">$0.782</span></span>
+            <span>24h L: <span style="color: #f43f5e;">$0.698</span></span>
+            <span>Vol: <span style="color: #38bdf8;">42.8M SUI</span></span>
+          </div>
+          <canvas id="telemetryCandleCanvas"></canvas>
+
+          <!-- Liquidity Depth Gauge -->
+          <div class="depth-liquidity-box">
+            <div class="depth-header-row">
+              <span style="color: #00ff88;">BID DEPTH: 67%</span>
+              <span style="color: #f43f5e;">ASK DEPTH: 33%</span>
+            </div>
+            <div class="depth-bar-gauge">
+              <div class="depth-fill-buy" style="width: 67%;"></div>
+              <div class="depth-fill-sell" style="width: 33%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Telemetry Engine Widget -->
+      <div class="engine-status-card">
+        <div class="engine-header-title">SYSTEM TELEMETRY ENGINE</div>
+        
+        <div class="engine-metric-row">
+          <span class="metric-name">Sui Network Gas Load</span>
+          <span class="metric-val" id="telemetryGasLoad">1,980 MIST</span>
+        </div>
+        <div style="height: 4px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; overflow: hidden; margin-bottom: 12px;">
+          <div id="telemetryGasBar" style="width: 48%; height: 100%; background: #38bdf8; transition: width 0.3s ease;"></div>
+        </div>
+
+        <div class="engine-metric-row">
+          <span class="metric-name">Mysticeti Latency</span>
+          <span class="metric-val" style="color: #00ff88;">&lt;390ms FINALITY</span>
+        </div>
+        <div class="engine-metric-row">
+          <span class="metric-name">Node Protocol Status</span>
+          <span class="metric-val green">SECURE_NODE_SYNC_OK</span>
+        </div>
+        <div class="engine-metric-row">
+          <span class="metric-name">Consensus Quorum</span>
+          <span class="metric-val" style="color: #38bdf8;">100/100 VALIDATORS</span>
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

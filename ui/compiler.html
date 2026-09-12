@@ -33,32 +33,162 @@
       overflow: hidden;
     }
 
-    /* ── WORKSPACE CONTAINER ── */
+    /* ── WORKSPACE CONTAINER & RESPONSIVE DEVICE SCALING ── */
     .compiler-screen-layout {
       position: absolute;
       top: var(--nav-height, 64px);
       left: 0;
-      width: 100vw;
+      width: 100%;
       height: calc(100vh - var(--nav-height, 64px));
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 16px;
-      padding: 16px 20px;
+      padding: 14px 20px;
       z-index: 10;
       overflow: hidden;
     }
 
-    @media (max-width: 1100px) {
+    /* Short laptops & compact desktop displays (e.g. 1366x768, 1280x720) */
+    @media (max-height: 780px) and (min-width: 1101px) {
       .compiler-screen-layout {
+        padding: 8px 14px;
+        gap: 10px;
+      }
+      .panel-top-bar {
+        padding: 6px 12px;
+      }
+      .editor-wrapper {
+        min-height: 140px;
+      }
+      .terminal-tray {
+        height: 100px;
+      }
+      .compiling-stream-console {
+        height: 65px;
+      }
+      .dag-telemetry-tray {
+        height: 75px;
+        padding: 6px 12px;
+      }
+      .dag-hud-cell .val {
+        font-size: 10.5px;
+      }
+    }
+
+    /* Tablets & Medium Split-Screen Displays */
+    @media (max-width: 1100px) {
+      html, body {
+        overflow-y: auto !important;
+        overflow-x: hidden !important;
+        height: auto !important;
+        min-height: 100%;
+      }
+      .compiler-screen-layout {
+        position: relative;
+        top: var(--nav-height, 64px);
         grid-template-columns: 1fr;
         height: auto;
-        overflow-y: auto;
+        min-height: calc(100vh - var(--nav-height, 64px));
+        overflow: visible;
+        padding: 14px;
+        gap: 16px;
+      }
+      .cyber-work-panel {
+        height: 580px;
+        flex-shrink: 0;
+      }
+    }
+
+    /* Mobile Phones (portrait & compact screens) */
+    @media (max-width: 680px) {
+      .compiler-screen-layout {
+        padding: 8px 6px;
+        gap: 12px;
+      }
+      .cyber-work-panel {
+        height: auto;
+        min-height: 480px;
+        border-radius: 10px;
+      }
+      .panel-top-bar {
+        padding: 8px 10px;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+      .panel-title-text {
+        font-size: 11px;
+      }
+      .template-dropdown {
+        font-size: 10px;
+        padding: 3px 6px;
+        max-width: 155px;
+      }
+      .editor-wrapper {
+        min-height: 180px;
+        height: 220px;
+      }
+      .terminal-tray {
+        height: 110px;
+      }
+      .compiler-bottom-toolbar {
+        flex-direction: column;
+        padding: 8px 10px;
+        gap: 6px;
+      }
+      .toolbar-btn {
+        width: 100%;
+        justify-content: center;
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+      .dag-stage-container {
+        min-height: 280px;
+        height: 340px;
+      }
+      .dag-stage-overlay-hint {
+        display: none;
+      }
+      .chain-quick-strip {
+        top: 6px;
+        left: 6px;
+        right: 6px;
+        justify-content: flex-start;
+        overflow-x: auto;
+        white-space: nowrap;
+        scrollbar-width: none;
+      }
+      .chain-quick-strip::-webkit-scrollbar {
+        display: none;
+      }
+      .node-ledger-floating-hud {
+        width: calc(100% - 16px);
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        padding: 8px 10px;
+        gap: 4px;
+      }
+      .compiling-stream-console {
+        height: 68px;
+        padding: 6px 10px;
+      }
+      .dag-telemetry-tray {
+        height: auto;
+        min-height: 75px;
+        padding: 6px 10px;
+      }
+      .dag-hud-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+      }
+      .dag-hud-cell .val {
+        font-size: 10px;
       }
     }
 
     /* ── CARD PANELS ── */
     .cyber-work-panel {
-      background: rgba(6, 11, 25, 0.85);
+      background: rgba(6, 11, 25, 0.88);
       border: 1px solid rgba(56, 189, 248, 0.18);
       border-radius: 14px;
       backdrop-filter: blur(24px);
@@ -72,7 +202,7 @@
     }
 
     .panel-top-bar {
-      padding: 12px 18px;
+      padding: 10px 16px;
       background: rgba(255, 255, 255, 0.02);
       border-bottom: 1px solid rgba(56, 189, 248, 0.14);
       display: flex;
@@ -101,7 +231,7 @@
     }
 
     .panel-title-text {
-      font-size: 13.5px;
+      font-size: 13px;
       font-weight: 700;
       letter-spacing: 0.5px;
       text-transform: uppercase;
@@ -112,10 +242,10 @@
       background: rgba(15, 23, 42, 0.8);
       border: 1px solid rgba(56, 189, 248, 0.3);
       color: #e2e8f0;
-      padding: 5px 12px;
+      padding: 4px 10px;
       border-radius: 6px;
       font-family: inherit;
-      font-size: 12px;
+      font-size: 11.5px;
       outline: none;
       cursor: pointer;
       transition: border-color 0.2s;
@@ -128,7 +258,7 @@
     /* ── LEFT PANE: CODE EDITOR (STRICT SCROLL ISOLATION) ── */
     .editor-wrapper {
       flex: 1 1 0;
-      min-height: 0;
+      min-height: 220px;
       display: flex;
       background: #01040f;
       border-bottom: 1px solid rgba(56, 189, 248, 0.12);
@@ -137,14 +267,14 @@
     }
 
     .line-number-gutter {
-      width: 44px;
-      padding: 14px 0;
+      width: 40px;
+      padding: 12px 0;
       text-align: center;
       color: #475569;
       background: rgba(2, 6, 18, 0.85);
       border-right: 1px solid rgba(255, 255, 255, 0.05);
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12.5px;
+      font-size: 12px;
       line-height: 1.5;
       user-select: none;
       overflow: hidden;
@@ -153,50 +283,63 @@
 
     .code-input-area {
       flex: 1;
-      height: 100%;
+      padding: 12px 14px;
       background: transparent;
       border: none;
+      color: #f1f5f9;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 12px;
+      line-height: 1.5;
       resize: none;
       outline: none;
-      color: #38bdf8;
-      padding: 14px 16px;
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 12.5px;
-      line-height: 1.5;
       white-space: pre;
       overflow: auto;
       tab-size: 2;
     }
 
-    /* ── LOWER TERMINAL TRAY ── */
+    /* Scrollbars */
+    .code-input-area::-webkit-scrollbar,
+    .terminal-output-scroll::-webkit-scrollbar,
+    .stream-console-logs::-webkit-scrollbar {
+      width: 5px;
+      height: 5px;
+    }
+    .code-input-area::-webkit-scrollbar-thumb,
+    .terminal-output-scroll::-webkit-scrollbar-thumb,
+    .stream-console-logs::-webkit-scrollbar-thumb {
+      background: rgba(56, 189, 248, 0.25);
+      border-radius: 4px;
+    }
+
+    /* Terminal Tray */
     .terminal-tray {
-      height: 160px;
+      height: 130px;
       flex-shrink: 0;
-      background: #010309;
+      background: #020510;
       display: flex;
       flex-direction: column;
-      border-top: 1px solid rgba(56, 189, 248, 0.14);
+      border-top: 1px solid rgba(56, 189, 248, 0.12);
     }
 
     .terminal-tab-bar {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       padding: 6px 14px;
       background: rgba(255, 255, 255, 0.02);
       border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
     }
 
     .term-tab-title {
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      font-weight: 700;
-      color: #00ff88;
-      text-transform: uppercase;
-      letter-spacing: 1px;
       display: flex;
       align-items: center;
       gap: 6px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: #94a3b8;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
     }
 
     .term-tab-title .t-dot {
@@ -209,7 +352,7 @@
 
     .terminal-output-scroll {
       flex: 1;
-      padding: 10px 14px;
+      padding: 8px 12px;
       overflow-y: auto;
       font-family: 'JetBrains Mono', monospace;
       font-size: 11px;
@@ -245,7 +388,7 @@
       font-family: inherit;
       font-weight: 600;
       font-size: 12px;
-      padding: 8px 18px;
+      padding: 7px 16px;
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s ease;
@@ -280,13 +423,13 @@
     /* ── RIGHT PANE: 3D DAG EXPLORER ── */
     .dag-stage-container {
       flex: 1 1 0;
-      min-height: 0;
+      min-height: 220px;
       position: relative;
       background: radial-gradient(circle at center, #041029 0%, #01040e 100%);
       overflow: hidden;
     }
 
-    #three-dag-canvas {
+    #three-dag-container {
       width: 100%;
       height: 100%;
       display: block;
@@ -294,44 +437,229 @@
 
     .dag-stage-overlay-hint {
       position: absolute;
-      top: 12px;
-      right: 14px;
-      background: rgba(15, 23, 42, 0.65);
+      top: 10px;
+      left: 12px;
+      background: rgba(15, 23, 42, 0.75);
       border: 1px solid rgba(255, 255, 255, 0.08);
       padding: 4px 10px;
       border-radius: 6px;
       font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
+      font-size: 9.5px;
       color: #94a3b8;
       pointer-events: none;
+      z-index: 5;
     }
 
-    /* DAG Telemetry Footer Card */
-    .dag-telemetry-tray {
-      height: 160px;
-      flex-shrink: 0;
+    @media (max-width: 1350px) {
+      .dag-stage-overlay-hint {
+        display: none;
+      }
+    }
+
+    /* Chain Quick Select Strip */
+    .chain-quick-strip {
+      position: absolute;
+      top: 10px;
+      right: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      z-index: 10;
+      flex-wrap: wrap;
+    }
+
+    .chain-pill-btn {
+      background: rgba(10, 18, 38, 0.85);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      color: #94a3b8;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9.5px;
+      font-weight: 600;
+      padding: 3px 7px;
+      border-radius: 4px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      transition: all 0.2s ease;
+    }
+
+    .chain-pill-btn:hover, .chain-pill-btn.active {
+      color: #00ff88;
+      border-color: #00ff88;
+      background: rgba(0, 255, 136, 0.12);
+      box-shadow: 0 0 10px rgba(0, 255, 136, 0.25);
+    }
+
+    .chain-arrow-sep {
+      color: rgba(56, 189, 248, 0.4);
+      font-size: 10px;
+    }
+
+    /* Dynamic 3D Projected Tooltip */
+    .block-hover-badge {
+      position: absolute;
+      transform: translate(-50%, -100%);
+      background: rgba(4, 10, 26, 0.94);
+      border: 1px solid rgba(0, 255, 136, 0.7);
+      color: #00ff88;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 6px;
+      pointer-events: none;
+      z-index: 25;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 6px 20px rgba(0, 255, 136, 0.4);
+      backdrop-filter: blur(10px);
+      white-space: nowrap;
+      transition: opacity 0.15s ease;
+    }
+
+    .block-hover-badge .badge-tag {
+      font-size: 9px;
+      padding: 1px 5px;
+      border-radius: 3px;
+      background: rgba(0, 255, 136, 0.15);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+    }
+
+    /* Floating Live Testnet Node Ledger Card (Hidden until hovered on a block) */
+    .node-ledger-floating-hud {
+      position: absolute;
+      right: 14px;
+      bottom: 14px;
+      width: 250px;
+      background: rgba(3, 7, 20, 0.90);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+      border-radius: 8px;
+      padding: 12px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.65);
+      z-index: 20;
+      pointer-events: none;
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(10px) scale(0.96);
+      transition: opacity 0.22s cubic-bezier(0.16, 1, 0.3, 1), transform 0.22s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.22s ease, border-color 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .node-ledger-floating-hud.visible {
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0) scale(1);
+    }
+
+    .ledger-hud-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 2px;
+      border-bottom: 1px solid rgba(56, 189, 248, 0.15);
+      padding-bottom: 6px;
+    }
+
+    .ledger-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      font-weight: 700;
+      color: #38bdf8;
+      letter-spacing: 0.5px;
+    }
+
+    .ledger-sync-tag {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      color: #00ff88;
+      background: rgba(0, 255, 136, 0.1);
+      border: 1px solid rgba(0, 255, 136, 0.3);
+      padding: 1px 6px;
+      border-radius: 3px;
+    }
+
+    .ledger-row {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .ledger-lbl {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 8.5px;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.4px;
+    }
+
+    .ledger-val {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px;
+      font-weight: 600;
+      color: #f1f5f9;
+      word-break: break-all;
+    }
+
+    /* Compiling Stream Console */
+    .compiling-stream-console {
       background: #010309;
+      border-top: 1px solid rgba(56, 189, 248, 0.14);
+      padding: 8px 14px;
+      flex-shrink: 0;
+      height: 90px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .stream-console-title {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 9px;
+      font-weight: 700;
+      color: #64748b;
+      text-transform: uppercase;
+      letter-spacing: 0.8px;
+    }
+
+    .stream-console-logs {
+      flex: 1;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 10px;
+      color: #94a3b8;
+    }
+
+    .stream-log-row {
+      line-height: 1.35;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Bottom Matrix Tray */
+    .dag-telemetry-tray {
+      height: 95px;
+      flex-shrink: 0;
+      background: #020510;
       border-top: 1px solid rgba(56, 189, 248, 0.14);
       display: flex;
       flex-direction: column;
-    }
-
-    .dag-telemetry-header {
-      padding: 6px 14px;
-      background: rgba(255, 255, 255, 0.02);
-      border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-      font-family: 'JetBrains Mono', monospace;
-      font-size: 10px;
-      color: #64748b;
-      text-transform: uppercase;
-      letter-spacing: 1px;
+      padding: 8px 14px;
     }
 
     .dag-hud-grid {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
       gap: 8px;
-      padding: 10px 14px;
       flex: 1;
     }
 
@@ -343,14 +671,15 @@
 
     .dag-hud-cell .lbl {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 9px;
+      font-size: 8.5px;
       color: #64748b;
       text-transform: uppercase;
+      letter-spacing: 0.4px;
     }
 
     .dag-hud-cell .val {
       font-family: 'JetBrains Mono', monospace;
-      font-size: 12px;
+      font-size: 11.5px;
       font-weight: 700;
       color: #fff;
     }
@@ -376,7 +705,7 @@
       </div>
       <div class="brand-text">
         <h1>FluidBLCX</h1>
-        <div class="sub">SOVEREIGN WEB3 EXECUTION ARCHITECTURE</div>
+        <div class="sub">POWERED BY SUI</div>
       </div>
     </a>
 
@@ -390,32 +719,23 @@
       <a href="deepbook.html" class="nav-module-link" title="DeepBook v3 Liquidity">
         <span>DeepBook v3</span>
       </a>
-      <a href="walrus_vault.html" class="nav-module-link" title="Walrus Decentralized Vault">
-        <span>Walrus Vault</span>
-      </a>
       <a href="security_dashboard.html" class="nav-module-link" title="Security Sentinel">
         <span>Security</span>
       </a>
-      <a href="wallet1.html" class="nav-module-link" title="Portfolio &amp; Wallet">
-        <span>Wallet</span>
+      <a href="walrus_vault.html" class="nav-module-link" title="Walrus Decentralized Vault">
+        <span>Vault</span>
       </a>
-      <a href="loginpage.html" class="nav-module-link highlight" title="Web3 Login Portal">
-        <span>Login &rarr;</span>
+      <a href="poison_ai.html" class="nav-module-link" title="Poison AI Matrix">
+        <span>Poison AI</span>
+      </a>
+      <a href="trojan_bots.html" class="nav-module-link" title="Trojan Bots Swarm">
+        <span>Trojan Bots</span>
       </a>
     </nav>
 
     <div class="nav-ticker-strip">
       <div class="ticker-item">
-        <span class="ticker-label">SUI TPS:</span>
-        <span class="ticker-val green">297,412 PEAK</span>
-      </div>
-      <div class="ticker-item">
-        <span class="ticker-label">EPOCH:</span>
-        <span class="ticker-val cyan">#542</span>
-      </div>
-      <div class="ticker-item">
-        <span class="ticker-label">NETWORK:</span>
-        <span class="ticker-val green"><span class="status-dot-pulse"></span> SUI TESTNET</span>
+        <span class="ticker-val green"><span class="status-dot-pulse"></span> Sui Testnet</span>
       </div>
     </div>
   </header>
@@ -428,10 +748,10 @@
       <div class="panel-top-bar">
         <div class="panel-heading-group">
           <div class="panel-indicator-dot"></div>
-          <h2 class="panel-title-text">Sui Move Intelligent Compiler Engine</h2>
+          <h2 class="panel-title-text">SUI MOVE INTELLIGENT COMPILER ENGINE</h2>
         </div>
         <select class="template-dropdown" id="moduleTemplateSelect">
-          <option value="atomicRouting">Atomic Asset Router</option>
+          <option value="atomicRouting">Atomic Asset Router Template</option>
           <option value="deepbookPool">DeepBook Liquidity Node</option>
           <option value="walrusVault">Walrus Encrypted Vault Guard</option>
           <option value="flashLoan">Flash Loan Arbitrage Vector</option>
@@ -449,20 +769,21 @@
         <div class="terminal-tab-bar">
           <div class="term-tab-title">
             <span class="t-dot"></span>
-            <span>Compiler Run Terminal (Sui Move Build)</span>
+            <span>COMPILER RUN TERMINAL</span>
           </div>
           <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #64748b;">v2.6.0-testnet</span>
         </div>
         <div class="terminal-output-scroll" id="termOutputLog">
           <div class="term-row term-cmd">$ sui move build --watch</div>
-          <div class="term-row">[SYSTEM] Sui Move diagnostic engine armed. Ready to compile PTBs.</div>
+          <div class="term-row" style="color: #94a3b8;">Terminal ready. Compiler status is being checked...</div>
+          <div class="term-row" style="color: #00ff88;">Real Sui CLI build pipeline is available at D:\projects\SUI\tools\sui\sui.exe.</div>
         </div>
       </div>
 
       <!-- Action Footer -->
       <div class="compiler-bottom-toolbar">
         <button class="toolbar-btn secondary" id="btnSimulatePath">Simulate Telemetry Path</button>
-        <button class="toolbar-btn primary" id="btnCompileInject">Compile &amp; Inject Block &rarr;</button>
+        <button class="toolbar-btn primary" id="btnCompileInject">Compile &amp; Inject Block</button>
       </div>
     </div>
 
@@ -471,36 +792,84 @@
       <div class="panel-top-bar">
         <div class="panel-heading-group">
           <div class="panel-indicator-dot green"></div>
-          <h2 class="panel-title-text">3D Real-Time Interconnected Block Visualizer</h2>
+          <h2 class="panel-title-text">3D REAL-TIME INTERCONNECTED BLOCK VISUALIZER</h2>
         </div>
         <span style="font-family: 'JetBrains Mono', monospace; font-size: 10px; color: #00ff88;">DAG QUORUM OK</span>
       </div>
 
-      <!-- 3D DAG WebGL Stage -->
-      <div class="dag-stage-container">
-        <div class="dag-stage-overlay-hint">Drag to Orbit · Scroll to Zoom · Hover Nodes to Inspect</div>
-        <div id="three-dag-container" style="width: 100%; height: 100%;"></div>
+      <!-- 3D DAG WebGL Stage with Floating Live Testnet Node Ledger HUD -->
+      <div class="dag-stage-container" id="dagStageContainer">
+        <div class="dag-stage-overlay-hint">Hover or Click Any Block to Inspect Metadata</div>
+        
+        <!-- Chain Quick Select Strip -->
+        <div class="chain-quick-strip" id="chainQuickStrip"></div>
+
+        <div id="three-dag-container"></div>
+
+        <!-- Dynamic 3D Projected Floating Tooltip Tag -->
+        <div id="blockHoverBadge" class="block-hover-badge" style="display: none;">
+          <span class="badge-icon">📦</span>
+          <span id="badgeBlockName">Block_Node_0x7c229</span>
+          <span class="badge-tag">HOVERED</span>
+        </div>
+
+        <!-- Floating Live Testnet Node Ledger Card Overlay -->
+        <div class="node-ledger-floating-hud" id="nodeLedgerHud">
+          <div class="ledger-hud-top">
+            <span class="ledger-title" id="ledgerTitleText">LIVE TESTNET NODE LEDGER</span>
+            <span class="ledger-sync-tag" id="ledgerSyncTag">LIVE_SYNC</span>
+          </div>
+          <div class="ledger-row">
+            <span class="ledger-lbl">NODE ID HASH</span>
+            <span class="ledger-val" id="ledgerNodeId">Block_Node_0x7c229</span>
+          </div>
+          <div class="ledger-row">
+            <span class="ledger-lbl">PARENT REFERENCE HASH</span>
+            <span class="ledger-val" id="ledgerParentHash">Block_Genesis_0x7c784</span>
+          </div>
+          <div class="ledger-row">
+            <span class="ledger-lbl">GAS USED PAYLOAD</span>
+            <span class="ledger-val" id="ledgerGasPayload">23223 MIST</span>
+          </div>
+          <div class="ledger-row">
+            <span class="ledger-lbl">CONSENSUS STATUS</span>
+            <span class="ledger-val" id="ledgerConsensusStatus">ACTIVE ROUTING TELEMETRY</span>
+          </div>
+          <div class="ledger-row">
+            <span class="ledger-lbl">TARGET INTERPOLATION SCALE</span>
+            <span class="ledger-val" id="ledgerScale">1.25</span>
+          </div>
+        </div>
       </div>
 
-      <!-- Bottom HUD Metrics Tray -->
+      <!-- Middle: System Compiling Stream Log Console -->
+      <div class="compiling-stream-console">
+        <div class="stream-console-title">SYSTEM COMPILING STREAM LOG CONSOLE</div>
+        <div class="stream-console-logs" id="streamConsoleLogs">
+          <div class="stream-log-row">[11:36:32 AM] [RPC FETCH] Initialized testnet node Block_Node_0x7c521</div>
+          <div class="stream-log-row">[11:50:59 AM] [RPC FETCH] Initialized testnet node Block_Genesis_0x7c784</div>
+          <div class="stream-log-row">[11:51:00 AM] [RPC FETCH] Initialized testnet node Block_Node_0x7c229</div>
+        </div>
+      </div>
+
+      <!-- Bottom: Selected Node Matrix Tray -->
       <div class="dag-telemetry-tray">
-        <div class="dag-telemetry-header">Execution &amp; Gas Vector Telemetry</div>
         <div class="dag-hud-grid">
           <div class="dag-hud-cell">
-            <span class="lbl">Selected Node Matrix</span>
-            <span class="val cyan" id="hudNodeId">Block_Genesis_0x001</span>
+            <span class="lbl">SELECTED NODE MATRIX</span>
+            <span class="val cyan" id="matrixSelectedNode">Block_Node_0x7c229</span>
           </div>
           <div class="dag-hud-cell">
-            <span class="lbl">Parent Hash Digest</span>
-            <span class="val" id="hudParentDigest">0x8fa4...119c</span>
+            <span class="lbl">CONNECTED TARGET PARENT</span>
+            <span class="val" id="matrixConnectedParent">Block_Genesis_0x7c784</span>
           </div>
           <div class="dag-hud-cell">
-            <span class="lbl">Execution Fuel Vector</span>
-            <span class="val green" id="hudGasCost">1,480 MIST (&lt; $0.0001)</span>
+            <span class="lbl">EXECUTION FUEL VECTOR</span>
+            <span class="val green" id="matrixFuelVector">23223 MIST</span>
           </div>
           <div class="dag-hud-cell">
-            <span class="lbl">Sui Package Scope</span>
-            <span class="val cyan">IMMUTABLE / SHARED_OBJECT</span>
+            <span class="lbl">SUI PACKAGE SCOPE</span>
+            <span class="val cyan" id="matrixPackageScope">ACTIVE ROUTING TELEMETRY</span>
           </div>
         </div>
       </div>
@@ -640,18 +1009,82 @@
       termOutput.scrollTop = termOutput.scrollHeight;
     }
 
-    // ── 3D THREE.JS BYTECODE DAG VISUALIZER ──
+    function appendStreamLog(msg) {
+      const logs = document.getElementById('streamConsoleLogs');
+      if (!logs) return;
+      const row = document.createElement('div');
+      row.className = 'stream-log-row';
+      row.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+      logs.appendChild(row);
+      logs.scrollTop = logs.scrollHeight;
+    }
+
+    // ── 3D THREE.JS BLOCKCHAIN CHAIN VISUALIZER (BLOCKS ONLY) ──
     let scene, camera, renderer, controls;
     let dagNodes = [];
     let connectingLinks = [];
-    let blockCount = 3;
+    let pulseParticles = [];
+    let hitTestMeshes = [];
+    let raycaster, mouse;
+    let hoveredNode = null;
+    let selectedNode = null;
+
+    // Perfectly Aligned Blockchain Chain Sequence (Blocks / Cubes Only)
+    const initialChainData = [
+      {
+        index: 0,
+        id: 'Block_Genesis_0x7c784',
+        label: 'Block #0 Genesis',
+        parent: 'ROOT_GENESIS_0x000',
+        gas: '1480 MIST',
+        status: 'GENESIS ROOT L1 ANCHOR',
+        pos: [-4.5, 0.0, 0.0],
+        colorHex: 0x0284c7, // Obsidian Blue
+        wireHex: 0x38bdf8
+      },
+      {
+        index: 1,
+        id: 'Block_Node_0x7c229',
+        label: 'Block #1 Router',
+        parent: 'Block_Genesis_0x7c784',
+        gas: '19840 MIST',
+        status: 'ACTIVE ROUTING TELEMETRY',
+        pos: [-1.5, 0.0, 0.0],
+        colorHex: 0x00ff88, // Emerald
+        wireHex: 0x00ff88
+      },
+      {
+        index: 2,
+        id: 'Block_Node_0x7c521',
+        label: 'Block #2 CLOB',
+        parent: 'Block_Node_0x7c229',
+        gas: '21390 MIST',
+        status: 'CLOB LIQUIDITY ORDERBOOK',
+        pos: [1.5, 0.0, 0.0],
+        colorHex: 0x06b6d4, // Electric Cyan
+        wireHex: 0x22d3ee
+      },
+      {
+        index: 3,
+        id: 'Block_Node_0x7cdc0',
+        label: 'Block #3 PTB',
+        parent: 'Block_Node_0x7c229',
+        gas: '23072 MIST',
+        status: 'ACTIVE ROUTING TELEMETRY',
+        pos: [4.5, 0.0, 0.0],
+        colorHex: 0xa855f7, // Neon Purple
+        wireHex: 0xc084fc
+      }
+    ];
 
     function init3DDag() {
       const container = document.getElementById('three-dag-container');
+      if (!container) return;
+
       scene = new THREE.Scene();
 
-      camera = new THREE.PerspectiveCamera(50, container.clientWidth / container.clientHeight, 0.1, 100);
-      camera.position.set(0, 0, 9);
+      camera = new THREE.PerspectiveCamera(48, container.clientWidth / container.clientHeight, 0.1, 100);
+      camera.position.set(0, 0.3, 10.8);
 
       renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
       renderer.setSize(container.clientWidth, container.clientHeight);
@@ -661,103 +1094,385 @@
       controls = new THREE.OrbitControls(camera, renderer.domElement);
       controls.enableDamping = true;
       controls.dampingFactor = 0.05;
-      controls.maxDistance = 20;
+      controls.maxDistance = 18;
       controls.minDistance = 3;
 
       // Lights
-      const ambient = new THREE.AmbientLight(0xffffff, 0.5);
+      const ambient = new THREE.AmbientLight(0xffffff, 0.65);
       scene.add(ambient);
 
-      const light1 = new THREE.PointLight(0x38bdf8, 3, 20);
-      light1.position.set(5, 5, 5);
+      const light1 = new THREE.PointLight(0x38bdf8, 3.5, 25);
+      light1.position.set(6, 6, 6);
       scene.add(light1);
 
-      const light2 = new THREE.PointLight(0x00ff88, 2, 20);
-      light2.position.set(-5, -5, 5);
+      const light2 = new THREE.PointLight(0x00ff88, 3.0, 25);
+      light2.position.set(-6, -6, 6);
       scene.add(light2);
 
-      // Create Initial 3 Connected DAG Blocks
-      createDagNode(-3.2, 0, 0, 'Block_Genesis_0x001', 0x38bdf8);
-      createDagNode(0, 0, 0, 'Block_Module_0x002', 0x2563eb);
-      createDagNode(3.2, 0, 0, 'Block_PTB_0x003', 0x00ff88);
-      linkNodes(dagNodes[0], dagNodes[1]);
-      linkNodes(dagNodes[1], dagNodes[2]);
-
-      // Star particles in visualizer
+      // Starfield particles in visualizer
       const starGeo = new THREE.BufferGeometry();
-      const starCoords = new Float32Array(300 * 3);
-      for (let i = 0; i < 300 * 3; i += 3) {
-        starCoords[i] = (Math.random() - 0.5) * 20;
-        starCoords[i + 1] = (Math.random() - 0.5) * 20;
-        starCoords[i + 2] = (Math.random() - 0.5) * 10;
+      const starCoords = new Float32Array(250 * 3);
+      for (let i = 0; i < 250 * 3; i += 3) {
+        starCoords[i] = (Math.random() - 0.5) * 22;
+        starCoords[i + 1] = (Math.random() - 0.5) * 18;
+        starCoords[i + 2] = (Math.random() - 0.5) * 12;
       }
       starGeo.setAttribute('position', new THREE.BufferAttribute(starCoords, 3));
-      const starMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.05, transparent: true, opacity: 0.6 });
+      const starMat = new THREE.PointsMaterial({ color: 0x38bdf8, size: 0.045, transparent: true, opacity: 0.5 });
       scene.add(new THREE.Points(starGeo, starMat));
 
-      window.addEventListener('resize', () => {
-        if (!container) return;
-        camera.aspect = container.clientWidth / container.clientHeight;
-        camera.updateProjectionMatrix();
-        renderer.setSize(container.clientWidth, container.clientHeight);
+      // Create Initial 4 Aligned Blockchain Blocks (ALL CUBES/BLOCKS ONLY)
+      initialChainData.forEach(data => {
+        createChainBlock(data);
       });
+
+      // Chain Links: 0 -> 1 -> 2 -> 3
+      for (let i = 0; i < dagNodes.length - 1; i++) {
+        linkChainBlocks(dagNodes[i], dagNodes[i + 1]);
+      }
+
+      // Render top chain quick selector pills
+      renderChainQuickStrip();
+
+      // Set default selected block to Block #1 (Block_Node_0x7c229)
+      selectBlock(dagNodes[1]);
+
+      // Raycaster & Mouse Interaction Setup
+      raycaster = new THREE.Raycaster();
+      mouse = new THREE.Vector2();
+
+      renderer.domElement.addEventListener('mousemove', onPointerMove);
+      renderer.domElement.addEventListener('click', onPointerClick);
+      renderer.domElement.addEventListener('mouseleave', onPointerLeave);
+
+      function onStageResize() {
+        if (!container || !camera || !renderer) return;
+        const w = container.clientWidth;
+        const h = container.clientHeight;
+        if (w === 0 || h === 0) return;
+
+        const aspect = w / h;
+        camera.aspect = aspect;
+
+        // Auto-fit blockchain across ALL device screens & aspect ratios:
+        // The chain blocks span across ~12.8 units width (from -4.5 to +4.5 with margins).
+        // On narrow devices (mobiles/tablets), camera.position.z dynamically scales back
+        // to guarantee every single block remains in frame without clipping.
+        const requiredWidth = 12.8;
+        const fovRad = (camera.fov * Math.PI) / 180;
+        const distToFit = (requiredWidth / 2) / (Math.tan(fovRad / 2) * aspect);
+
+        // Clamped: min 10.8 for desktop; smoothly scales back up to 25 for narrow mobile viewports
+        camera.position.z = Math.max(10.8, distToFit);
+        camera.updateProjectionMatrix();
+        renderer.setSize(w, h);
+      }
+
+      onStageResize();
+      window.addEventListener('resize', onStageResize);
+
+      if (window.ResizeObserver) {
+        const ro = new ResizeObserver(() => {
+          onStageResize();
+        });
+        ro.observe(container);
+      }
 
       animateDag();
     }
 
-    function createDagNode(x, y, z, id, colorHex) {
+    // ── ALL BLOCKS USE BOX GEOMETRY ONLY (NO ICOSAHEDRONS, NO MISALIGNMENT) ──
+    function createChainBlock(data) {
       const group = new THREE.Group();
-      group.position.set(x, y, z);
+      group.position.set(data.pos[0], data.pos[1], data.pos[2]);
 
-      // Solid Box Core
-      const geom = new THREE.BoxGeometry(1.4, 1.4, 1.4);
+      const size = 1.35;
+      const boxGeom = new THREE.BoxGeometry(size, size, size);
+
+      // Solid translucent block core
       const mat = new THREE.MeshPhysicalMaterial({
-        color: 0x03102c,
-        emissive: colorHex,
-        emissiveIntensity: 0.6,
-        roughness: 0.2,
-        metalness: 0.8,
+        color: 0x030f28,
+        emissive: data.colorHex,
+        emissiveIntensity: 0.65,
+        roughness: 0.15,
+        metalness: 0.85,
         transparent: true,
-        opacity: 0.85
+        opacity: 0.88
       });
-      const mesh = new THREE.Mesh(geom, mat);
+      const mesh = new THREE.Mesh(boxGeom, mat);
+      mesh.userData.parentGroup = group;
       group.add(mesh);
 
-      // Wireframe Cage
-      const wireMat = new THREE.MeshBasicMaterial({ color: colorHex, wireframe: true, transparent: true, opacity: 0.5 });
-      const wireMesh = new THREE.Mesh(geom, wireMat);
+      // Glowing Wireframe Edge Cage
+      const edgesGeom = new THREE.EdgesGeometry(boxGeom);
+      const wireMat = new THREE.LineBasicMaterial({
+        color: data.wireHex || data.colorHex,
+        transparent: true,
+        opacity: 0.75,
+        linewidth: 2
+      });
+      const wireMesh = new THREE.LineSegments(edgesGeom, wireMat);
       wireMesh.scale.set(1.05, 1.05, 1.05);
       group.add(wireMesh);
 
-      group.userData = { id, colorHex, mesh, wireMesh };
+      // Inner glowing core sphere
+      const innerSphereGeom = new THREE.SphereGeometry(0.35, 16, 16);
+      const innerSphereMat = new THREE.MeshBasicMaterial({
+        color: data.wireHex || data.colorHex,
+        transparent: true,
+        opacity: 0.7
+      });
+      const innerCore = new THREE.Mesh(innerSphereGeom, innerSphereMat);
+      group.add(innerCore);
+
+      // Larger invisible hit test box for effortless hover detection
+      const hitBoxGeom = new THREE.BoxGeometry(2.1, 2.1, 2.1);
+      const hitBoxMat = new THREE.MeshBasicMaterial({ visible: false });
+      const hitBox = new THREE.Mesh(hitBoxGeom, hitBoxMat);
+      hitBox.userData.parentGroup = group;
+      group.add(hitBox);
+
+      group.userData = {
+        ...data,
+        mesh,
+        wireMesh,
+        innerCore,
+        baseScale: 1.0
+      };
+
       scene.add(group);
       dagNodes.push(group);
+      hitTestMeshes.push(hitBox);
       return group;
     }
 
-    function linkNodes(nodeA, nodeB) {
-      const lineMat = new THREE.LineBasicMaterial({ color: 0x38bdf8, transparent: true, opacity: 0.4 });
+    // ── GLOWING LASER DATA CHAIN LINK & MOVING DATA PACKETS ──
+    function linkChainBlocks(nodeA, nodeB) {
+      // Main laser link
+      const lineMat = new THREE.LineBasicMaterial({
+        color: 0x38bdf8,
+        transparent: true,
+        opacity: 0.55
+      });
       const points = [nodeA.position, nodeB.position];
       const geom = new THREE.BufferGeometry().setFromPoints(points);
       const line = new THREE.Line(geom, lineMat);
       scene.add(line);
       connectingLinks.push({ line, nodeA, nodeB });
+
+      // Moving photon data packet
+      const packetGeo = new THREE.SphereGeometry(0.12, 12, 12);
+      const packetMat = new THREE.MeshBasicMaterial({
+        color: 0x00ff88,
+        transparent: true,
+        opacity: 0.95
+      });
+      const packet = new THREE.Mesh(packetGeo, packetMat);
+      scene.add(packet);
+      pulseParticles.push({
+        mesh: packet,
+        start: nodeA.position,
+        end: nodeB.position,
+        progress: Math.random(),
+        speed: 0.008 + Math.random() * 0.004
+      });
     }
 
+    function renderChainQuickStrip() {
+      const strip = document.getElementById('chainQuickStrip');
+      if (!strip) return;
+      strip.innerHTML = '';
+
+      dagNodes.forEach((node, i) => {
+        const d = node.userData;
+        const btn = document.createElement('button');
+        btn.className = `chain-pill-btn ${selectedNode === node ? 'active' : ''}`;
+        btn.innerHTML = `<span>📦</span><span>${d.id.substring(0, 15)}</span>`;
+        
+        btn.addEventListener('mouseenter', () => {
+          hoverBlock(node);
+        });
+        btn.addEventListener('mouseleave', () => {
+          unhoverBlock();
+        });
+        btn.addEventListener('click', () => {
+          selectBlock(node);
+        });
+
+        strip.appendChild(btn);
+
+        if (i < dagNodes.length - 1) {
+          const sep = document.createElement('span');
+          sep.className = 'chain-arrow-sep';
+          sep.textContent = '→';
+          strip.appendChild(sep);
+        }
+      });
+    }
+
+    // ── DYNAMIC HOVER & CLICK INSPECTION ──
+    function hoverBlock(targetGroup) {
+      if (hoveredNode !== targetGroup) {
+        if (hoveredNode && hoveredNode !== selectedNode) {
+          gsap.to(hoveredNode.scale, { x: 1.0, y: 1.0, z: 1.0, duration: 0.2, overwrite: 'auto' });
+          hoveredNode.userData.wireMesh.material.opacity = 0.6;
+        }
+        hoveredNode = targetGroup;
+        gsap.to(hoveredNode.scale, { x: 1.25, y: 1.25, z: 1.25, duration: 0.2, overwrite: 'auto' });
+        hoveredNode.userData.wireMesh.material.opacity = 0.95;
+
+        updateNodeLedgerHUD(hoveredNode.userData, 1.25, true);
+
+        // Make detail box visible when hovered on any block
+        const hud = document.getElementById('nodeLedgerHud');
+        if (hud) hud.classList.add('visible');
+      }
+    }
+
+    function unhoverBlock() {
+      if (hoveredNode) {
+        if (hoveredNode !== selectedNode) {
+          gsap.to(hoveredNode.scale, { x: 1.0, y: 1.0, z: 1.0, duration: 0.2, overwrite: 'auto' });
+          hoveredNode.userData.wireMesh.material.opacity = 0.6;
+        }
+        hoveredNode = null;
+
+        // Hide detail box when not hovered on any block
+        const hud = document.getElementById('nodeLedgerHud');
+        if (hud) hud.classList.remove('visible');
+      }
+    }
+
+    function selectBlock(targetGroup) {
+      if (selectedNode && selectedNode !== targetGroup) {
+        gsap.to(selectedNode.scale, { x: 1.0, y: 1.0, z: 1.0, duration: 0.25, overwrite: 'auto' });
+        selectedNode.userData.wireMesh.material.opacity = 0.6;
+      }
+
+      selectedNode = targetGroup;
+
+      // Pulse Shockwave Animation
+      gsap.fromTo(selectedNode.scale, 
+        { x: 1.38, y: 1.38, z: 1.38 }, 
+        { x: 1.25, y: 1.25, z: 1.25, duration: 0.35, ease: 'back.out(2)', overwrite: 'auto' }
+      );
+      selectedNode.userData.wireMesh.material.opacity = 1.0;
+
+      updateNodeLedgerHUD(selectedNode.userData, 1.25, false);
+      appendStreamLog(`[RPC FETCH] Inspected testnet node ${selectedNode.userData.id}`);
+      renderChainQuickStrip();
+    }
+
+    function updateNodeLedgerHUD(data, scale = 1.25, isHovering = false) {
+      if (!data) return;
+      const formattedScale = typeof scale === 'number' ? scale.toFixed(2) : scale;
+
+      const hud = document.getElementById('nodeLedgerHud');
+      if (hud && data.wireHex) {
+        const hexStr = '#' + data.wireHex.toString(16).padStart(6, '0');
+        hud.style.borderColor = isHovering ? hexStr : 'rgba(56, 189, 248, 0.3)';
+        hud.style.boxShadow = isHovering ? `0 8px 30px ${hexStr}44` : '0 8px 30px rgba(0, 0, 0, 0.65)';
+      }
+
+      document.getElementById('ledgerNodeId').textContent = data.id;
+      document.getElementById('ledgerParentHash').textContent = data.parent;
+      document.getElementById('ledgerGasPayload').textContent = data.gas;
+      document.getElementById('ledgerConsensusStatus').textContent = data.status;
+      document.getElementById('ledgerScale').textContent = formattedScale;
+
+      // Bottom Matrix Card
+      document.getElementById('matrixSelectedNode').textContent = data.id;
+      document.getElementById('matrixConnectedParent').textContent = data.parent;
+      document.getElementById('matrixFuelVector').textContent = data.gas;
+      document.getElementById('matrixPackageScope').textContent = data.status;
+    }
+
+    function onPointerMove(e) {
+      const container = document.getElementById('three-dag-container');
+      if (!container) return;
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(hitTestMeshes);
+
+      if (intersects.length > 0) {
+        renderer.domElement.style.cursor = 'pointer';
+        const hit = intersects[0].object;
+        const targetGroup = hit.userData.parentGroup;
+        hoverBlock(targetGroup);
+      } else {
+        renderer.domElement.style.cursor = 'default';
+        unhoverBlock();
+      }
+    }
+
+    function onPointerClick(e) {
+      const rect = renderer.domElement.getBoundingClientRect();
+      mouse.x = ((e.clientX - rect.left) / rect.width) * 2 - 1;
+      mouse.y = -((e.clientY - rect.top) / rect.height) * 2 + 1;
+
+      raycaster.setFromCamera(mouse, camera);
+      const intersects = raycaster.intersectObjects(hitTestMeshes);
+
+      if (intersects.length > 0) {
+        const hit = intersects[0].object;
+        const targetGroup = hit.userData.parentGroup;
+        selectBlock(targetGroup);
+      }
+    }
+
+    function onPointerLeave() {
+      unhoverBlock();
+    }
+
+    // ── ANIMATION LOOP WITH 3D PROJECTED TOOLTIP & DATA PULSES ──
     function animateDag() {
       requestAnimationFrame(animateDag);
       const time = Date.now() * 0.001;
 
+      // Gentle blockchain chain floating motion
       dagNodes.forEach((node, idx) => {
-        node.rotation.y += 0.008 * (idx % 2 === 0 ? 1 : -1);
-        node.rotation.x = Math.sin(time + idx) * 0.15;
+        node.rotation.y += 0.005 * (idx % 2 === 0 ? 1 : -1);
+        node.rotation.x = Math.sin(time + idx * 0.8) * 0.06;
       });
+
+      // Animate photon data packets along the chain links
+      pulseParticles.forEach(p => {
+        p.progress = (p.progress + p.speed) % 1.0;
+        p.mesh.position.lerpVectors(p.start, p.end, p.progress);
+      });
+
+      // Project 3D tooltip above hovered block ONLY (hidden when not hovered)
+      const container = document.getElementById('three-dag-container');
+      const activeBlock = hoveredNode;
+      const badge = document.getElementById('blockHoverBadge');
+
+      if (activeBlock && container && badge) {
+        const tempV = new THREE.Vector3();
+        activeBlock.getWorldPosition(tempV);
+        tempV.y += 1.35; // Position right above the 3D block
+        tempV.project(camera);
+
+        const x = (tempV.x * 0.5 + 0.5) * container.clientWidth;
+        const y = (-(tempV.y * 0.5) + 0.5) * container.clientHeight;
+
+        badge.style.display = 'flex';
+        badge.style.left = `${x}px`;
+        badge.style.top = `${y}px`;
+        document.getElementById('badgeBlockName').textContent = activeBlock.userData.id;
+      } else if (badge) {
+        badge.style.display = 'none';
+      }
 
       controls.update();
       renderer.render(scene, camera);
     }
 
     // ── COMPILATION & SIMULATION HANDLERS ──
+    let customBlockIdx = 4;
+
     btnCompile.addEventListener('click', () => {
       appendTerm('$ sui move build', 'cmd');
       appendTerm('[1/4] Parsing Move AST & module structures...', 'cmd');
@@ -771,29 +1486,75 @@
       }, 700);
 
       setTimeout(() => {
-        blockCount++;
-        const newId = `Block_PTB_0x00${blockCount}`;
-        const newX = (Math.random() - 0.5) * 4;
-        const newY = (Math.random() - 0.5) * 3;
-        const newNode = createDagNode(newX, newY, 1.5, newId, 0x00ff88);
-        linkNodes(dagNodes[dagNodes.length - 2], newNode);
+        customBlockIdx++;
+        const hex = Math.floor(Math.random() * 0xfffff).toString(16).padStart(5, '0');
+        const newId = `Block_Node_0x7c${hex.substring(0, 3)}`;
+        const parentNode = dagNodes[dagNodes.length - 1];
+        const parentId = parentNode.userData.id;
+        const gasUsed = `${Math.floor(Math.random() * 8000) + 18000} MIST`;
 
-        gsap.from(newNode.scale, { x: 0, y: 0, z: 0, duration: 0.6, ease: 'back.out(2)' });
+        // Extend the chain sequence cleanly along the line without overlap
+        const lastPos = parentNode.position;
+        const newPos = [
+          lastPos.x + 3.0,
+          0.0,
+          0.0
+        ];
 
+        const colors = [0x00ff88, 0x38bdf8, 0xa855f7, 0xf59e0b];
+        const chosenColor = colors[customBlockIdx % colors.length];
+
+        const newNode = createChainBlock({
+          index: customBlockIdx,
+          id: newId,
+          label: `Block #${customBlockIdx}`,
+          parent: parentId,
+          gas: gasUsed,
+          status: 'ACTIVE ROUTING TELEMETRY',
+          pos: newPos,
+          colorHex: chosenColor,
+          wireHex: chosenColor
+        });
+
+        // Link parent to new block
+        linkChainBlocks(parentNode, newNode);
+
+        // Pan camera gently to center the growing chain
+        gsap.to(camera.position, {
+          x: (lastPos.x + 2.8) * 0.5,
+          duration: 0.8,
+          ease: 'power2.out'
+        });
+
+        // Spawn animation
+        gsap.fromTo(newNode.scale, 
+          { x: 0, y: 0, z: 0 }, 
+          { x: 1.25, y: 1.25, z: 1.25, duration: 0.6, ease: 'back.out(2)' }
+        );
+
+        selectBlock(newNode);
+        renderChainQuickStrip();
+
+        appendStreamLog(`[RPC FETCH] Injected testnet node ${newId} (Gas: ${gasUsed})`);
         appendTerm(`[4/4] [SUCCESS] Module verified & injected into DAG as: "${newId}"!`, 'success');
-        document.getElementById('hudNodeId').textContent = newId;
-        document.getElementById('hudGasCost').textContent = `${Math.floor(Math.random() * 500) + 1200} MIST`;
       }, 1100);
     });
 
     btnSimulate.addEventListener('click', () => {
       appendTerm('[SIMULATION] Injecting Mysticeti DAG consensus telemetry...', 'cmd');
-      dagNodes.forEach(node => {
-        gsap.to(node.userData.mesh.scale, { x: 1.3, y: 1.3, z: 1.3, duration: 0.2, yoyo: true, repeat: 1 });
+      dagNodes.forEach((node, i) => {
+        gsap.to(node.scale, { 
+          x: 1.35, y: 1.35, z: 1.35, 
+          duration: 0.25, 
+          delay: i * 0.1, 
+          yoyo: true, 
+          repeat: 1 
+        });
       });
       setTimeout(() => {
         appendTerm('[SIMULATION OK] All 104 validator nodes reached quorum agreement (390ms).', 'success');
-      }, 500);
+        appendStreamLog('[CONSENSUS] Mysticeti DAG quorum verified across all active block nodes.');
+      }, 700);
     });
 
     window.addEventListener('DOMContentLoaded', init3DDag);

@@ -1,5 +1,111 @@
 [
   {
+    "blobId": "0xBLOB_23d6f7650c1d...c174",
+    "storedKey": "blob_1789192166660_bec79196",
+    "name": "WhatsApp Image 2026-09-12 at 10.12.11 AM.jpeg",
+    "mimeType": "image/jpeg",
+    "originalSize": 118078,
+    "packagedSize": 118106,
+    "shardSize": 19685,
+    "shardsCount": 8,
+    "rootHash": "0x2a35ca95a96c5ac83285ceb8",
+    "merkleTree": {
+      "rootHash": "0x2a35ca95a96c5ac83285ceb8",
+      "interHashes": [
+        "0x75a0a8cdf4b5099d",
+        "0x6f9c110cbe69425f"
+      ],
+      "branchHashes": [
+        "0x1950fcda5e9d762c",
+        "0x3cff70bea927cc9d",
+        "0xae027ac112bd73fc",
+        "0x99ce57d7e2e709f7"
+      ],
+      "leafHashes": [
+        "0xb295b4227274b6af",
+        "0x3d826bda6bc965ef",
+        "0x314b5c672310f87f",
+        "0x2b77627fadf8cc87",
+        "0x24919c6d7c53d057",
+        "0x43ace9dd490bd377",
+        "0x8b5e389915347654",
+        "0xaddb7334e6361778"
+      ]
+    },
+    "shards": [
+      {
+        "id": 0,
+        "label": "SHARD #01 (DATA)",
+        "hash": "0xb295b4227274b6af",
+        "size": 19685,
+        "fileName": "blob_1789192166660_bec79196_shard_0.bin",
+        "isParity": false
+      },
+      {
+        "id": 1,
+        "label": "SHARD #02 (DATA)",
+        "hash": "0x3d826bda6bc965ef",
+        "size": 19685,
+        "fileName": "blob_1789192166660_bec79196_shard_1.bin",
+        "isParity": false
+      },
+      {
+        "id": 2,
+        "label": "SHARD #03 (DATA)",
+        "hash": "0x314b5c672310f87f",
+        "size": 19685,
+        "fileName": "blob_1789192166660_bec79196_shard_2.bin",
+        "isParity": false
+      },
+      {
+        "id": 3,
+        "label": "SHARD #04 (DATA)",
+        "hash": "0x2b77627fadf8cc87",
+        "size": 19685,
+        "fileName": "blob_1789192166660_bec79196_shard_3.bin",
+        "isParity": false
+      },
+      {
+        "id": 4,
+        "label": "SHARD #05 (DATA)",
+        "hash": "0x24919c6d7c53d057",
+        "size": 19685,
+        "fileName": "blob_1789192166660_bec79196_shard_4.bin",
+        "isParity": false
+      },
+      {
+        "id": 5,
+        "label": "SHARD #06 (DATA)",
+        "hash": "0x43ace9dd490bd377",
+        "size": 19685,
+        "fileName": "blob_1789192166660_bec79196_shard_5.bin",
+        "isParity": false
+      },
+      {
+        "id": 6,
+        "label": "SHARD #07 (PARITY)",
+        "hash": "0x8b5e389915347654",
+        "size": 19685,
+        "fileName": "blob_1789192166660_bec79196_shard_6.bin",
+        "isParity": true
+      },
+      {
+        "id": 7,
+        "label": "SHARD #08 (PARITY)",
+        "hash": "0xaddb7334e6361778",
+        "size": 19685,
+        "fileName": "blob_1789192166660_bec79196_shard_7.bin",
+        "isParity": true
+      }
+    ],
+    "cipher": "AES-256-GCM + IV-96",
+    "erasureProtocol": "Reed-Solomon (6+2 Quorum)",
+    "certifiedEpoch": 542,
+    "expiryEpoch": 680,
+    "status": "CERTIFIED ACTIVE",
+    "storedAt": "2026-09-12T05:49:26.673Z"
+  },
+  {
     "blobId": "0xBLOB_a28601682433...1b5f",
     "storedKey": "blob_1789139262835_d52b327c",
     "name": "Adarsh_Yadav_202401100200018_ADBMS_LAB_3_Cursor_Programs.docx",

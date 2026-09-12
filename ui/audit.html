@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ledger Audit // Cryptographic Signatures — FluidBLCX</title>
+  <link rel="stylesheet" href="dashboard.css">
+</head>
+<body>
+
+  <div class="cyber-bg"></div>
+  <div class="cyber-glow"></div>
+
+  <!-- ─── TOP NAVIGATION BAR ─── -->
+  <header class="dash-header">
+    <a href="index.html" class="dash-brand">
+      <div class="brand-waterdrop">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+        </svg>
+      </div>
+      <h1>FluidBLCX</h1>
+    </a>
+
+    <!-- Navigation Pills Group -->
+    <nav class="nav-pills-bar">
+      <a href="portfolio.html" class="nav-pill-item">Portfolio</a>
+      <a href="market.html" class="nav-pill-item">Live Spot Market</a>
+      <a href="swap.html" class="nav-pill-item">Atomic Swap</a>
+      <a href="bridge.html" class="nav-pill-item">Bridge Gateway</a>
+      <a href="yield.html" class="nav-pill-item">Yield Farming</a>
+      <a href="audit.html" class="nav-pill-item active">Ledger Audit</a>
+    </nav>
+
+    <!-- Right Controls -->
+    <div class="nav-right-cluster">
+      <a href="tradewindow.html" class="btn-quant-tradex" title="Launch High-Frequency Trading Terminal">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+          <polyline points="17 6 23 6 23 12"></polyline>
+        </svg>
+        <span>Quant TradeX</span>
+      </a>
+
+      <div class="status-pill" id="walletStatusPill">
+        <span class="status-dot-indicator" id="walletStatusDot"></span>
+        <span id="walletStatusText">Not Connected</span>
+      </div>
+
+      <button class="btn-connect-wallet" id="connectWalletBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+          <path d="M7 15h0M2 10h20"></path>
+        </svg>
+        <span>Connect Wallet</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ─── MAIN TWO-COLUMN DASHBOARD WORKSPACE ─── -->
+  <main class="dash-workspace">
+
+    <!-- LEFT COLUMN: Cryptographic Ledger Signatures -->
+    <div class="left-content-column">
+
+      <!-- Audit Macro Stats Strip -->
+      <div class="quick-metrics-strip" style="margin-bottom: 0;">
+        <div class="quick-metric-chip">
+          <span class="chip-label">Cryptographic Proof</span>
+          <span class="chip-val" style="color: #00ff88;">Zero-Knowledge Validated</span>
+        </div>
+        <div class="quick-metric-chip">
+          <span class="chip-label">Epoch Committed PTBs</span>
+          <span class="chip-val" style="color: #38bdf8;">18,492,108 Blocks</span>
+        </div>
+        <div class="quick-metric-chip">
+          <span class="chip-label">Consensus Integrity</span>
+          <span class="chip-val">99.998% Uptime</span>
+        </div>
+      </div>
+
+      <div class="dash-table-card">
+        <h2 class="table-header-title">Cryptographic Ledger Signatures &amp; Execution Audit</h2>
+
+        <table class="dash-table">
+          <thead>
+            <tr>
+              <th>METHOD VERIFICATION HASH</th>
+              <th>OPERATION SIGNATURE</th>
+              <th>EXECUTION PAYLOAD</th>
+              <th>SETTLED TIME</th>
+              <th>NODE STATUS</th>
+            </tr>
+          </thead>
+          <tbody id="auditTableBody">
+            <tr>
+              <td class="col-cyan" style="cursor: pointer;" onclick="copyAddress('0x9fd2a3b8c1d4e5f67a8b9c1d2e3f4a5b6c7d8e9f211a')" title="Click to copy full hash">
+                0x9fd2...211a 📋
+              </td>
+              <td style="font-weight: 700; color: #ffffff;">Smart Pipeline Swap</td>
+              <td class="col-mono" style="color: #94a3b8;">450.00 SUI &rarr; 1,656.00 USDT</td>
+              <td class="col-mono" style="font-size: 11px; color: #64748b;">Epoch #542 • 12s ago</td>
+              <td>
+                <span class="badge-status-committed">COMMITTED</span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col-cyan" style="cursor: pointer;" onclick="copyAddress('0x12e4f5a6b7c8d9e0123456789abcdef01234567884fc')" title="Click to copy full hash">
+                0x12e4...84fc 📋
+              </td>
+              <td style="font-weight: 700; color: #ffffff;">Consensus Inflow Injection</td>
+              <td class="col-mono" style="color: #94a3b8;">Staked 800.00 SUI</td>
+              <td class="col-mono" style="font-size: 11px; color: #64748b;">Epoch #542 • 45s ago</td>
+              <td>
+                <span class="badge-status-committed">COMMITTED</span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col-cyan" style="cursor: pointer;" onclick="copyAddress('0x3b89c0d1e2f3a4b5c6d7e8f90123456789abcdef51e2')" title="Click to copy full hash">
+                0x3b89...51e2 📋
+              </td>
+              <td style="font-weight: 700; color: #ffffff;">Bridge Wormhole Transit</td>
+              <td class="col-mono" style="color: #94a3b8;">Dispatched 250 SUI &rarr; EVM</td>
+              <td class="col-mono" style="font-size: 11px; color: #64748b;">Epoch #541 • 2m ago</td>
+              <td>
+                <span class="badge-status-committed">COMMITTED</span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col-cyan" style="cursor: pointer;" onclick="copyAddress('0x7c41a2b3c4d5e6f7a8b9c0d1e2f3a4b5c6d7e8f999bb')" title="Click to copy full hash">
+                0x7c41...99bb 📋
+              </td>
+              <td style="font-weight: 700; color: #ffffff;">DeepBook v3 Order Match</td>
+              <td class="col-mono" style="color: #94a3b8;">Limit Filled 500 SUI @ $18.42</td>
+              <td class="col-mono" style="font-size: 11px; color: #64748b;">Epoch #541 • 5m ago</td>
+              <td>
+                <span class="badge-status-committed">COMMITTED</span>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="col-cyan" style="cursor: pointer;" onclick="copyAddress('0x5a18b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6e7f8a933d0')" title="Click to copy full hash">
+                0x5a18...33d0 📋
+              </td>
+              <td style="font-weight: 700; color: #ffffff;">Consensus Harvest Inflow</td>
+              <td class="col-mono" style="color: #94a3b8;">Claimed 42.80 CETUS Yield</td>
+              <td class="col-mono" style="font-size: 11px; color: #64748b;">Epoch #540 • 12m ago</td>
+              <td>
+                <span class="badge-status-committed">COMMITTED</span>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: Persistent Telemetry Sidebar -->
+    <aside class="right-sidebar-column">
+
+      <!-- Dynamic Telemetry Tracking Widget -->
+      <div class="sidebar-telemetry-card">
+        <div class="timeframe-strip">
+          <div>
+            <div class="sidebar-card-title">Dynamic Telemetry</div>
+            <div class="sidebar-card-sub" style="margin-bottom: 0;">SUI/USDT Spot Matrices</div>
+          </div>
+          <div class="timeframe-btn-group">
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '15M')">15M</button>
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '1H')">1H</button>
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '4H')">4H</button>
+            <button class="timeframe-btn active" onclick="setCandleTimeframe(this, '1D')">1D</button>
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '1W')">1W</button>
+          </div>
+        </div>
+
+        <div class="candlestick-chart-box">
+          <div class="chart-stats-header">
+            <span class="symbol">SUI/USDT</span>
+            <span class="price" id="telemetrySpotPrice">$0.725</span>
+            <span class="change down" id="telemetrySpotChange">&darr; 3.36%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: #64748b; margin-bottom: 8px;">
+            <span>24h H: <span style="color: #00ff88;">$0.782</span></span>
+            <span>24h L: <span style="color: #f43f5e;">$0.698</span></span>
+            <span>Vol: <span style="color: #38bdf8;">42.8M SUI</span></span>
+          </div>
+          <canvas id="telemetryCandleCanvas"></canvas>
+
+          <!-- Liquidity Depth Gauge -->
+          <div class="depth-liquidity-box">
+            <div class="depth-header-row">
+              <span style="color: #00ff88;">BID DEPTH: 67%</span>
+              <span style="color: #f43f5e;">ASK DEPTH: 33%</span>
+            </div>
+            <div class="depth-bar-gauge">
+              <div class="depth-fill-buy" style="width: 67%;"></div>
+              <div class="depth-fill-sell" style="width: 33%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Telemetry Engine Widget -->
+      <div class="engine-status-card">
+        <div class="engine-header-title">SYSTEM TELEMETRY ENGINE</div>
+        
+        <div class="engine-metric-row">
+          <span class="metric-name">Sui Network Gas Load</span>
+          <span class="metric-val" id="telemetryGasLoad">1,980 MIST</span>
+        </div>
+        <div style="height: 4px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; overflow: hidden; margin-bottom: 12px;">
+          <div id="telemetryGasBar" style="width: 48%; height: 100%; background: #38bdf8; transition: width 0.3s ease;"></div>
+        </div>
+
+        <div class="engine-metric-row">
+          <span class="metric-name">Mysticeti Latency</span>
+          <span class="metric-val" style="color: #00ff88;">&lt;390ms FINALITY</span>
+        </div>
+        <div class="engine-metric-row">
+          <span class="metric-name">Node Protocol Status</span>
+          <span class="metric-val green">SECURE_NODE_SYNC_OK</span>
+        </div>
+        <div class="engine-metric-row">
+          <span class="metric-name">Consensus Quorum</span>
+          <span class="metric-val" style="color: #38bdf8;">100/100 VALIDATORS</span>
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <script src="dashboard.js"></script>
+</body>
+</html>

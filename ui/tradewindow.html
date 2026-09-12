@@ -649,6 +649,67 @@
       color: var(--accent);
       margin-right: 8px;
     }
+
+    /* ─── RESPONSIVE WEB SCALING (SPLIT-SCREEN & LAPTOPS) ─── */
+    @media (max-width: 1280px) {
+      .core-workspace {
+        grid-template-columns: 270px 1fr 210px;
+      }
+      #terminal-wrapper {
+        grid-template-rows: 48px 1fr 180px;
+      }
+      .live-tickers-strip {
+        gap: 14px;
+        padding-left: 14px;
+      }
+      .branding-title {
+        font-size: 12px;
+      }
+      .audit-ledger-container {
+        gap: 12px;
+        padding: 4px 10px;
+      }
+    }
+
+    @media (max-width: 1050px) {
+      .core-workspace {
+        grid-template-columns: 240px 1fr 180px;
+      }
+      #terminal-wrapper {
+        grid-template-rows: 44px 1fr 140px;
+      }
+      .scrollable-config-box {
+        padding: 10px;
+      }
+      .hud-active-indicators-tracker {
+        padding: 4px 8px;
+        gap: 6px;
+      }
+      .hud-pill {
+        font-size: 8.5px;
+        padding: 2px 5px;
+      }
+    }
+
+    @media (max-width: 820px) {
+      body {
+        height: auto !important;
+        overflow-y: auto !important;
+      }
+      .core-workspace {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr auto;
+        overflow-y: auto;
+      }
+      .panel-shelf:last-child {
+        display: none;
+      }
+      #terminal-wrapper {
+        height: auto;
+        min-height: calc(100vh - var(--nav-height, 64px));
+        grid-template-rows: auto 1fr auto;
+      }
+    }
   </style>
 </head>
 
@@ -691,8 +752,8 @@
       <a href="tradewindow.html" class="nav-module-link active" title="DeepBook Swap Terminal">
         <span>Trade</span>
       </a>
-      <a href="wallet1.html" class="nav-module-link" title="Portfolio &amp; Wallet">
-        <span>Wallet</span>
+      <a href="portfolio.html" class="nav-module-link" title="Portfolio &amp; Vaults">
+        <span>Portfolio</span>
       </a>
       <a href="loginpage.html" class="nav-module-link highlight" title="Web3 Login Portal">
         <span>Login &rarr;</span>

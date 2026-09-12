@@ -121,13 +121,28 @@
       position: relative;
     }
 
-    @media (max-width: 1200px) {
-      .institutional-gateway-view { grid-template-columns: 1fr 440px; }
+    @media (max-width: 1280px) {
+      .institutional-gateway-view { grid-template-columns: 1fr 420px; }
+      .gateway-left-3d { padding: 20px 24px; }
+      .gateway-right-portal { padding: 20px; }
+      .gateway-telemetry-card { padding: 14px 18px; gap: 10px; }
     }
 
-    @media (max-width: 960px) {
-      .institutional-gateway-view { grid-template-columns: 1fr; }
-      .gateway-left-3d { display: none; }
+    @media (max-width: 980px) {
+      .institutional-gateway-view { 
+        grid-template-columns: 1fr; 
+        overflow-y: auto;
+      }
+      .gateway-left-3d { 
+        min-height: 260px; 
+        max-height: 280px; 
+        padding: 16px 20px; 
+      }
+      .gateway-right-portal {
+        border-left: none;
+        border-top: 1px solid rgba(56, 189, 248, 0.16);
+        padding: 20px;
+      }
     }
 
     /* Left 3D Mysticeti Sphere Canvas Container */
@@ -442,9 +457,6 @@
       <a href="security_dashboard.html" class="nav-module-link" title="Security Sentinel">
         <span>Security</span>
       </a>
-      <a href="wallet1.html" class="nav-module-link" title="Portfolio &amp; QuantX Wallet">
-        <span>Wallet</span>
-      </a>
       <a href="loginpage.html" class="nav-module-link highlight" title="Web3 Login Portal">
         <span>Login &rarr;</span>
       </a>
@@ -597,6 +609,7 @@
     /* ─── 3D GEODESIC MYSTICETI SPHERE (THREE.JS) ─── */
     let geoScene, geoCamera, geoRenderer, geoCage, geoCore, geoParticles;
     let isBatchVerified = false;
+    const geoClock = new THREE.Clock();
 
     function initGeodesicSphere3D() {
       const canvas = document.getElementById('geodesic-3d-canvas');
@@ -610,9 +623,17 @@
       geoCamera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
       geoCamera.position.z = 8.5;
 
-      geoRenderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      geoRenderer = new THREE.WebGLRenderer({ 
+        canvas, 
+        alpha: true, 
+        antialias: true,
+        powerPreference: "high-performance",
+        precision: "mediump",
+        depth: true,
+        stencil: false
+      });
       geoRenderer.setSize(width, height);
-      geoRenderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+      geoRenderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.25));
 
       // 1. Outer Geodesic Wireframe Cage
       const cageGeom = new THREE.IcosahedronGeometry(2.8, 2);
@@ -662,7 +683,7 @@
       geoScene.add(ptLight2);
 
       // 5. Star / Particle Dust
-      const dustCount = 150;
+      const dustCount = 120;
       const dustGeom = new THREE.BufferGeometry();
       const dustPos = new Float32Array(dustCount * 3);
       for (let i = 0; i < dustCount * 3; i += 3) {
@@ -707,35 +728,26 @@
 
     function animateGeodesic() {
       requestAnimationFrame(animateGeodesic);
+      if (document.hidden) return;
+      const dt = Math.min(geoClock.getDelta(), 0.05);
       if (geoCage) {
-        geoCage.rotation.y += 0.004;
-        geoCage.rotation.x += 0.002;
+        geoCage.rotation.y += 0.22 * dt;
+        geoCage.rotation.x += 0.11 * dt;
       }
       if (geoCore) {
-        geoCore.rotation.y += 0.005;
-        geoCore.rotation.x += 0.003;
+        geoCore.rotation.y += 0.32 * dt;
+        geoCore.rotation.x += 0.16 * dt;
       }
       if (geoParticles) {
-        geoParticles.rotation.y += 0.0015;
+        geoParticles.rotation.y += 0.08 * dt;
       }
       if (geoRenderer && geoScene && geoCamera) {
         geoRenderer.render(geoScene, geoCamera);
       }
     }
 
-    /* ─── SUB-WALLETS DATA & CSV BATCH ENGINE ─── */
-    const sampleWallets = [
-      { id: 1, name: 'Wallet-1 (Alpha-Fund)', address: '0xa3b8...0001', alloc: '10.6%', bal: '27,472 SUI', token: 'SUI', active: true },
-      { id: 2, name: 'Wallet-2 (Beta-Trading)', address: '0xa3b8...0002', alloc: '8.4%', bal: '35,860 USDC', token: 'USDC', active: true },
-      { id: 3, name: 'Wallet-3 (Gamma-Arb)', address: '0xa3b8...0003', alloc: '6.7%', bal: '34,862 DEEP', token: 'DEEP', active: true },
-      { id: 4, name: 'Wallet-4 (Delta-LP)', address: '0xa3b8...0004', alloc: '5.6%', bal: '44,274 SUI', token: 'SUI', active: true },
-      { id: 5, name: 'Wallet-5 (Epsilon-MM)', address: '0xa3b8...0005', alloc: '5.0%', bal: '24,110 USDC', token: 'USDC', active: true },
-      { id: 6, name: 'Wallet-6 (Zeta-Hedge)', address: '0xa3b8...0006', alloc: '4.5%', bal: '13,233 SUI', token: 'SUI', active: true },
-      { id: 7, name: 'Wallet-7 (Eta-Liquid)', address: '0xa3b8...0007', alloc: '3.9%', bal: '18,762 DEEP', token: 'DEEP', active: true },
-      { id: 8, name: 'Wallet-8 (Theta-Swap)', address: '0xa3b8...0008', alloc: '3.9%', bal: '12,182 USDC', token: 'USDC', active: true },
-      { id: 9, name: 'Wallet-9 (Iota-Book)', address: '0xa3b8...0009', alloc: '3.4%', bal: '41,181 SUI', token: 'SUI', active: true },
-      { id: 10, name: 'Wallet-10 (Kappa-Pool)', address: '0xa3b8...000a', alloc: '3.4%', bal: '18,797 DEEP', token: 'DEEP', active: true }
-    ];
+    /* ─── DYNAMIC SUB-WALLETS DATA & CSV BATCH ENGINE ─── */
+    let sampleWallets = [];
 
     function renderSubWallets() {
       const list = document.getElementById('subWalletsList');
@@ -762,64 +774,230 @@
 
     function toggleWallet(id) {
       const w = sampleWallets.find(x => x.id === id);
-      if (w) w.active = !w.active;
-      renderSubWallets();
+      if (w) {
+        w.active = !w.active;
+        const lbl = document.querySelector(`label[for="chk_w_${id}"]`);
+        if (lbl) lbl.style.color = w.active ? '#fff' : '#64748b';
+        updateSelectedWalletsCount();
+      }
     }
 
     function updateSelectedWalletsCount() {
       const count = sampleWallets.filter(w => w.active).length;
       document.getElementById('selectedWalletsCount').textContent = `${sampleWallets.length} wallets · ${count} selected`;
       document.getElementById('btnProceedExecution').innerHTML = `<span>⚡ Proceed with ${count} Wallets to Execution Terminal &rarr;</span>`;
+      
+      // Store current active wallets in storage for trade terminal
+      try {
+        localStorage.setItem('deepbook_wallets_v33', JSON.stringify(sampleWallets));
+        localStorage.setItem('deepbook_wallets', JSON.stringify(sampleWallets));
+        sessionStorage.setItem('deepbook_selected_wallets', JSON.stringify(sampleWallets.filter(w => w.active)));
+      } catch(e) {}
     }
 
-    function loadSamplePortfolioCsv(e) {
-      if (e) e.stopPropagation();
-      const consoleBox = document.getElementById('gatewayConsoleLogs');
-      consoleBox.innerHTML = '';
+    function parseCsvContent(text, filename = 'portfolio.csv') {
+      const lines = text.split(/\r?\n/).filter(l => l.trim());
+      if (lines.length < 2) return;
 
-      const lines = [
-        '[SYS_GATEWAY] Reading credentials portfolio.csv...',
-        '[NODE-SYNC-01] Alpha-Fund-001 + 0xa3b8...0001 - Allocation: 10.6%',
-        '[NODE-SYNC-02] Beta-Trading-002 + 0xa3b8...0002 - Allocation: 8.4%',
-        '[NODE-SYNC-03] Gamma-Arb-003 + 0xa3b8...0003 - Allocation: 6.7%',
-        '[NODE-SYNC-04] Delta-LP-004 + 0xa3b8...0004 - Allocation: 5.6%',
-        '[NODE-SYNC-05] Epsilon-Market-005 + 0xa3b8...0005 - Allocation: 5.0%',
-        '[NODE-SYNC-06] Zeta-Hedge-006 + 0xa3b8...0006 - Allocation: 4.5%',
-        '[NODE-SYNC-07] Eta-Liquid-007 + 0xa3b8...0007 - Allocation: 3.9%',
-        '[NODE-SYNC-08] Theta-Swap-008 + 0xa3b8...0008 - Allocation: 3.9%',
-        '[NODE-SYNC-09] Iota-Book-009 + 0xa3b8...0009 - Allocation: 3.4%',
-        '[NODE-SYNC-10] Kappa-Pool-010 + 0xa3b8...000a - Allocation: 3.4%',
-        '[SUCCESS] 10 wallet(s) mapped. Mysticeti L1 Consensus Armed.'
-      ];
+      const headers = lines[0].split(',').map(h => h.trim().toLowerCase());
+      const labelIdx = headers.findIndex(h => h === 'username' || h === 'label' || h === 'name' || h === 'wallet');
+      const addrIdx = headers.findIndex(h => h === 'address' || h === 'addr' || h === 'public_key');
+      const allocIdx = headers.findIndex(h => h === 'allocation' || h === 'alloc');
+      const tokenIdx = headers.findIndex(h => h === 'primary_token' || h === 'token' || h === 'asset');
+      const holdingsIdx = headers.findIndex(h => h === 'holdings' || h === 'balance');
 
-      lines.forEach((line, idx) => {
-        setTimeout(() => {
-          const div = document.createElement('div');
-          div.className = 'log-line' + (idx === lines.length - 1 ? ' cyan' : '');
-          div.textContent = line;
-          consoleBox.appendChild(div);
-          consoleBox.scrollTop = consoleBox.scrollHeight;
-        }, idx * 60);
-      });
+      const parsedWallets = [];
+      for (let i = 1; i < lines.length; i++) {
+        const cols = lines[i].split(',').map(c => c.trim());
+        if (cols.length < 2) continue;
 
-      setTimeout(() => {
+        const rawLabel = labelIdx >= 0 ? cols[labelIdx] : `Node-${i}`;
+        const name = rawLabel || `Wallet-${i}`;
+        let rawAddr = addrIdx >= 0 ? cols[addrIdx] : '';
+        if (!rawAddr || !rawAddr.startsWith('0x')) {
+          rawAddr = '0x' + (i).toString(16).padStart(4, '0') + '...d' + i.toString(16).padStart(3, '0');
+        }
+        const shortAddr = rawAddr.length > 12 ? `${rawAddr.slice(0, 6)}...${rawAddr.slice(-4)}` : rawAddr;
+        const alloc = (allocIdx >= 0 && cols[allocIdx] ? cols[allocIdx] : (100 / (lines.length - 1)).toFixed(1)) + '%';
+        const tok = tokenIdx >= 0 && cols[tokenIdx] ? cols[tokenIdx].toUpperCase() : 'SUI';
+
+        let bal = '10,000 ' + tok;
+        if (holdingsIdx >= 0 && cols[holdingsIdx]) {
+          const match = cols[holdingsIdx].match(/\{\s*(\w+)\s*::\s*([\d.]+)\s*\}/);
+          if (match) bal = `${parseFloat(match[2]).toLocaleString()} ${match[1].toUpperCase()}`;
+          else if (!isNaN(parseFloat(cols[holdingsIdx]))) bal = `${parseFloat(cols[holdingsIdx]).toLocaleString()} ${tok}`;
+        }
+
+        parsedWallets.push({
+          id: i,
+          name,
+          address: rawAddr,
+          shortAddress: shortAddr,
+          alloc,
+          bal,
+          token: tok,
+          active: true
+        });
+      }
+
+      if (parsedWallets.length > 0) {
+        sampleWallets = parsedWallets;
+        renderSubWallets();
+
+        const totalCount = sampleWallets.length;
+        document.getElementById('csvDropTitle').textContent = `✅ ${totalCount} Institutional Wallets Synced`;
+        document.getElementById('csvDropSub').textContent = `${filename} parsed · ${totalCount} nodes mapped to Mysticeti Consensus`;
+        document.getElementById('gatewayVerifState').textContent = `WALLET_BATCH_${totalCount}_OK`;
+        document.getElementById('topVerifStatus').textContent = `BATCH_${totalCount}_OK`;
         setSphereVerifiedColor();
-        document.getElementById('gatewayVerifState').textContent = 'WALLET_BATCH_OK';
-        document.getElementById('topVerifStatus').textContent = 'WALLET_BATCH_OK';
-        document.getElementById('csvDropTitle').textContent = '✅ 10 Institutional Wallets Synced';
-        document.getElementById('csvDropSub').textContent = 'portfolio.csv parsed · Mysten Mysticeti Consensus Validated';
-      }, lines.length * 60 + 50);
+
+        // Stream console logs dynamically matching actual parsed wallets
+        const consoleBox = document.getElementById('gatewayConsoleLogs');
+        consoleBox.innerHTML = '';
+
+        const logLines = [
+          `[SYS_GATEWAY] Parsing credentials from ${filename} (${totalCount} nodes detected)...`
+        ];
+
+        // Stream up to first 12, then summarize if larger
+        const sampleLogs = sampleWallets.slice(0, 12);
+        sampleLogs.forEach((w, idx) => {
+          logLines.push(`[NODE-SYNC-${String(idx + 1).padStart(2, '0')}] ${w.name} (${w.shortAddress}) - Alloc: ${w.alloc}`);
+        });
+
+        if (totalCount > 12) {
+          logLines.push(`[NODE-SYNC-BATCH] ... and ${totalCount - 12} additional wallet nodes compiled.`);
+        }
+
+        logLines.push(`[SUCCESS] Exactly ${totalCount} wallet(s) armed on Mysticeti L1 Consensus.`);
+
+        logLines.forEach((line, idx) => {
+          setTimeout(() => {
+            const div = document.createElement('div');
+            div.className = 'log-line' + (idx === logLines.length - 1 ? ' cyan' : '');
+            div.textContent = line;
+            consoleBox.appendChild(div);
+            consoleBox.scrollTop = consoleBox.scrollHeight;
+          }, idx * 30);
+        });
+      }
     }
 
-    // CSV Dropzone listeners
+    function handleUploadedCsvFile(file) {
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = function(e) {
+        parseCsvContent(e.target.result, file.name);
+      };
+      reader.readAsText(file);
+    }
+
+    async function loadSamplePortfolioCsv(e) {
+      if (e) e.stopPropagation();
+      try {
+        const resp = await fetch('Deepbookv3ui/portfolio.csv?_t=' + Date.now(), { cache: 'no-cache' });
+        if (resp.ok) {
+          const csvText = await resp.text();
+          parseCsvContent(csvText, 'portfolio.csv (33 Institutional Nodes)');
+          return;
+        }
+      } catch (err) {}
+
+      // Embedded 33 institutional nodes dataset
+      const sampleText = `username,password,address,allocation,risk_tier,primary_token,holdings
+Alpha-Fund-001,pk_iy9wco37,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000000,10.6,low,SUI,{SUI :: 27472}
+Beta-Trading-002,pk_d6tgqowg,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000001,8.4,medium,USDC,{USDC :: 35860}
+Gamma-Arb-003,pk_0luz4vi8,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000002,6.7,high,DEEP,{DEEP :: 34862}
+Delta-LP-004,pk_0ppay4r0,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000003,5.6,low,SUI,{SUI :: 44274}
+Epsilon-Market-005,pk_0ybj28fw,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000004,5,medium,USDC,{USDC :: 24110}
+Zeta-Hedge-006,pk_nb0x7d7x,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000005,4.5,low,SUI,{SUI :: 13233}
+Eta-Liquid-007,pk_hoalsm8f,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000006,3.9,high,DEEP,{DEEP :: 18762}
+Theta-Swap-008,pk_gqmd40d0,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000007,3.9,medium,USDC,{USDC :: 12182}
+Iota-Book-009,pk_3ebmy8tp,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000008,3.4,low,SUI,{SUI :: 41181}
+Kappa-Pool-010,pk_74l5r32y,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000009,3.4,low,DEEP,{DEEP :: 18797}
+Lambda-Prop-011,pk_1kxapw4p,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f0000000a,3.4,medium,USDC,{USDC :: 35459}
+Mu-Bounty-012,pk_1ve391ih,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f0000000b,2.8,low,SUI,{SUI :: 34756}
+Nu-Rebate-013,pk_em389qbt,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f0000000c,2.8,medium,DEEP,{DEEP :: 10363}
+Xi-Vault-014,pk_n8irpmiy,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f0000000d,2.8,high,SUI,{SUI :: 24401}
+Omicron-Stake-015,pk_0pgh4tvd,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f0000000e,2.8,low,USDC,{USDC :: 12129}
+Pi-Flash-016,pk_69612eff,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f0000000f,2.2,medium,DEEP,{DEEP :: 25884}
+Rho-Margin-017,pk_bnkzcipw,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000010,2.2,low,SUI,{SUI :: 17301}
+Sigma-Grid-018,pk_u5b6zljf,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000011,2.2,low,USDC,{USDC :: 15781}
+Tau-Algo-019,pk_1bc9pxho,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000012,2.2,medium,SUI,{SUI :: 13955}
+Upsilon-Spot-020,pk_xbaa338x,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000013,2.2,low,DEEP,{DEEP :: 31913}
+Phi-Futures-021,pk_ipum5o16,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000014,1.7,high,USDC,{USDC :: 35102}
+Chi-Option-022,pk_nil2oad1,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000015,1.7,low,SUI,{SUI :: 42645}
+Psi-Synth-023,pk_6ss8jvn8,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000016,1.7,medium,DEEP,{DEEP :: 9654}
+Omega-Core-024,pk_53m0j3op,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000017,1.7,low,USDC,{USDC :: 32954}
+Aero-Trade-025,pk_5eyp6xa2,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000018,1.7,medium,SUI,{SUI :: 2162}
+Blitz-Fund-026,pk_6o6xiy0o,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000019,1.7,low,DEEP,{DEEP :: 9701}
+Crypto-Depth-027,pk_rnvev2t4,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f0000001a,1.7,high,USDC,{USDC :: 12270}
+Drift-Arb-028,pk_xq3j7jvg,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f0000001b,1.7,low,SUI,{SUI :: 26896}
+Edge-MM-029,pk_s6ulp66n,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f0000001c,1.7,medium,USDC,{USDC :: 23386}
+Flux-Peg-030,pk_14o5r22q,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f0000001d,1.7,low,DEEP,{DEEP :: 13182}
+Graviton-Swap-031,pk_xtzta1ip,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f0000001e,1.1,medium,SUI,{SUI :: 23926}
+Helix-Prop-032,pk_aup6e7ab,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f0000001f,0.9,low,USDC,{USDC :: 37654}
+Infinity-Prime-033,pk_9q2mzk18,0xa3b8f9c1d4e572607b2c9a4f6d1e8f3c5a7b9c1d3e5f7a8b9c0d1e2f00000020,0.8,low,SUI,{SUI :: 18450}`;
+      parseCsvContent(sampleText, 'portfolio.csv (33 Institutional Nodes)');
+    }
+
+    // CSV Dropzone listeners (Click and Drag & Drop)
     const csvDrop = document.getElementById('csvDropZone');
     const csvInput = document.getElementById('csvFileInput');
-    csvDrop.addEventListener('click', () => csvInput.click());
-    csvInput.addEventListener('change', () => loadSamplePortfolioCsv());
+
+    if (csvDrop && csvInput) {
+      csvDrop.addEventListener('click', () => csvInput.click());
+      csvInput.addEventListener('change', (e) => {
+        if (e.target.files && e.target.files[0]) {
+          handleUploadedCsvFile(e.target.files[0]);
+        }
+      });
+
+      csvDrop.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        csvDrop.style.borderColor = '#38bdf8';
+        csvDrop.style.background = 'rgba(56, 189, 248, 0.08)';
+      });
+
+      csvDrop.addEventListener('dragleave', (e) => {
+        e.preventDefault();
+        csvDrop.style.borderColor = '';
+        csvDrop.style.background = '';
+      });
+
+      csvDrop.addEventListener('drop', (e) => {
+        e.preventDefault();
+        csvDrop.style.borderColor = '';
+        csvDrop.style.background = '';
+        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files[0]) {
+          handleUploadedCsvFile(e.dataTransfer.files[0]);
+        }
+      });
+    }
 
     window.addEventListener('DOMContentLoaded', () => {
       initGeodesicSphere3D();
-      renderSubWallets();
+
+      // Check if previously stored wallets exist and have exactly 33 items
+      try {
+        const stored = localStorage.getItem('deepbook_wallets_v33');
+        if (stored) {
+          const parsed = JSON.parse(stored);
+          if (Array.isArray(parsed) && parsed.length === 33) {
+            sampleWallets = parsed;
+            document.getElementById('csvDropTitle').textContent = `✅ 33 Institutional Wallets Synced`;
+            document.getElementById('csvDropSub').textContent = `Loaded 33 active nodes from previous session`;
+            document.getElementById('gatewayVerifState').textContent = `WALLET_BATCH_33_OK`;
+            document.getElementById('topVerifStatus').textContent = `BATCH_33_OK`;
+            setSphereVerifiedColor();
+            renderSubWallets();
+            return;
+          }
+        }
+      } catch(e) {}
+
+      // Automatically sync latest 33-wallet dataset
+      loadSamplePortfolioCsv();
     });
   </script>
 </body>

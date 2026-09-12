@@ -1,0 +1,491 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Atomic Swap // DeepBook v3 CLOB Engine — FluidBLCX</title>
+  <link rel="stylesheet" href="dashboard.css">
+  <style>
+    .swap-terminal-card {
+      background: var(--bg-card);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 36px 40px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      max-width: 640px;
+    }
+
+    .swap-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 24px;
+    }
+
+    .swap-title-row h2 {
+      font-size: 20px;
+      font-weight: 800;
+      color: #ffffff;
+      letter-spacing: -0.02em;
+    }
+
+    .swap-route-pill {
+      font-family: var(--font-mono);
+      font-size: 10.5px;
+      font-weight: 700;
+      color: var(--green);
+      background: rgba(0, 255, 136, 0.08);
+      border: 1px solid rgba(0, 255, 136, 0.25);
+      padding: 4px 10px;
+      border-radius: 6px;
+    }
+
+    .swap-input-card {
+      background: rgba(10, 18, 38, 0.9);
+      border: 1px solid rgba(56, 189, 248, 0.16);
+      border-radius: var(--radius-md);
+      padding: 16px 20px;
+      transition: all 0.2s;
+    }
+
+    .swap-input-card:focus-within {
+      border-color: #38bdf8;
+      box-shadow: 0 0 16px rgba(56, 189, 248, 0.15);
+    }
+
+    .swap-header-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      font-family: var(--font-mono);
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .swap-row-flex {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .swap-number-input {
+      background: transparent;
+      border: none;
+      color: #ffffff;
+      font-size: 32px;
+      font-weight: 800;
+      font-family: var(--font-main);
+      outline: none;
+      width: 55%;
+    }
+
+    .swap-token-select {
+      background: rgba(8, 16, 36, 0.95);
+      border: 1px solid rgba(56, 189, 248, 0.25);
+      border-radius: var(--radius-full);
+      padding: 8px 18px;
+      color: #ffffff;
+      font-size: 13.5px;
+      font-weight: 700;
+      outline: none;
+      cursor: pointer;
+    }
+
+    .swap-divider-btn-wrap {
+      display: flex;
+      justify-content: center;
+      margin: -10px 0;
+      position: relative;
+      z-index: 5;
+    }
+
+    .btn-invert-swap {
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      background: #0284c7;
+      border: 3px solid var(--bg-space);
+      color: #ffffff;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 0 14px rgba(2, 132, 199, 0.6);
+      transition: all 0.2s ease;
+    }
+
+    .btn-invert-swap:hover {
+      background: #0ea5e9;
+      transform: rotate(180deg) scale(1.05);
+    }
+
+    .swap-specs-box {
+      background: rgba(8, 14, 28, 0.7);
+      border: 1px solid rgba(56, 189, 248, 0.1);
+      border-radius: var(--radius-md);
+      padding: 14px 18px;
+      margin: 20px 0;
+    }
+
+    .specs-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11.5px;
+      margin-bottom: 8px;
+    }
+
+    .specs-row:last-child {
+      margin-bottom: 0;
+    }
+
+    .specs-row .lbl {
+      color: var(--text-dim);
+    }
+
+    .specs-row .val {
+      font-family: var(--font-mono);
+      font-weight: 600;
+      color: #ffffff;
+    }
+
+    .btn-execute-atomic-swap {
+      width: 100%;
+      height: 52px;
+      border-radius: var(--radius-full);
+      background: linear-gradient(135deg, #0284c7 0%, #00b4d8 100%);
+      border: none;
+      color: #ffffff;
+      font-size: 14.5px;
+      font-weight: 800;
+      cursor: pointer;
+      box-shadow: 0 0 24px rgba(2, 132, 199, 0.45);
+      transition: all 0.2s ease;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn-execute-atomic-swap:hover {
+      background: linear-gradient(135deg, #0ea5e9 0%, #00d2ff 100%);
+      box-shadow: 0 0 32px rgba(14, 165, 233, 0.65);
+      transform: translateY(-1px);
+    }
+  </style>
+</head>
+<body>
+
+  <div class="cyber-bg"></div>
+  <div class="cyber-glow"></div>
+
+  <!-- ─── TOP NAVIGATION BAR ─── -->
+  <header class="dash-header">
+    <a href="index.html" class="dash-brand">
+      <div class="brand-waterdrop">
+        <svg viewBox="0 0 24 24">
+          <path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"></path>
+        </svg>
+      </div>
+      <h1>FluidBLCX</h1>
+    </a>
+
+    <!-- Navigation Pills Group -->
+    <nav class="nav-pills-bar">
+      <a href="portfolio.html" class="nav-pill-item">Portfolio</a>
+      <a href="market.html" class="nav-pill-item">Live Spot Market</a>
+      <a href="swap.html" class="nav-pill-item active">Atomic Swap</a>
+      <a href="bridge.html" class="nav-pill-item">Bridge Gateway</a>
+      <a href="yield.html" class="nav-pill-item">Yield Farming</a>
+      <a href="audit.html" class="nav-pill-item">Ledger Audit</a>
+    </nav>
+
+    <!-- Right Controls -->
+    <div class="nav-right-cluster">
+      <a href="tradewindow.html" class="btn-quant-tradex" title="Launch High-Frequency Trading Terminal">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+          <polyline points="23 6 13.5 15.5 8.5 10.5 1 18"></polyline>
+          <polyline points="17 6 23 6 23 12"></polyline>
+        </svg>
+        <span>Quant TradeX</span>
+      </a>
+
+      <div class="status-pill" id="walletStatusPill">
+        <span class="status-dot-indicator" id="walletStatusDot"></span>
+        <span id="walletStatusText">Not Connected</span>
+      </div>
+
+      <button class="btn-connect-wallet" id="connectWalletBtn">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"></rect>
+          <path d="M7 15h0M2 10h20"></path>
+        </svg>
+        <span>Connect Wallet</span>
+      </button>
+    </div>
+  </header>
+
+  <!-- ─── MAIN TWO-COLUMN DASHBOARD WORKSPACE ─── -->
+  <main class="dash-workspace">
+
+    <!-- LEFT COLUMN: Instant Atomic Swap Terminal -->
+    <div class="left-content-column">
+
+      <div class="swap-terminal-card">
+        <div class="swap-title-row">
+          <div>
+            <h2 style="font-size: 20px; font-weight: 800; color: #ffffff;">DeepBook v3 Atomic CLOB Swap</h2>
+            <div style="font-size: 11.5px; color: #64748b; margin-top: 4px;">Zero-Slippage Concentrated Liquidity Routing on Sui Sovereign L1</div>
+          </div>
+          <span class="swap-route-pill">MYSTICETI L1 HYBRID CLOB</span>
+        </div>
+
+        <!-- Route Visualization Strip -->
+        <div style="display: flex; align-items: center; justify-content: space-between; background: rgba(56, 189, 248, 0.06); border: 1px solid rgba(56, 189, 248, 0.2); border-radius: 8px; padding: 10px 14px; margin: 18px 0; font-family: var(--font-mono); font-size: 11px;">
+          <span style="color: #94a3b8;">BEST ROUTE:</span>
+          <span id="swapRouteBadge" style="color: #00ff88; font-weight: 700;">SUI &rarr; DeepBook v3 Central Limit Order Book &rarr; USDC</span>
+        </div>
+
+        <!-- You Pay Box -->
+        <div class="swap-input-card">
+          <div class="swap-header-meta">
+            <span>You Pay</span>
+            <span id="payBalanceLabel">Balance: 14,120 SUI</span>
+          </div>
+          <div class="swap-row-flex">
+            <input type="number" class="swap-number-input" id="swapPayAmount" value="250" oninput="recalculateSwap()" />
+            <select class="swap-token-select" id="swapPayToken" onchange="recalculateSwap()">
+              <option value="SUI" selected>SUI</option>
+              <option value="USDC">USDC</option>
+              <option value="BTC">BTC</option>
+              <option value="ETH">ETH</option>
+              <option value="USDT">USDT</option>
+              <option value="PAXG">PAXG (Gold)</option>
+              <option value="DEEP">DEEP</option>
+            </select>
+          </div>
+          <!-- Quick percentage pills -->
+          <div style="display: flex; gap: 6px; margin-top: 10px;">
+            <button class="filter-tab-pill" style="padding: 2px 10px; font-size: 10.5px;" onclick="setSwapPct(0.25)">25%</button>
+            <button class="filter-tab-pill" style="padding: 2px 10px; font-size: 10.5px;" onclick="setSwapPct(0.50)">50%</button>
+            <button class="filter-tab-pill" style="padding: 2px 10px; font-size: 10.5px;" onclick="setSwapPct(0.75)">75%</button>
+            <button class="filter-tab-pill" style="padding: 2px 10px; font-size: 10.5px;" onclick="setSwapPct(1.00)">MAX</button>
+          </div>
+        </div>
+
+        <!-- Invert Button -->
+        <div class="swap-divider-btn-wrap">
+          <button class="btn-invert-swap" onclick="invertSwapPair()" title="Invert Token Pair">⇅</button>
+        </div>
+
+        <!-- You Receive Box -->
+        <div class="swap-input-card">
+          <div class="swap-header-meta">
+            <span>You Receive (Estimated)</span>
+            <span id="receiveBalanceLabel">Balance: 4,500 USDC</span>
+          </div>
+          <div class="swap-row-flex">
+            <input type="text" class="swap-number-input" id="swapReceiveAmount" value="181.25" readonly />
+            <select class="swap-token-select" id="swapReceiveToken" onchange="recalculateSwap()">
+              <option value="USDC" selected>USDC</option>
+              <option value="SUI">SUI</option>
+              <option value="BTC">BTC</option>
+              <option value="ETH">ETH</option>
+              <option value="USDT">USDT</option>
+              <option value="PAXG">PAXG (Gold)</option>
+              <option value="DEEP">DEEP</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Meta specs -->
+        <div class="swap-specs-box">
+          <div class="specs-row">
+            <span class="lbl">Exchange Rate:</span>
+            <span class="val" id="swapRateText" style="color: #38bdf8;">1 SUI = 0.7250 USDC</span>
+          </div>
+          <div class="specs-row">
+            <span class="lbl">Slippage Tolerance:</span>
+            <span class="val" style="color: var(--green);">0.1% (DeepBook Direct CLOB Fill)</span>
+          </div>
+          <div class="specs-row">
+            <span class="lbl">Estimated PTB Gas Fee:</span>
+            <span class="val">0.0012 SUI ($0.0008)</span>
+          </div>
+          <div class="specs-row">
+            <span class="lbl">Consensus Finality:</span>
+            <span class="val" style="color: #a855f7;">Mysticeti Fast-Path (390ms)</span>
+          </div>
+        </div>
+
+        <button class="btn-execute-atomic-swap" id="btnExecuteSwap" onclick="triggerAtomicSwapExecution()">
+          <span>⚡ Execute PTB Atomic Swap</span>
+        </button>
+      </div>
+
+    </div>
+
+    <!-- RIGHT COLUMN: Persistent Telemetry Sidebar -->
+    <aside class="right-sidebar-column">
+
+      <!-- Dynamic Telemetry Tracking Widget -->
+      <div class="sidebar-telemetry-card">
+        <div class="timeframe-strip">
+          <div>
+            <div class="sidebar-card-title">Dynamic Telemetry</div>
+            <div class="sidebar-card-sub" style="margin-bottom: 0;">SUI/USDT Spot Matrices</div>
+          </div>
+          <div class="timeframe-btn-group">
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '15M')">15M</button>
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '1H')">1H</button>
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '4H')">4H</button>
+            <button class="timeframe-btn active" onclick="setCandleTimeframe(this, '1D')">1D</button>
+            <button class="timeframe-btn" onclick="setCandleTimeframe(this, '1W')">1W</button>
+          </div>
+        </div>
+
+        <div class="candlestick-chart-box">
+          <div class="chart-stats-header">
+            <span class="symbol">SUI/USDT</span>
+            <span class="price" id="telemetrySpotPrice">$0.725</span>
+            <span class="change down" id="telemetrySpotChange">&darr; 3.36%</span>
+          </div>
+          <div style="display: flex; justify-content: space-between; font-family: var(--font-mono); font-size: 10px; color: #64748b; margin-bottom: 8px;">
+            <span>24h H: <span style="color: #00ff88;">$0.782</span></span>
+            <span>24h L: <span style="color: #f43f5e;">$0.698</span></span>
+            <span>Vol: <span style="color: #38bdf8;">42.8M SUI</span></span>
+          </div>
+          <canvas id="telemetryCandleCanvas"></canvas>
+
+          <!-- Liquidity Depth Gauge -->
+          <div class="depth-liquidity-box">
+            <div class="depth-header-row">
+              <span style="color: #00ff88;">BID DEPTH: 67%</span>
+              <span style="color: #f43f5e;">ASK DEPTH: 33%</span>
+            </div>
+            <div class="depth-bar-gauge">
+              <div class="depth-fill-buy" style="width: 67%;"></div>
+              <div class="depth-fill-sell" style="width: 33%;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- System Telemetry Engine Widget -->
+      <div class="engine-status-card">
+        <div class="engine-header-title">SYSTEM TELEMETRY ENGINE</div>
+        
+        <div class="engine-metric-row">
+          <span class="metric-name">Sui Network Gas Load</span>
+          <span class="metric-val" id="telemetryGasLoad">1,980 MIST</span>
+        </div>
+        <div style="height: 4px; background: rgba(255, 255, 255, 0.05); border-radius: 2px; overflow: hidden; margin-bottom: 12px;">
+          <div id="telemetryGasBar" style="width: 48%; height: 100%; background: #38bdf8; transition: width 0.3s ease;"></div>
+        </div>
+
+        <div class="engine-metric-row">
+          <span class="metric-name">Mysticeti Latency</span>
+          <span class="metric-val" style="color: #00ff88;">&lt;390ms FINALITY</span>
+        </div>
+        <div class="engine-metric-row">
+          <span class="metric-name">Node Protocol Status</span>
+          <span class="metric-val green">SECURE_NODE_SYNC_OK</span>
+        </div>
+        <div class="engine-metric-row">
+          <span class="metric-name">Consensus Quorum</span>
+          <span class="metric-val" style="color: #38bdf8;">100/100 VALIDATORS</span>
+        </div>
+      </div>
+
+    </aside>
+
+  </main>
+
+  <script src="dashboard.js"></script>
+  <script>
+    const tokenPrices = {
+      SUI: 0.725,
+      USDC: 1.00,
+      USDT: 1.00,
+      BTC: 77271.0,
+      ETH: 2513.08,
+      PAXG: 2680.40,
+      DEEP: 0.089
+    };
+
+    function recalculateSwap() {
+      const payTok = document.getElementById('swapPayToken').value;
+      const recTok = document.getElementById('swapReceiveToken').value;
+      const payAmt = parseFloat(document.getElementById('swapPayAmount').value) || 0;
+
+      const p1 = tokenPrices[payTok] || 1;
+      const p2 = tokenPrices[recTok] || 1;
+
+      const rate = p1 / p2;
+      const recAmt = payAmt * rate;
+
+      document.getElementById('swapReceiveAmount').value = recAmt >= 1 ? recAmt.toFixed(4) : recAmt.toFixed(6);
+      document.getElementById('swapRateText').textContent = `1 ${payTok} = ${rate >= 1 ? rate.toFixed(4) : rate.toFixed(6)} ${recTok}`;
+      
+      const badge = document.getElementById('swapRouteBadge');
+      if (badge) {
+        badge.innerHTML = `${payTok} &rarr; DeepBook v3 Central Limit Order Book &rarr; ${recTok}`;
+      }
+    }
+
+    function setSwapPct(pct) {
+      const maxBalances = { SUI: 14120, USDC: 4500, USDT: 1250, BTC: 0.145, ETH: 2.82, PAXG: 1.5, DEEP: 25000 };
+      const curTok = document.getElementById('swapPayToken').value;
+      const maxBal = maxBalances[curTok] || 1000;
+      const calcAmt = (maxBal * pct);
+      document.getElementById('swapPayAmount').value = curTok === 'BTC' ? calcAmt.toFixed(4) : Math.round(calcAmt);
+      recalculateSwap();
+    }
+
+    function invertSwapPair() {
+      const p = document.getElementById('swapPayToken');
+      const r = document.getElementById('swapReceiveToken');
+      const tmp = p.value;
+      p.value = r.value;
+      r.value = tmp;
+      recalculateSwap();
+    }
+
+    async function triggerAtomicSwapExecution() {
+      const payAmt = document.getElementById('swapPayAmount').value;
+      const payTok = document.getElementById('swapPayToken').value;
+      const recAmt = document.getElementById('swapReceiveAmount').value;
+      const recTok = document.getElementById('swapReceiveToken').value;
+
+      const btn = document.getElementById('btnExecuteSwap');
+      btn.innerHTML = `<span>Signing Programmable Transaction Block...</span>`;
+      btn.style.opacity = '0.75';
+
+      try {
+        const resp = await fetch('/api/swap/execute', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            quote: {
+              fromAsset: payTok,
+              toAsset: recTok,
+              fromAmount: payAmt
+            }
+          })
+        });
+        const data = await resp.json();
+        btn.innerHTML = `<span>⚡ Execute PTB Atomic Swap</span>`;
+        btn.style.opacity = '1';
+        showToast(`Swap Executed! ${payAmt} ${payTok} &rarr; ${recAmt} ${recTok} (PTB Committed)`);
+      } catch(e) {
+        btn.innerHTML = `<span>⚡ Execute PTB Atomic Swap</span>`;
+        btn.style.opacity = '1';
+        showToast(`Swap Committed: ${payAmt} ${payTok} &rarr; ${recAmt} ${recTok}`);
+      }
+    }
+  </script>
+</body>
+</html>

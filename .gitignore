@@ -1,19 +1,69 @@
-move/build/
-AIEngine/__pycache__/
-*.log
-walrusvault/
+# ══════════════════════════════════════════════════════════════════
+# FluidBLCX Engine — Universal Git Ignore
+# ══════════════════════════════════════════════════════════════════
+
+# Node & Package Dependencies
 node_modules/
-.env
-.env.*
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 pnpm-debug.log*
-.DS_Store
-Thumbs.db
-tools/sui/
+.pnpm-store/
 
+# Python Cache & Bytecode
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.venv/
+.pytest_cache/
+AIEngine/__pycache__/
+AIEngine/*.pyc
+LLM_SecurityPatcher/**/__pycache__/
+
+# Sui Move Build Artifacts & Binaries
+move/build/
+tools/sui/
+compile_result.txt
+
+# Walrus Vault Generated Shard Binaries
+data/walrus_vault/shards/*.bin
+walrusvault/
+
+# Environment Variables & Secrets
+.env
+.env.*
+*.env
+*.local
+
+# System & Application Logs
+*.log
+*.tmp
 server_debug.txt
 server_err.txt
 server_out.txt
-compile_result.txt
+
+# OS Generated Files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# IDE & Editor Configurations
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.swp
+*.swo
+*~
+
+# Project Archives & Legacy Backups
+archive/
+LLM_SecurityPatcher/

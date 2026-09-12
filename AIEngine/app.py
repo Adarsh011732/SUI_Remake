@@ -87,7 +87,7 @@ def analyze_request():
         }), 429
 
     path = data.get("path", request.path)
-    body = data.get("body", "")
+    body = data.get("body") or data.get("payload") or ""
     query = data.get("query", "")
     headers = data.get("headers", {})
     method = data.get("method", request.method)
